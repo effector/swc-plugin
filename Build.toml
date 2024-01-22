@@ -1,0 +1,5 @@
+path = "../src/lib.rs"
+
+[[test]]
+name = "fixtures"
+path = "../tests/with_fixture.rs"

@@ -1,0 +1,4 @@
+{
+  "factories": ["./parent", "./src/sibling"],
+  "__file": "src/input.js"
+}

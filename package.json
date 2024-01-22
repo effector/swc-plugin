@@ -1,0 +1,32 @@
+{
+  "name": "effector-swc-plugin",
+  "version": "0.1.0",
+  "description": "SWC Plugin for Effector",
+  "keywords": [
+    "swc-plugin",
+    "effector"
+  ],
+  "homepage": "https://github.com/kireevmp/effector-swc-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/kireevmp/effector-swc-plugin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kireevmp/effector-swc-plugin.git"
+  },
+  "license": "ISC",
+  "author": "Kireev Mikhail",
+  "type": "module",
+  "main": "effector_swc_plugin.wasm",
+  "files": [
+    "effector_swc_plugin.wasm"
+  ],
+  "scripts": {
+    "build": "cargo build-plugin --release",
+    "build:packages": "./build.sh"
+  },
+  "peerDependencies": {
+    "@swc/core": ">=1.3.106"
+  },
+  "preferUnplugged": true
+}

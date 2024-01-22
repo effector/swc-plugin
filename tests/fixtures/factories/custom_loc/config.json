@@ -1,0 +1,4 @@
+{
+  "factories": ["c/d", "@/f"],
+  "addLoc": true
+}
