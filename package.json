@@ -25,6 +25,9 @@
     "build": "cargo build-plugin --release",
     "build:packages": "./build.sh"
   },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1"
+  },
   "peerDependencies": {
     "@swc/core": ">=1.3.106"
   },
