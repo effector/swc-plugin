@@ -8,7 +8,7 @@ mkdir -p target/bundles
 
 echo "========="
 
-if [ "${TEST+0}" = "1" ]; then
+if [ "${TEST:-0}" = "1" ]; then
   echo "Testing the base plugin..."
   cargo test
 fi;
@@ -53,7 +53,7 @@ for pair in $versions; do
   cargo add swc_core@~$rust_swc --features "$features" --quiet
   cargo add swc_ecma_parser@~$parser_swc --quiet
 
-  if [ "${TEST+0}" = "1" ]; then
+  if [ "${TEST:-0}" = "1" ]; then
     echo "Testing the build..."
     cargo test -F packing --quiet
   fi;
