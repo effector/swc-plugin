@@ -194,7 +194,13 @@ impl VisitMut for UnitIdentifier<'_> {
                 id: Ident = id.clone().into()
             );
 
-            node.body.insert(0, import);
+            let first_import = node
+                .body
+                .iter()
+                .position(|expr| matches!(expr, ModuleItem::ModuleDecl(..)))
+                .unwrap_or(0);
+
+            node.body.insert(first_import, import);
         }
     }
 }
