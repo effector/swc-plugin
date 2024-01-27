@@ -7,12 +7,14 @@ use effector_swc_plugin::{effector, Config, VisitorMeta};
 use serde::Deserialize;
 use swc_core::{
     common::{chain, sync::Lrc, Mark},
-    ecma::transforms::{
-        base::resolver,
-        testing::{test_fixture, Tester},
+    ecma::{
+        parser::Syntax,
+        transforms::{
+            base::resolver,
+            testing::{test_fixture, Tester},
+        },
     },
 };
-use swc_ecma_parser::Syntax;
 
 fn find_input(dir: &Path) -> PathBuf {
     let mut curr = dir;
