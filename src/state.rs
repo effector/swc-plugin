@@ -17,5 +17,5 @@ pub struct State {
 
     pub import: EffectorImport,
 
-    pub factory: Option<Ident>,
+    pub factory_import: Option<Ident>,
 }

@@ -49,13 +49,12 @@ pub fn process_transform(mut program: Program, meta: TransformPluginProgramMetad
     let meta = VisitorMeta {
         file: meta
             .get_context(&TransformPluginMetadataContextKind::Filename)
-            .unwrap(),
+            .unwrap_or("unknown".into()),
 
         config: config.into(),
         mapper: Lrc::from(meta.source_map),
 
         state: Default::default(),
-        internal: Default::default(),
     };
 
     let meta = Lrc::from(meta);
