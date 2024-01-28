@@ -26,11 +26,11 @@ echo "========="
 export CARGO_TARGET_DIR="../target"
 
 temp_dir=./build/
-features=ecma_plugin_transform,ecma_quote,ecma_utils
-versions=$(jq -r 'map("\(.rust):\(.parser):\(.node.lo):\(.node.hi)") | .[]' versions.json)
+features=ecma_plugin_transform,ecma_quote,ecma_utils,ecma_parser
+versions=$(jq -r 'map("\(.rust):\(.node.lo):\(.node.hi)") | .[]' versions.json)
 
 for pair in $versions; do
-  IFS=':' read -r rust_swc parser_swc npm_swc node_hi <<< "$pair"
+  IFS=':' read -r rust_swc npm_swc node_hi <<< "$pair"
   
   publish_version="$package_version-swc$npm_swc"
   if [ "$node_hi" = "null" ]; then swc_range=">=$npm_swc"; else swc_range=">=$npm_swc <$node_hi"; fi
@@ -51,7 +51,6 @@ for pair in $versions; do
 
   echo "Loading packages..."
   cargo add swc_core@~$rust_swc --features "$features" --quiet
-  cargo add swc_ecma_parser@~$parser_swc --quiet
 
   if [ "${TEST:-0}" = "1" ]; then
     echo "Testing the build..."
