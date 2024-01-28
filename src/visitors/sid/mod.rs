@@ -169,8 +169,8 @@ impl VisitMut for UnitIdentifier<'_> {
                 }
                 .transform(node);
             } else if self.match_factory(expr) {
-                if self.state.factory.is_none() {
-                    self.state.factory = quote_ident!(WITH_FACTORY).into();
+                if self.state.factory_import.is_none() {
+                    self.state.factory_import = quote_ident!(WITH_FACTORY).into();
                 }
 
                 FactoryTransformer {
@@ -178,7 +178,7 @@ impl VisitMut for UnitIdentifier<'_> {
                     config: self.config,
                     stack: &self.stack,
 
-                    id: self.state.factory.as_ref().unwrap(),
+                    id: self.state.factory_import.as_ref().unwrap(),
                 }
                 .transform(node);
             }
@@ -188,7 +188,7 @@ impl VisitMut for UnitIdentifier<'_> {
     fn visit_mut_module(&mut self, node: &mut Module) {
         node.visit_mut_children_with(self);
 
-        if let Some(id) = &self.state.factory {
+        if let Some(id) = &self.state.factory_import {
             let import = quote!(
                 "import { withFactory as $id } from 'effector'" as ModuleItem,
                 id: Ident = id.clone().into()

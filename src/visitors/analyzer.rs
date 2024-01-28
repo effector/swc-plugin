@@ -10,7 +10,7 @@ use swc_core::{
 
 use super::meta::VisitorMeta;
 use crate::{
-    constants::Internal,
+    constants::INTERNAL,
     state::State,
     utils::{to_method, Resolve},
     Config,
@@ -22,7 +22,6 @@ pub(crate) struct AsAnalyzer {
 
 struct Analyzer<'a> {
     pub config: &'a Config,
-    pub internal: &'a Internal,
     pub state: &'a mut State,
 
     pub file: &'a String,
@@ -37,7 +36,6 @@ impl VisitMut for AsAnalyzer {
         let mut visitor = Analyzer {
             file: &self.meta.file,
             config: &self.meta.config,
-            internal: &self.meta.internal,
 
             state: &mut self.meta.state.borrow_mut(),
         };
@@ -49,7 +47,6 @@ impl VisitMut for AsAnalyzer {
         let mut visitor = Analyzer {
             file: &self.meta.file,
             config: &self.meta.config,
-            internal: &self.meta.internal,
 
             state: &mut self.meta.state.borrow_mut(),
         };
@@ -96,8 +93,7 @@ impl Analyzer<'_> {
         }
 
         // Lax rules for built-in factories (we look at prefix to handle patronum/*)
-        if self
-            .internal
+        if INTERNAL
             .factories
             .iter()
             .any(|factory| import.starts_with(factory))
@@ -144,7 +140,7 @@ impl Visit for Analyzer<'_> {
     fn visit_import_decl(&mut self, node: &ImportDecl) {
         let import = node.src.value.to_string();
 
-        if self.internal.tracked.contains(&import) {
+        if INTERNAL.tracked.contains(&import.as_str()) {
             node.specifiers
                 .iter()
                 .for_each(|spec| self.match_effector(spec));

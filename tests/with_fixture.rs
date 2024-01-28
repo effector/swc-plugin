@@ -53,7 +53,6 @@ fn fixture(plugin_config: PathBuf) {
                 mapper: tester.cm.clone(),
 
                 state: Default::default(),
-                internal: Default::default(),
 
                 file: internal.__file.to_owned().unwrap_or("input.js".into()),
             };
