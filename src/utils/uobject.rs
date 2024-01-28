@@ -8,17 +8,14 @@ impl UObject {
     }
 
     pub fn prop(key: &str, value: Expr) -> PropOrSpread {
-        let prop = KeyValueProp {
-            key: UObject::prop_key(key),
-            value: Box::new(value),
-        };
+        let prop = KeyValueProp { key: UObject::prop_key(key), value: Box::new(value) };
 
         PropOrSpread::Prop(Prop::KeyValue(prop).into())
     }
 
     pub fn with(props: Vec<(&str, Expr)>) -> ObjectLit {
         ObjectLit {
-            span: DUMMY_SP,
+            span:  DUMMY_SP,
             props: props
                 .iter()
                 .map(|(key, value)| UObject::prop(key, value.clone()))
@@ -27,10 +24,7 @@ impl UObject {
     }
 
     pub fn insert_and(base: &mut ObjectLit, and: Box<Expr>) {
-        let prop = KeyValueProp {
-            key: UObject::prop_key("and"),
-            value: and,
-        };
+        let prop = KeyValueProp { key: UObject::prop_key("and"), value: and };
 
         base.props.push(Prop::KeyValue(prop).into());
     }

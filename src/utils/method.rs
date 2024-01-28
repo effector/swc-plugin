@@ -18,7 +18,13 @@ pub(crate) fn to_method(name: &str) -> Option<EffectorMethod> {
         "split" => Some(EffectorMethod::Split),
         "createApi" => Some(EffectorMethod::CreateApi),
 
+        "useEvent" => Some(EffectorMethod::UseEvent),
+        "useGate" => Some(EffectorMethod::UseGate),
+        "useList" => Some(EffectorMethod::UseList),
+        "useStore" => Some(EffectorMethod::UseStore),
+        "useStoreMap" => Some(EffectorMethod::UseStoreMap),
         "useUnit" => Some(EffectorMethod::UseUnit),
+
         "createGate" => Some(EffectorMethod::Gate),
         _ => None,
     }

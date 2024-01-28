@@ -52,9 +52,9 @@ Third, run your build tools and enjoy.
 
 - `forceScope`: `boolean` (default: `false`)
 
-  When enabled, injects `forceScope: true` in all [`useUnit`](https://effector.dev/en/api/effector-react/useunit/) calls.
+  When enabled, injects `forceScope: true` in all [`hooks`](https://effector.dev/en/api/effector-react/#hooks) of `effector-react` and `effector-solid`.
 
-  If `forceScope` is enabled, it makes `useUnit` call to _require_ `Scope` during render (or throw otherwise). This setting completely replaces the requirement for `effector-<view>/scope` imports.
+  If `forceScope` is enabled, it enforces that your app _always_ uses `Scope` during render. When `Scope` is missing, the app will throw an error. This setting completely replaces the requirement for `effector-<view>/scope` imports.
 
   More about Scope enforcement in [documentation](https://effector.dev/en/api/effector-react/module/scope/#scope-enforcement).
 
