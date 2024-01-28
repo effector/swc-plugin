@@ -33,7 +33,7 @@ pub(crate) struct AsUnitIdentifier {
 
 struct UnitIdentifier<'a> {
     pub config: &'a Config,
-    pub state: &'a mut State,
+    pub state:  &'a mut State,
 
     pub mapper: &'a dyn SourceMapper,
 
@@ -48,10 +48,10 @@ impl VisitMut for AsUnitIdentifier {
     fn visit_mut_module(&mut self, module: &mut Module) {
         let mut visitor = UnitIdentifier {
             config: &self.meta.config,
-            stack: Vec::new(),
+            stack:  Vec::new(),
 
             mapper: self.meta.mapper.as_ref(),
-            state: &mut self.meta.state.borrow_mut(),
+            state:  &mut self.meta.state.borrow_mut(),
         };
 
         module.visit_mut_with(&mut visitor);
@@ -60,10 +60,10 @@ impl VisitMut for AsUnitIdentifier {
     fn visit_mut_script(&mut self, module: &mut Script) {
         let mut visitor = UnitIdentifier {
             config: &self.meta.config,
-            stack: Vec::new(),
+            stack:  Vec::new(),
 
             mapper: &*self.meta.mapper,
-            state: &mut self.meta.state.borrow_mut(),
+            state:  &mut self.meta.state.borrow_mut(),
         };
 
         module.visit_mut_with(&mut visitor);
@@ -80,8 +80,7 @@ impl UnitIdentifier<'_> {
     fn is_effector(&self, id: &Id) -> bool {
         let EffectorImport { star, def } = &self.state.import;
 
-        star.as_ref().is_some_and(|star| *star == *id)
-            || def.as_ref().is_some_and(|def| *def == *id)
+        star.as_ref().is_some_and(|star| *star == *id) || def.as_ref().is_some_and(|def| *def == *id)
     }
 
     fn match_method(&self, node: &Expr) -> Option<EffectorMethod> {
@@ -103,7 +102,7 @@ impl UnitIdentifier<'_> {
 
     fn match_factory(&self, node: &Expr) -> bool {
         if let Expr::Ident(ident) = node {
-            return self.state.factories.contains(&ident.to_id());
+            self.state.factories.contains(&ident.to_id())
         } else {
             false
         }
@@ -163,7 +162,7 @@ impl VisitMut for UnitIdentifier<'_> {
                 MethodTransformer {
                     mapper: self.mapper,
                     config: self.config,
-                    stack: &self.stack,
+                    stack:  &self.stack,
 
                     method: method.to_owned(),
                 }
@@ -176,7 +175,7 @@ impl VisitMut for UnitIdentifier<'_> {
                 FactoryTransformer {
                     mapper: self.mapper,
                     config: self.config,
-                    stack: &self.stack,
+                    stack:  &self.stack,
 
                     id: self.state.factory_import.as_ref().unwrap(),
                 }
@@ -191,7 +190,7 @@ impl VisitMut for UnitIdentifier<'_> {
         if let Some(id) = &self.state.factory_import {
             let import = quote!(
                 "import { withFactory as $id } from 'effector'" as ModuleItem,
-                id: Ident = id.clone().into()
+                id: Ident = id.clone()
             );
 
             let first_import = node

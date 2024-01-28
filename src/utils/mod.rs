@@ -1,6 +1,7 @@
 pub(crate) use self::method::{to_domain_method, to_method};
-pub use self::{path::Resolve, uobject::UObject};
+pub use self::{keyof::*, path::Resolve, uobject::UObject};
 
+mod keyof;
 mod method;
 mod path;
 mod uobject;
