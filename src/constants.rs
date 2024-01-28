@@ -17,6 +17,11 @@ pub enum EffectorMethod {
     Split,
     CreateApi,
 
+    UseEvent,
+    UseGate,
+    UseList,
+    UseStore,
+    UseStoreMap,
     UseUnit,
     Gate,
 }
