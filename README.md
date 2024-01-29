@@ -9,14 +9,14 @@ Can be used for SSR, debugging and testing in SWC-powered projects, like [NextJS
 
 ## ⚙️ Get Started
 
-First, install a [compatible](#Versioning) tag of this package:
+First, install a [compatible](#Versioning) tag of this package, and pin it:
 
 ```bash
-$ npm install effector-swc-plugin
+$ npm install effector-swc-plugin@compatible-tag --save-exact
 # or
-$ yarn add effector-swc-plugin
+$ yarn add effector-swc-plugin@compatible-tag --exact
 # or
-$ pnpm add effector-swc-plugin
+$ pnpm add effector-swc-plugin@compatible-tag --save-exact
 ```
 
 Second, add this plugin into your SWC configuration (like `.swcrc`):
@@ -35,7 +35,7 @@ Second, add this plugin into your SWC configuration (like `.swcrc`):
 
 Third, run your build tools and enjoy.
 
-## Configuration
+## 🛠️ Configuration
 
 - `addNames`: `boolean` (default: `true`)
 
@@ -50,13 +50,25 @@ Third, run your build tools and enjoy.
 
   Add a file path and unit name to the end of generated SID. Useful for debugging SSR.
 
-- `forceScope`: `boolean` (default: `false`)
+- `forceScope`: `boolean | { hooks: boolean, reflect: boolean }` (default: `false`)
 
-  When enabled, injects `forceScope: true` in all [`hooks`](https://effector.dev/en/api/effector-react/#hooks) of `effector-react` and `effector-solid`.
+  When enabled, injects `forceScope: true` into all [`hooks`](https://effector.dev/en/api/effector-react/#hooks) or `@effector/reflect` calls, depending on your configuration.
 
-  If `forceScope` is enabled, it enforces that your app _always_ uses `Scope` during render. When `Scope` is missing, the app will throw an error. This setting completely replaces the requirement for `effector-<view>/scope` imports.
+  When `forceScope` is enabled, it enforces that your app _always_ uses `Scope` during render. If the `Scope` is missing, the app will throw an error. This setting completely replaces the requirement for `/scope` or `/ssr` imports.
 
   More about Scope enforcement in [documentation](https://effector.dev/en/api/effector-react/module/scope/#scope-enforcement).
+
+  - `forceScope.hooks`: `boolean` _(since `v0.2.0`)_
+
+    `hooks: true` enforces that all hooks from `effector-react` and `effector-solid`, like `useUnit` and `useList`, use `Scope`.
+
+  - `forceScope.reflect`: `boolean` _(since `v0.2.0`)_
+
+    For `@effector/reflect` users. If enabled, this option enforces all components created with `reflect` library also use `Scope`.
+
+    > Note: Only useful for `@effector/reflect@>=9.0.0`. Versions lower than `9.0.0` do not support `forceScope`.
+
+  - `forceScope: boolean` - a shorthand to enable/disable all options
 
 - `factories`: `string[]` (default: `[]`)
 
@@ -113,7 +125,7 @@ This package will do its best and specify the correct `@swc/core` in its `peerDe
 
 To work around breaking changes, this package publishes different ['labels'](https://semver.org/#spec-item-9) for different corresponding `@swc/core` ranges. To choose an appropriate label, pick your `@swc/core` / `NextJS` version from [the list](https://www.npmjs.com/package/effector-swc-plugin?activeTab=versions).
 
-_Always pin your `@swc/core` and this plugin version for stable behavior._
+**Always pin your `@swc/core` and this plugin version for stable behavior.**
 
 Choosing the Right Plugin Version:
 
@@ -128,4 +140,11 @@ Choosing the Right Plugin Version:
 | `@0.x.x-swc1.3.58`             | `1.3.58` to `1.3.61`            |
 | `@0.x.x-swc1.3.62` or `@0.x.x` | `1.3.62`                        |
 
-Also, see SWC Documentation "[Selecting the version](https://swc.rs/docs/plugin/selecting-swc-core)" for detailed info on plugin compatibility.
+### For NextJS users
+
+> [!TIP]
+> For convenience, the `next@latest`-compatible version of this plugin is published under `@nextjs` tag. If you use the _latest_ `NextJS`, this tag should work for you.
+
+See SWC Documentation "[Selecting the version](https://swc.rs/docs/plugin/selecting-swc-core)" for detailed info on plugin compatibility. Each NextJS version has a corresponding `@swc/core` version, which you need to know.
+
+As soon as you know the `@swc/core` version, follow the rules above to install the plugin.

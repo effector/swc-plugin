@@ -20,6 +20,7 @@ format_macro_matchers = true
 
 group_imports = "StdExternalCrate"
 
-max_width = 120
+max_width = 90
 struct_field_align_threshold = 4
+single_line_let_else_max_width = 80
 struct_lit_width = 60

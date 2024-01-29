@@ -26,6 +26,10 @@ pub(crate) fn to_method(name: &str) -> Option<EffectorMethod> {
         "useUnit" => Some(EffectorMethod::UseUnit),
 
         "createGate" => Some(EffectorMethod::Gate),
+
+        "reflect" => Some(EffectorMethod::Reflect),
+        "list" => Some(EffectorMethod::ReflectList),
+        "variant" => Some(EffectorMethod::ReflectVariant),
         _ => None,
     }
 }

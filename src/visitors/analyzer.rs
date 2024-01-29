@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{cell::RefCell, path::Path};
 
 use swc_core::{
     common::sync::Lrc,
@@ -22,7 +22,7 @@ pub(crate) struct AsAnalyzer {
 
 struct Analyzer<'a> {
     pub config: &'a Config,
-    pub state: &'a mut State,
+    pub state:  &'a RefCell<State>,
 
     pub file: &'a String,
 }
@@ -31,27 +31,23 @@ pub(crate) fn analyzer(meta: Lrc<VisitorMeta>) -> AsAnalyzer {
     AsAnalyzer { meta }
 }
 
+impl AsAnalyzer {
+    fn as_core(&mut self) -> Analyzer<'_> {
+        Analyzer {
+            file:   &self.meta.file,
+            config: &self.meta.config,
+            state:  &self.meta.state,
+        }
+    }
+}
+
 impl VisitMut for AsAnalyzer {
     fn visit_mut_module(&mut self, module: &mut Module) {
-        let mut visitor = Analyzer {
-            file: &self.meta.file,
-            config: &self.meta.config,
-
-            state: &mut self.meta.state.borrow_mut(),
-        };
-
-        module.visit_with(&mut visitor);
+        module.visit_with(&mut self.as_core());
     }
 
-    fn visit_mut_script(&mut self, module: &mut Script) {
-        let mut visitor = Analyzer {
-            file: &self.meta.file,
-            config: &self.meta.config,
-
-            state: &mut self.meta.state.borrow_mut(),
-        };
-
-        module.visit_with(&mut visitor);
+    fn visit_mut_script(&mut self, script: &mut Script) {
+        script.visit_with(&mut self.as_core());
     }
 }
 
@@ -114,14 +110,18 @@ impl Analyzer<'_> {
     }
 
     fn match_effector(&mut self, specifier: &ImportSpecifier) {
+        let mut state = self.state.borrow_mut();
+
         match specifier {
             ImportSpecifier::Named(import) => {
                 if let Some(method) = to_method(Self::name_of(import)) {
-                    self.state.aliases.insert(import.local.to_id(), method);
+                    state.aliases.insert(import.local.to_id(), method);
                 }
             }
-            ImportSpecifier::Default(def) => self.state.import.def = Some(def.local.to_id()),
-            ImportSpecifier::Namespace(star) => self.state.import.star = Some(star.local.to_id()),
+            ImportSpecifier::Default(def) => state.import.def = Some(def.local.to_id()),
+            ImportSpecifier::Namespace(star) => {
+                state.import.star = Some(star.local.to_id())
+            }
         }
     }
 
@@ -129,7 +129,7 @@ impl Analyzer<'_> {
         match specifier {
             ImportSpecifier::Named(ImportNamedSpecifier { local, .. })
             | ImportSpecifier::Default(ImportDefaultSpecifier { local, .. }) => {
-                self.state.factories.insert(local.to_id());
+                self.state.borrow_mut().factories.insert(local.to_id());
             }
             _ => (/* unsupported */),
         }

@@ -1,4 +1,4 @@
-use std::ops::Deref;
+use std::{cell::RefCell, ops::Deref};
 
 use swc_core::{
     common::{sync::Lrc, SourceMapper},
@@ -19,7 +19,7 @@ use super::meta::VisitorMeta;
 use crate::{
     constants::EffectorMethod,
     state::{EffectorImport, State},
-    utils::{to_domain_method, to_method},
+    utils::{to_domain_method, to_method, TryKeyOf},
     Config,
 };
 
@@ -27,46 +27,44 @@ mod call_identity;
 mod factory;
 mod method;
 
-pub(crate) struct AsUnitIdentifier {
+struct AsUnitIdentifier {
     meta: Lrc<VisitorMeta>,
 }
 
 struct UnitIdentifier<'a> {
     pub config: &'a Config,
-    pub state:  &'a mut State,
+    pub state:  &'a RefCell<State>,
 
     pub mapper: &'a dyn SourceMapper,
 
     stack: Vec<Option<JsWord>>,
+    factory_import: Option<Ident>,
 }
 
-pub(crate) fn unit_identifier(meta: Lrc<VisitorMeta>) -> AsUnitIdentifier {
+pub(crate) fn unit_identifier(meta: Lrc<VisitorMeta>) -> impl VisitMut {
     AsUnitIdentifier { meta }
+}
+
+impl AsUnitIdentifier {
+    fn as_core(&self) -> UnitIdentifier<'_> {
+        UnitIdentifier {
+            stack: Vec::new(),
+            factory_import: None,
+
+            config: &self.meta.config,
+            mapper: &*self.meta.mapper,
+            state:  &self.meta.state,
+        }
+    }
 }
 
 impl VisitMut for AsUnitIdentifier {
     fn visit_mut_module(&mut self, module: &mut Module) {
-        let mut visitor = UnitIdentifier {
-            config: &self.meta.config,
-            stack:  Vec::new(),
-
-            mapper: self.meta.mapper.as_ref(),
-            state:  &mut self.meta.state.borrow_mut(),
-        };
-
-        module.visit_mut_with(&mut visitor);
+        module.visit_mut_with(&mut self.as_core());
     }
 
     fn visit_mut_script(&mut self, module: &mut Script) {
-        let mut visitor = UnitIdentifier {
-            config: &self.meta.config,
-            stack:  Vec::new(),
-
-            mapper: &*self.meta.mapper,
-            state:  &mut self.meta.state.borrow_mut(),
-        };
-
-        module.visit_mut_with(&mut visitor);
+        module.visit_mut_with(&mut self.as_core());
     }
 }
 
@@ -78,14 +76,17 @@ impl UnitIdentifier<'_> {
     }
 
     fn is_effector(&self, id: &Id) -> bool {
-        let EffectorImport { star, def } = &self.state.import;
+        let EffectorImport { star, def } = &self.state.borrow().import;
 
-        star.as_ref().is_some_and(|star| *star == *id) || def.as_ref().is_some_and(|def| *def == *id)
+        star.as_ref().is_some_and(|star| *star == *id)
+            || def.as_ref().is_some_and(|def| *def == *id)
     }
 
     fn match_method(&self, node: &Expr) -> Option<EffectorMethod> {
         match node {
-            Expr::Ident(ident) => self.state.aliases.get(&ident.to_id()).cloned(),
+            Expr::Ident(ident) => {
+                self.state.borrow().aliases.get(&ident.to_id()).cloned()
+            }
             Expr::Member(member) => {
                 let MemberExpr { obj, prop, .. } = member;
                 let (obj, prop) = (obj.as_ident()?, prop.as_ident()?);
@@ -101,11 +102,42 @@ impl UnitIdentifier<'_> {
     }
 
     fn match_factory(&self, node: &Expr) -> bool {
-        if let Expr::Ident(ident) = node {
-            self.state.factories.contains(&ident.to_id())
-        } else {
-            false
+        let Expr::Ident(ident) = node else { return false };
+
+        self.state.borrow().factories.contains(&ident.to_id())
+    }
+
+    fn transform_method(&self, node: &mut CallExpr) {
+        let Callee::Expr(expr) = &node.callee else { return };
+        let Some(method) = self.match_method(expr) else { return };
+
+        MethodTransformer {
+            mapper: self.mapper,
+            config: self.config,
+            stack:  &self.stack,
+
+            method: method.to_owned(),
         }
+        .transform(node)
+    }
+
+    fn transform_factory(&mut self, node: &mut CallExpr) {
+        let Callee::Expr(expr) = &node.callee else { return };
+
+        if self.match_factory(expr) {
+            let id = self
+                .factory_import
+                .get_or_insert_with(|| quote_ident!(WITH_FACTORY));
+
+            FactoryTransformer {
+                id,
+
+                mapper: self.mapper,
+                config: self.config,
+                stack: &self.stack,
+            }
+            .transform(node);
+        };
     }
 }
 
@@ -134,11 +166,7 @@ impl VisitMut for UnitIdentifier<'_> {
     }
 
     fn visit_mut_key_value_prop(&mut self, node: &mut KeyValueProp) {
-        let id: Option<JsWord> = match &node.key {
-            PropName::Ident(id) => Some(id.sym.to_owned()),
-            PropName::Str(id) => Some(id.value.to_owned()),
-            _ => None,
-        };
+        let id = node.try_key();
 
         self.visit_stacked(id, node);
     }
@@ -157,37 +185,14 @@ impl VisitMut for UnitIdentifier<'_> {
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
         node.visit_mut_children_with(self);
 
-        if let Callee::Expr(expr) = &node.callee {
-            if let Some(method) = self.match_method(expr) {
-                MethodTransformer {
-                    mapper: self.mapper,
-                    config: self.config,
-                    stack:  &self.stack,
-
-                    method: method.to_owned(),
-                }
-                .transform(node);
-            } else if self.match_factory(expr) {
-                if self.state.factory_import.is_none() {
-                    self.state.factory_import = quote_ident!(WITH_FACTORY).into();
-                }
-
-                FactoryTransformer {
-                    mapper: self.mapper,
-                    config: self.config,
-                    stack:  &self.stack,
-
-                    id: self.state.factory_import.as_ref().unwrap(),
-                }
-                .transform(node);
-            }
-        }
+        self.transform_method(node);
+        self.transform_factory(node);
     }
 
     fn visit_mut_module(&mut self, node: &mut Module) {
         node.visit_mut_children_with(self);
 
-        if let Some(id) = &self.state.factory_import {
+        if let Some(id) = &self.factory_import {
             let import = quote!(
                 "import { withFactory as $id } from 'effector'" as ModuleItem,
                 id: Ident = id.clone()

@@ -1,7 +1,7 @@
 pub use self::meta::VisitorMeta;
-pub(crate) use self::{analyzer::analyzer, force_scope::force_scope, sid::unit_identifier};
+pub(crate) use self::{analyzer::analyzer, sid::unit_identifier};
 
 mod analyzer;
-mod force_scope;
+pub mod force_scope;
 mod meta;
 mod sid;
