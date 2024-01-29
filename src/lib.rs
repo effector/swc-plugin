@@ -27,24 +27,31 @@ pub fn effector(meta: Lrc<VisitorMeta>) -> impl VisitMut + Fold {
 
     let visitor = chain!(
         analyzer(meta.clone()),
-        unit_identifier(meta.clone()),
         Optional {
-            enabled: config.force_scope,
-            visitor: force_scope(meta.clone()),
-        }
+            enabled: config.force_scope.reflect(),
+            visitor: force_scope::reflect(meta.clone()),
+        },
+        Optional {
+            enabled: config.force_scope.hooks(),
+            visitor: force_scope::hooks(meta.clone()),
+        },
+        unit_identifier(meta.clone()),
     );
 
     as_folder(visitor)
 }
 
 #[plugin_transform]
-pub fn process_transform(mut program: Program, meta: TransformPluginProgramMetadata) -> Program {
+pub fn process_transform(
+    mut program: Program,
+    meta: TransformPluginProgramMetadata,
+) -> Program {
     let config = serde_json::from_str::<Config>(
         &meta
             .get_transform_plugin_config()
             .expect("effector-plugin config should be set"),
     )
-    .expect("effector-plugin confug should be valud");
+    .expect("effector-plugin config should be valid");
 
     let meta = VisitorMeta {
         file: meta

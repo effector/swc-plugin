@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use swc_core::{
     common::{sync::Lrc, util::take::Take},
     ecma::{
@@ -7,40 +9,42 @@ use swc_core::{
     },
 };
 
-use super::meta::VisitorMeta;
 use crate::{
     constants::EffectorMethod,
     state::State,
     utils::{TryKeyOf, UObject},
+    visitors::meta::VisitorMeta,
 };
 
-pub(crate) struct AsForceScope {
+struct AsForceHooksScope {
     meta: Lrc<VisitorMeta>,
 }
 
-struct ForceScope<'a> {
-    pub state: &'a State,
+struct ForceHooksScope<'a> {
+    pub aliases: &'a HashMap<Id, EffectorMethod>,
 }
 
-pub(crate) fn force_scope(meta: Lrc<VisitorMeta>) -> AsForceScope {
-    AsForceScope { meta }
+pub(crate) fn force_hooks_scope(meta: Lrc<VisitorMeta>) -> impl VisitMut {
+    AsForceHooksScope { meta }
 }
 
-impl VisitMut for AsForceScope {
+impl VisitMut for AsForceHooksScope {
     fn visit_mut_module(&mut self, module: &mut Module) {
-        let mut visitor = ForceScope { state: &self.meta.state.borrow() };
+        let State { aliases, .. } = &*self.meta.state.borrow();
+        let mut visitor = ForceHooksScope { aliases };
 
         module.visit_mut_with(&mut visitor);
     }
 
     fn visit_mut_script(&mut self, module: &mut Script) {
-        let mut visitor = ForceScope { state: &self.meta.state.borrow() };
+        let State { aliases, .. } = &*self.meta.state.borrow();
+        let mut visitor = ForceHooksScope { aliases };
 
         module.visit_mut_with(&mut visitor);
     }
 }
 
-impl ForceScope<'_> {
+impl ForceHooksScope<'_> {
     fn ensure_gate_props(&self, node: &mut CallExpr) {
         if node.args.len() == 1 {
             node.args.push(Expr::Object(ObjectLit::dummy()).into())
@@ -86,7 +90,8 @@ impl ForceScope<'_> {
                 });
 
                 if !has_option {
-                    config.props.insert(0, UObject::prop("forceScope", true.into()));
+                    let prop = UObject::prop("forceScope", true.into());
+                    config.props.insert(0, prop);
                 };
             }
 
@@ -95,30 +100,33 @@ impl ForceScope<'_> {
     }
 }
 
-impl VisitMut for ForceScope<'_> {
+impl VisitMut for ForceHooksScope<'_> {
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
         let method = node
             .callee
             .as_expr()
             .and_then(|calle| calle.as_ident())
-            .and_then(|ident| self.state.aliases.get(&ident.to_id()));
+            .and_then(|ident| self.aliases.get(&ident.to_id()));
 
-        if let Some(method) = method {
-            match method {
-                EffectorMethod::UseUnit | EffectorMethod::UseEvent | EffectorMethod::UseStore => {
-                    self.inject_use_unit(node, 1);
-                }
-                EffectorMethod::UseList => self.inject_use_unit(node, 2),
+        let Some(method) = method else { return };
 
-                EffectorMethod::UseGate => {
-                    self.ensure_gate_props(node);
-                    self.inject_use_unit(node, 2);
-                }
+        match method {
+            EffectorMethod::UseUnit
+            | EffectorMethod::UseEvent
+            | EffectorMethod::UseStore => {
+                self.inject_use_unit(node, 1);
+            }
 
-                EffectorMethod::UseStoreMap => self.inject_use_store_map(node),
+            EffectorMethod::UseList => self.inject_use_unit(node, 2),
 
-                _ => (/* not a hook */),
-            };
+            EffectorMethod::UseGate => {
+                self.ensure_gate_props(node);
+                self.inject_use_unit(node, 2);
+            }
+
+            EffectorMethod::UseStoreMap => self.inject_use_store_map(node),
+
+            _ => (),
         };
     }
 }

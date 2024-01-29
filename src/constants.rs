@@ -1,6 +1,7 @@
 #[derive(PartialEq, Eq, Hash, Clone, Debug)]
 #[repr(usize)]
 pub enum EffectorMethod {
+    // unit creators
     Store,
     Event,
     Effect,
@@ -9,6 +10,7 @@ pub enum EffectorMethod {
     Merge,
     Restore,
 
+    // effector operators
     Combine,
     Sample,
     Forward,
@@ -17,17 +19,24 @@ pub enum EffectorMethod {
     Split,
     CreateApi,
 
+    // view library hooks
     UseEvent,
     UseGate,
     UseList,
     UseStore,
     UseStoreMap,
     UseUnit,
+    // view library units
     Gate,
+
+    // reflect
+    Reflect,
+    ReflectList,
+    ReflectVariant,
 }
 
 pub(crate) struct Internal {
-    pub tracked: [&'static str; 9],
+    pub tracked:   [&'static str; 10],
     pub factories: [&'static str; 5],
 }
 
@@ -50,6 +59,8 @@ impl Internal {
                 // Solid
                 "effector-solid",
                 "effector-solid/scope",
+                // Reflect
+                "@effector/reflect",
             ],
 
             factories: [
