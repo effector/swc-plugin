@@ -6,7 +6,7 @@ use std::{
 use effector_swc_plugin::{effector, Config, VisitorMeta};
 use serde::Deserialize;
 use swc_core::{
-    common::{chain, sync::Lrc, Mark},
+    common::{chain, Mark},
     ecma::{
         parser::Syntax,
         transforms::{
@@ -41,7 +41,8 @@ fn fixture(plugin_config: PathBuf) {
 
     let syntax = Syntax::Es(Default::default());
 
-    let raw_config = read_to_string(plugin_config.clone()).expect("failed to read config.json");
+    let raw_config =
+        read_to_string(plugin_config.clone()).expect("failed to read config.json");
     let config = serde_json::from_str::<Config>(&raw_config).unwrap();
     let internal = serde_json::from_str::<TestConfig>(&raw_config).unwrap();
 
@@ -57,12 +58,7 @@ fn fixture(plugin_config: PathBuf) {
                 file: internal.__file.to_owned().unwrap_or("input.js".into()),
             };
 
-            let meta = Lrc::from(meta);
-
-            chain!(
-                resolver(Mark::new(), Mark::new(), false),
-                effector(meta.clone())
-            )
+            chain!(resolver(Mark::new(), Mark::new(), false), effector(meta))
         },
         &input,
         &dir.join("output.js"),

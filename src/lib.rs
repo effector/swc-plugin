@@ -1,4 +1,4 @@
-use std::ops::Deref;
+use std::rc::Rc;
 
 use swc_core::{
     common::{chain, pass::Optional, sync::Lrc},
@@ -22,20 +22,20 @@ mod state;
 mod utils;
 mod visitors;
 
-pub fn effector(meta: Lrc<VisitorMeta>) -> impl VisitMut + Fold {
-    let config = meta.config.deref();
+pub fn effector(meta: VisitorMeta) -> impl VisitMut + Fold {
+    let config = &meta.config;
 
     let visitor = chain!(
-        analyzer(meta.clone()),
+        analyzer(&meta),
         Optional {
             enabled: config.force_scope.reflect(),
-            visitor: force_scope::reflect(meta.clone()),
+            visitor: force_scope::reflect(&meta),
         },
         Optional {
             enabled: config.force_scope.hooks(),
-            visitor: force_scope::hooks(meta.clone()),
+            visitor: force_scope::hooks(&meta),
         },
-        unit_identifier(meta.clone()),
+        unit_identifier(&meta),
     );
 
     as_folder(visitor)
@@ -58,13 +58,12 @@ pub fn process_transform(
             .get_context(&TransformPluginMetadataContextKind::Filename)
             .unwrap_or("unknown".into()),
 
-        config: config.into(),
+        config: Rc::new(config),
         mapper: Lrc::from(meta.source_map),
 
         state: Default::default(),
     };
 
-    let meta = Lrc::from(meta);
     let mut visitor = effector(meta);
 
     program.visit_mut_with(&mut visitor);

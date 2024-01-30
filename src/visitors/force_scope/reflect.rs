@@ -1,49 +1,22 @@
-use std::{collections::HashMap, ops::DerefMut};
+use std::ops::DerefMut;
 
-use swc_core::{
-    common::sync::Lrc,
-    ecma::{
-        ast::*,
-        visit::{VisitMut, VisitMutWith},
-    },
-};
+use swc_core::ecma::{ast::*, visit::VisitMut};
 
 use crate::{
     constants::EffectorMethod,
-    state::State,
     utils::{TryKeyOf, UObject},
-    visitors::meta::VisitorMeta,
+    visitors::{MutableState, VisitorMeta},
 };
 
-struct AsForceReflectScope {
-    meta: Lrc<VisitorMeta>,
+struct ForceReflectScope {
+    pub state: MutableState,
 }
 
-struct ForceReflectScope<'a> {
-    pub aliases: &'a HashMap<Id, EffectorMethod>,
+pub(crate) fn force_reflect_scope(meta: &VisitorMeta) -> impl VisitMut {
+    ForceReflectScope { state: meta.state.clone() }
 }
 
-pub(crate) fn force_reflect_scope(meta: Lrc<VisitorMeta>) -> impl VisitMut {
-    AsForceReflectScope { meta }
-}
-
-impl VisitMut for AsForceReflectScope {
-    fn visit_mut_module(&mut self, module: &mut Module) {
-        let State { aliases, .. } = &*self.meta.state.borrow();
-        let mut visitor = ForceReflectScope { aliases };
-
-        module.visit_mut_with(&mut visitor);
-    }
-
-    fn visit_mut_script(&mut self, module: &mut Script) {
-        let State { aliases, .. } = &*self.meta.state.borrow();
-        let mut visitor = ForceReflectScope { aliases };
-
-        module.visit_mut_with(&mut visitor);
-    }
-}
-
-impl ForceReflectScope<'_> {
+impl ForceReflectScope {
     fn inject_reflect(&self, node: &mut CallExpr) {
         let Some(config) = node.args.get_mut(0) else { return };
         let ExprOrSpread { spread: None, expr: config } = config else { return };
@@ -64,13 +37,15 @@ impl ForceReflectScope<'_> {
     }
 }
 
-impl VisitMut for ForceReflectScope<'_> {
+impl VisitMut for ForceReflectScope {
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
+        let state = self.state.borrow();
+
         let method = node
             .callee
             .as_expr()
             .and_then(|calle| calle.as_ident())
-            .and_then(|ident| self.aliases.get(&ident.to_id()));
+            .and_then(|ident| state.aliases.get(&ident.to_id()));
 
         let Some(method) = method else { return };
 
