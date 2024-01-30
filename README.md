@@ -142,9 +142,6 @@ Choosing the Right Plugin Version:
 
 ### For NextJS users
 
-> [!TIP]
-> For convenience, the `next@latest`-compatible version of this plugin is published under `@nextjs` tag. If you use the _latest_ `NextJS`, this tag should work for you.
-
 See SWC Documentation "[Selecting the version](https://swc.rs/docs/plugin/selecting-swc-core)" for detailed info on plugin compatibility. Each NextJS version has a corresponding `@swc/core` version, which you need to know.
 
 As soon as you know the `@swc/core` version, follow the rules above to install the plugin.

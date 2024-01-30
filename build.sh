@@ -13,13 +13,15 @@ if [ "${TEST:-0}" = "1" ]; then
   cargo test
 fi;
 
-echo "Finalizing the base plugin..."
-cargo build-plugin --release
-cp target/wasm32-wasi/release/effector_swc_plugin.wasm .
+if [ "${BUILD:-1}" = "1" ]; then
+  echo "Finalizing the base plugin..."
+  cargo build-plugin --release
+  cp target/wasm32-wasi/release/effector_swc_plugin.wasm .
 
-echo "Packing $package_version..."
-pnpm pack
-mv "effector-swc-plugin-$package_version.tgz" "target/bundles/"
+  echo "Packing $package_version..."
+  pnpm pack
+  mv "effector-swc-plugin-$package_version.tgz" "target/bundles/"
+fi;
 
 echo "========="
 
@@ -49,28 +51,30 @@ for pair in $versions; do
 
   pushd "$temp_dir"
 
-  echo "Loading packages..."
+  echo "Loading packages ($rust_swc)..."
   cargo add swc_core@~$rust_swc --features "$features" --quiet
 
   if [ "${TEST:-0}" = "1" ]; then
-    echo "Testing the build..."
+    echo "Testing the build $publish_version..."
     cargo test -F packing --quiet
   fi;
 
-  echo "Finalizing the build..."
-  cargo build-plugin --release --quiet
+  if [ "${BUILD:-1}" = "1" ]; then
+    echo "Finalizing the build $publish_version..."
+    cargo build-plugin --release --quiet
 
-  cp ../target/wasm32-wasi/release/effector_swc_plugin.wasm .
+    cp ../target/wasm32-wasi/release/effector_swc_plugin.wasm .
 
-  echo "Packing $publish_version..."
-  
-  pnpm pack
-  mv "effector-swc-plugin-$publish_version.tgz" "../target/bundles/"
+    echo "Packing $publish_version..."
+    
+    pnpm pack
+    mv "effector-swc-plugin-$publish_version.tgz" "../target/bundles/"
+  fi;
 
   popd
   rm -rf "$temp_dir"
 done
 
 echo 
-echo "All packages built"
+echo "All packages ready."
 echo 
