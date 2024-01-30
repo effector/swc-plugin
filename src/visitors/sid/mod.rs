@@ -1,4 +1,4 @@
-use std::{cell::RefCell, ops::Deref};
+use std::{ops::Deref, rc::Rc};
 
 use swc_core::{
     common::{sync::Lrc, SourceMapper},
@@ -15,11 +15,11 @@ use self::{
     factory::{FactoryTransformer, WITH_FACTORY},
     method::MethodTransformer,
 };
-use super::meta::VisitorMeta;
 use crate::{
     constants::EffectorMethod,
-    state::{EffectorImport, State},
+    state::EffectorImport,
     utils::{to_domain_method, to_method, TryKeyOf},
+    visitors::{MutableState, VisitorMeta},
     Config,
 };
 
@@ -27,48 +27,27 @@ mod call_identity;
 mod factory;
 mod method;
 
-struct AsUnitIdentifier {
-    meta: Lrc<VisitorMeta>,
-}
-
-struct UnitIdentifier<'a> {
-    pub config: &'a Config,
-    pub state:  &'a RefCell<State>,
-
-    pub mapper: &'a dyn SourceMapper,
+struct UnitIdentifier {
+    pub config: Rc<Config>,
+    pub mapper: Lrc<dyn SourceMapper>,
+    pub state:  MutableState,
 
     stack: Vec<Option<JsWord>>,
     factory_import: Option<Ident>,
 }
 
-pub(crate) fn unit_identifier(meta: Lrc<VisitorMeta>) -> impl VisitMut {
-    AsUnitIdentifier { meta }
-}
+pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut {
+    UnitIdentifier {
+        stack: Vec::new(),
+        factory_import: None,
 
-impl AsUnitIdentifier {
-    fn as_core(&self) -> UnitIdentifier<'_> {
-        UnitIdentifier {
-            stack: Vec::new(),
-            factory_import: None,
-
-            config: &self.meta.config,
-            mapper: &*self.meta.mapper,
-            state:  &self.meta.state,
-        }
+        config: meta.config.clone(),
+        mapper: meta.mapper.clone(),
+        state:  meta.state.clone(),
     }
 }
 
-impl VisitMut for AsUnitIdentifier {
-    fn visit_mut_module(&mut self, module: &mut Module) {
-        module.visit_mut_with(&mut self.as_core());
-    }
-
-    fn visit_mut_script(&mut self, module: &mut Script) {
-        module.visit_mut_with(&mut self.as_core());
-    }
-}
-
-impl UnitIdentifier<'_> {
+impl UnitIdentifier {
     fn visit_stacked(&mut self, id: Option<JsWord>, node: &mut impl VisitMutWith<Self>) {
         self.stack.push(id);
         node.visit_mut_children_with(self);
@@ -85,7 +64,7 @@ impl UnitIdentifier<'_> {
     fn match_method(&self, node: &Expr) -> Option<EffectorMethod> {
         match node {
             Expr::Ident(ident) => {
-                self.state.borrow().aliases.get(&ident.to_id()).cloned()
+                self.state.borrow_mut().aliases.get(&ident.to_id()).cloned()
             }
             Expr::Member(member) => {
                 let MemberExpr { obj, prop, .. } = member;
@@ -103,7 +82,6 @@ impl UnitIdentifier<'_> {
 
     fn match_factory(&self, node: &Expr) -> bool {
         let Expr::Ident(ident) = node else { return false };
-
         self.state.borrow().factories.contains(&ident.to_id())
     }
 
@@ -112,8 +90,8 @@ impl UnitIdentifier<'_> {
         let Some(method) = self.match_method(expr) else { return };
 
         MethodTransformer {
-            mapper: self.mapper,
-            config: self.config,
+            mapper: self.mapper.as_ref(),
+            config: self.config.as_ref(),
             stack:  &self.stack,
 
             method: method.to_owned(),
@@ -130,18 +108,18 @@ impl UnitIdentifier<'_> {
                 .get_or_insert_with(|| quote_ident!(WITH_FACTORY));
 
             FactoryTransformer {
-                id,
-
-                mapper: self.mapper,
-                config: self.config,
+                mapper: self.mapper.as_ref(),
+                config: self.config.as_ref(),
                 stack: &self.stack,
+
+                id,
             }
             .transform(node);
         };
     }
 }
 
-impl VisitMut for UnitIdentifier<'_> {
+impl VisitMut for UnitIdentifier {
     noop_visit_mut_type!();
 
     fn visit_mut_member_prop(&mut self, node: &mut MemberProp) {

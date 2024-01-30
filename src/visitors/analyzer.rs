@@ -1,57 +1,29 @@
-use std::{cell::RefCell, path::Path};
+use std::{path::Path, rc::Rc};
 
-use swc_core::{
-    common::sync::Lrc,
-    ecma::{
-        ast::*,
-        visit::{Visit, VisitMut, VisitWith},
-    },
-};
+use swc_core::ecma::{ast::*, visit::VisitMut};
 
-use super::meta::VisitorMeta;
 use crate::{
     constants::INTERNAL,
-    state::State,
     utils::{to_method, Resolve},
+    visitors::{MutableState, VisitorMeta},
     Config,
 };
 
-pub(crate) struct AsAnalyzer {
-    meta: Lrc<VisitorMeta>,
+struct Analyzer {
+    pub config: Rc<Config>,
+    pub state:  MutableState,
+    pub file:   String,
 }
 
-struct Analyzer<'a> {
-    pub config: &'a Config,
-    pub state:  &'a RefCell<State>,
-
-    pub file: &'a String,
-}
-
-pub(crate) fn analyzer(meta: Lrc<VisitorMeta>) -> AsAnalyzer {
-    AsAnalyzer { meta }
-}
-
-impl AsAnalyzer {
-    fn as_core(&mut self) -> Analyzer<'_> {
-        Analyzer {
-            file:   &self.meta.file,
-            config: &self.meta.config,
-            state:  &self.meta.state,
-        }
+pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut {
+    Analyzer {
+        config: meta.config.clone(),
+        state:  meta.state.clone(),
+        file:   meta.file.clone(),
     }
 }
 
-impl VisitMut for AsAnalyzer {
-    fn visit_mut_module(&mut self, module: &mut Module) {
-        module.visit_with(&mut self.as_core());
-    }
-
-    fn visit_mut_script(&mut self, script: &mut Script) {
-        script.visit_with(&mut self.as_core());
-    }
-}
-
-impl Analyzer<'_> {
+impl Analyzer {
     fn name_of(import: &ImportNamedSpecifier) -> &str {
         import
             .imported
@@ -67,7 +39,7 @@ impl Analyzer<'_> {
         let is_relative = import.starts_with("./") || import.starts_with("../");
 
         if is_relative {
-            let import_path = Path::new(self.file)
+            let import_path = Path::new(&self.file)
                 .parent()
                 .unwrap()
                 .join(import)
@@ -136,8 +108,8 @@ impl Analyzer<'_> {
     }
 }
 
-impl Visit for Analyzer<'_> {
-    fn visit_import_decl(&mut self, node: &ImportDecl) {
+impl VisitMut for Analyzer {
+    fn visit_mut_import_decl(&mut self, node: &mut ImportDecl) {
         let import = node.src.value.to_string();
 
         if INTERNAL.tracked.contains(&import.as_str()) {

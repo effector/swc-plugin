@@ -1,50 +1,23 @@
-use std::collections::HashMap;
-
 use swc_core::{
-    common::{sync::Lrc, util::take::Take},
-    ecma::{
-        ast::*,
-        utils::ExprFactory,
-        visit::{VisitMut, VisitMutWith},
-    },
+    common::util::take::Take,
+    ecma::{ast::*, utils::ExprFactory, visit::VisitMut},
 };
 
 use crate::{
     constants::EffectorMethod,
-    state::State,
     utils::{TryKeyOf, UObject},
-    visitors::meta::VisitorMeta,
+    visitors::{MutableState, VisitorMeta},
 };
 
-struct AsForceHooksScope {
-    meta: Lrc<VisitorMeta>,
+struct ForceHooksScope {
+    pub state: MutableState,
 }
 
-struct ForceHooksScope<'a> {
-    pub aliases: &'a HashMap<Id, EffectorMethod>,
+pub(crate) fn force_hooks_scope(meta: &VisitorMeta) -> impl VisitMut {
+    ForceHooksScope { state: meta.state.clone() }
 }
 
-pub(crate) fn force_hooks_scope(meta: Lrc<VisitorMeta>) -> impl VisitMut {
-    AsForceHooksScope { meta }
-}
-
-impl VisitMut for AsForceHooksScope {
-    fn visit_mut_module(&mut self, module: &mut Module) {
-        let State { aliases, .. } = &*self.meta.state.borrow();
-        let mut visitor = ForceHooksScope { aliases };
-
-        module.visit_mut_with(&mut visitor);
-    }
-
-    fn visit_mut_script(&mut self, module: &mut Script) {
-        let State { aliases, .. } = &*self.meta.state.borrow();
-        let mut visitor = ForceHooksScope { aliases };
-
-        module.visit_mut_with(&mut visitor);
-    }
-}
-
-impl ForceHooksScope<'_> {
+impl ForceHooksScope {
     fn ensure_gate_props(&self, node: &mut CallExpr) {
         if node.args.len() == 1 {
             node.args.push(Expr::Object(ObjectLit::dummy()).into())
@@ -100,13 +73,15 @@ impl ForceHooksScope<'_> {
     }
 }
 
-impl VisitMut for ForceHooksScope<'_> {
+impl VisitMut for ForceHooksScope {
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
+        let state = self.state.borrow();
+
         let method = node
             .callee
             .as_expr()
             .and_then(|calle| calle.as_ident())
-            .and_then(|ident| self.aliases.get(&ident.to_id()));
+            .and_then(|ident| state.aliases.get(&ident.to_id()));
 
         let Some(method) = method else { return };
 
