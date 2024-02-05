@@ -1,5 +1,13 @@
 # effector-swc-plugin
 
+## 0.2.1
+
+Added support for `swc_core@0.90.0` and `@swc/core@1.4.0`.
+
+### Patch Changes
+
+- 45f4160: Enable support for `swc_core@0.90.0` and `@swc/core@1.4.0`
+
 ## 0.2.0
 
 This release brings two key improvements to `forceScope`:
