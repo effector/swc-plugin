@@ -29,10 +29,10 @@ export CARGO_TARGET_DIR="../target"
 
 temp_dir=./build/
 features=ecma_plugin_transform,ecma_quote,ecma_utils,ecma_parser
-versions=$(jq -r 'map("\(.rust):\(.node.lo):\(.node.hi)") | .[]' versions.json)
+versions=$(jq -r 'map("\(.rust):\(.node.lo):\(.node.hi):\(.features)") | .[]' versions.json)
 
 for pair in $versions; do
-  IFS=':' read -r rust_swc npm_swc node_hi <<< "$pair"
+  IFS=':' read -r rust_swc npm_swc node_hi build_features <<< "$pair"
   
   publish_version="$package_version-swc$npm_swc"
   if [ "$node_hi" = "null" ]; then swc_range=">=$npm_swc"; else swc_range=">=$npm_swc <$node_hi"; fi
@@ -54,14 +54,16 @@ for pair in $versions; do
   echo "Loading packages ($rust_swc)..."
   cargo add swc_core@~$rust_swc --features "$features" --quiet
 
+  echo "Features for $rust_swc: ${build_features:-"none!"}"
+
   if [ "${TEST:-0}" = "1" ]; then
     echo "Testing the build $publish_version..."
-    cargo test -F packing --quiet
+    cargo test --features packing --features "$build_features" --quiet
   fi;
 
   if [ "${BUILD:-1}" = "1" ]; then
     echo "Finalizing the build $publish_version..."
-    cargo build-plugin --release --quiet
+    cargo build-plugin --release --features "$build_features" --quiet
 
     cp ../target/wasm32-wasi/release/effector_swc_plugin.wasm .
 

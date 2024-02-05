@@ -28,3 +28,12 @@ const configured = createEvent({
         column: 19
     }
 });
+// --- valid: member ---
+object.test = createEvent({
+    sid: "zngkehk",
+    loc: {
+        file: "input.js",
+        line: 9,
+        column: 14
+    }
+});

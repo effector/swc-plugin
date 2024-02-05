@@ -1,4 +1,4 @@
-use std::{ops::Deref, rc::Rc};
+use std::rc::Rc;
 
 use swc_core::{
     common::{sync::Lrc, SourceMapper},
@@ -122,16 +122,38 @@ impl UnitIdentifier {
 impl VisitMut for UnitIdentifier {
     noop_visit_mut_type!();
 
-    fn visit_mut_member_prop(&mut self, node: &mut MemberProp) {
-        let id = node.as_ident().map(|id| id.sym.to_owned());
+    #[cfg(not(feature = "plugin_compat_v1"))]
+    fn visit_mut_assign_expr(&mut self, node: &mut AssignExpr) {
+        let id: Option<JsWord> = match &node.left {
+            AssignTarget::Simple(target) => match target {
+                SimpleAssignTarget::Ident(binding) => Some(binding.id.sym.to_owned()),
+                SimpleAssignTarget::Member(member) => match &member.prop {
+                    MemberProp::Ident(id) => Some(id.sym.to_owned()),
+                    _ => None,
+                },
+                _ => None,
+            },
+            _ => None,
+        };
 
         self.visit_stacked(id, node);
     }
 
+    #[cfg(feature = "plugin_compat_v1")]
     fn visit_mut_assign_expr(&mut self, node: &mut AssignExpr) {
+        use std::ops::Deref;
+
         let id: Option<JsWord> = match &node.left {
             PatOrExpr::Pat(pat) => match pat.deref() {
                 Pat::Ident(binding) => Some(binding.id.sym.to_owned()),
+                Pat::Expr(expr) => match expr.deref() {
+                    Expr::Ident(id) => Some(id.sym.to_owned()),
+                    Expr::Member(member) => member
+                        .prop
+                        .as_ident()
+                        .and_then(|id| Some(id.sym.to_owned())),
+                    _ => None,
+                },
                 _ => None,
             },
             PatOrExpr::Expr(expr) => match expr.deref() {

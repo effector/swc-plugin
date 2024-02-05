@@ -13,3 +13,7 @@ const configured = createEvent({
 }, {
     sid: "c4qjkowi"
 });
+// --- valid: member ---
+object.test = createEvent({
+    sid: "zngkehk"
+});

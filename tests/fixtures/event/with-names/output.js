@@ -16,3 +16,8 @@ const configured = createEvent({
     sid: "c4qjkowi",
     name: "configured"
 });
+// --- valid: member ---
+object.test = createEvent({
+    sid: "zngkehk",
+    name: "test"
+});
