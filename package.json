@@ -1,6 +1,6 @@
 {
   "name": "effector-swc-plugin",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "SWC Plugin for Effector",
   "keywords": [
     "swc-plugin",
@@ -29,7 +29,7 @@
     "@changesets/cli": "^2.27.1"
   },
   "peerDependencies": {
-    "@swc/core": ">=1.3.106"
+    "@swc/core": ">=1.4.0"
   },
   "preferUnplugged": true
 }

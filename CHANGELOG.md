@@ -1,5 +1,11 @@
 # effector-swc-plugin
 
+## 0.2.2
+
+### Patch Changes
+
+- 8941803: Fix "AST schema version is not compatible with host's" in `swc_core@0.90` (issue #10)
+
 ## 0.2.1
 
 Added support for `swc_core@0.90.0` and `@swc/core@1.4.0`.
