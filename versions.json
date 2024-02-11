@@ -1,5 +1,5 @@
 [
   { "rust": "0.78", "features": "plugin_compat_v1", "node": { "lo": "1.3.63", "hi": "1.3.106" } },
   { "rust": "0.88", "features": "plugin_compat_v1", "node": { "lo": "1.3.106", "hi": "1.3.107" } },
-  { "rust": "0.90", "features": "", "node": { "lo": "1.4.0" } }
+  { "rust": "0.90.6", "features": "", "node": { "lo": "1.4.0" } }
 ]
