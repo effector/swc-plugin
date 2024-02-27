@@ -3,7 +3,7 @@ import { useUnit } from "effector-react";
 import { reflect } from "@effector/reflect";
 // --- reflect/disabled ---
 const Name = _effector$factory({
-    sid: "223ghfvv",
+    sid: "9cpz6z07",
     name: "Name",
     method: "reflect",
     fn: ()=>reflect({

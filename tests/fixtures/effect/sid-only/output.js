@@ -1,19 +1,19 @@
 import { createEffect } from "effector";
 // --- valid: empty ---
 const empty = createEffect({
-    sid: "9ptdyw9i"
+    sid: "7lc86mpg"
 });
 // --- valid: with name ---
 const name = createEffect("name", {
-    sid: "8s95qlim"
+    sid: "44o0xf6c"
 });
 // --- valid: handler ---
 const handler = createEffect(()=>0, {
-    sid: "b2tfp94t"
+    sid: "b52dng93"
 });
 // --- valid: with name & config ---
 const nameAndConfig = createEffect("name", {
-    sid: "dws1ocgl",
+    sid: "9aogr3ia",
     and: {
         handler: ()=>0
     }
@@ -23,11 +23,11 @@ const config = createEffect({
     name: "name",
     handler: ()=>0
 }, {
-    sid: "cpqt48lo"
+    sid: "6wo0jscf"
 });
 // --- valid: with config ---
 const configured = createEffect({
     name: "name"
 }, {
-    sid: "dnxj1e12"
+    sid: "7dgd9kso"
 });

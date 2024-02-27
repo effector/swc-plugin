@@ -1,7 +1,7 @@
 import { createStore } from "effector";
 // --- valid: push config ---
 const $justValue = createStore(0, {
-    sid: "csony271",
+    sid: "90r73xj8",
     loc: {
         file: "input.js",
         line: 3,
@@ -10,7 +10,7 @@ const $justValue = createStore(0, {
 });
 // --- valid: merge config ---
 const $valueAndConfig = createStore(0, {
-    sid: "c0dl862u",
+    sid: "agy6bc79",
     loc: {
         file: "input.js",
         line: 5,
@@ -30,7 +30,7 @@ const cfg = {
 };
 // --- inline ---
 const $external = createStore(0, {
-    sid: "bzpmei7g",
+    sid: "4vh1u7ju",
     loc: {
         file: "input.js",
         line: 13,
@@ -40,7 +40,7 @@ const $external = createStore(0, {
 });
 // --- spread ---
 const $spread = createStore(0, {
-    sid: "6wyvv8o9",
+    sid: "1osrx9hk",
     loc: {
         file: "input.js",
         line: 15,
@@ -52,7 +52,7 @@ const $spread = createStore(0, {
 });
 // --- spread + member ---
 const $spreadAndMember = createStore(0, {
-    sid: "dl0rdtrm",
+    sid: "466cjumc",
     loc: {
         file: "input.js",
         line: 17,

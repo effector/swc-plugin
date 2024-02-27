@@ -52,7 +52,7 @@ for pair in $versions; do
   pushd "$temp_dir"
 
   echo "Loading packages ($rust_swc)..."
-  cargo add swc_core@~$rust_swc --features "$features" --quiet
+  cargo add swc_core@$rust_swc --features "$features" --quiet
 
   echo "Features for $rust_swc: ${build_features:-"none!"}"
 
