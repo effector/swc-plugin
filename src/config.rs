@@ -17,6 +17,12 @@ pub struct Config {
 
     #[serde(default)]
     pub factories: Vec<String>,
+
+    #[serde(
+        default = "Configurator::enabled",
+        alias = "transformLegacyDomainMethods"
+    )]
+    pub transform_domain_methods: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]

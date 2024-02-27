@@ -1,0 +1,5 @@
+{
+  "addNames": true,
+  "addLoc": true,
+  "transformLegacyDomainMethods": false
+}
