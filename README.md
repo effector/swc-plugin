@@ -99,6 +99,24 @@ Third, run your build tools and enjoy.
   const $boolean = createBooleanStore() /* Treated as a factory! */
   ```
 
+- `transformLegacyDomainMethods`: `boolean` (default: `true`)
+
+  When disabled, stops transforming [Unit creators in Domains](https://effector.dev/en/api/effector/domain/#unit-creators), like `domain.event()` or `domain.createEffect()`.
+
+  Transforming such calls relies heavily on guessing, and is known to affect/break code unrelated to Effector.
+  An alternative approach to these methods is to use `domain` argument in regular methods:
+
+  ```ts
+  const domain = createDomain();
+
+  // ↓ pass domain as an argument
+  const foo = createEvent({ domain });
+  ```
+
+  > Disabling this option will **stop** adding `sid`s and other debug information into these unit creators. Before turning it off, ensure that your code does not use domain methods.
+
+  Further reading: [You Don't Need Domains](https://withease.pages.dev/magazine/no_domains.html).
+
 ### Known differences with `effector/babel-plugin`
 
 - No support for `importName`
@@ -108,7 +126,7 @@ Third, run your build tools and enjoy.
 
 - No support for `noDefaults`
 
-  This is currently only used by library developers, and will be implemented in the future.
+  This is currently only used by library developers, and may be implemented in the future.
   If you feel you need this feature, please open an issue!
 
 - `reactSsr` replaced by `forceScope`

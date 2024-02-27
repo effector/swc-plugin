@@ -72,8 +72,10 @@ impl UnitIdentifier {
 
                 if self.is_effector(&obj.to_id()) {
                     to_method(&prop.sym)
-                } else {
+                } else if self.config.transform_domain_methods {
                     to_domain_method(&prop.sym)
+                } else {
+                    None
                 }
             }
             _ => None,
