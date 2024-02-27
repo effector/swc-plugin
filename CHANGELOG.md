@@ -1,5 +1,15 @@
 # effector-swc-plugin
 
+## 0.3.0
+
+### Minor Changes
+
+- 6519220: Add a new `transformLegacyDomainMethods` option to configure transforming `Domain`'s unit creators
+
+### Patch Changes
+
+- ec44187: Bump dependencies & freeze `swc_core` version
+
 ## 0.2.2
 
 ### Patch Changes
