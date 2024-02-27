@@ -5,7 +5,7 @@ import { createQuery } from "@farfetched/core";
 import { invoke } from "@withease/factories";
 import { createCounter } from "./some-file";
 const q = _effector$factory({
-    sid: "6bnps52z",
+    sid: "3upx3dqc",
     name: "q",
     loc: {
         file: "input.js",
@@ -18,7 +18,7 @@ const q = _effector$factory({
         })
 });
 _effector$factory({
-    sid: "7kr29sob",
+    sid: "yv2kbtk",
     loc: {
         file: "input.js",
         line: 11,
@@ -32,7 +32,7 @@ _effector$factory({
         })
 });
 _effector$factory({
-    sid: "289fb367",
+    sid: "7iwrwbh8",
     loc: {
         file: "input.js",
         line: 17,
@@ -46,7 +46,7 @@ _effector$factory({
         })
 });
 const counter = _effector$factory({
-    sid: "a18ytq02",
+    sid: "c1o5rnz7",
     name: "counter",
     loc: {
         file: "input.js",
@@ -59,7 +59,7 @@ const counter = _effector$factory({
         })
 });
 const counterFn = _effector$factory({
-    sid: "dc1mlb9b",
+    sid: "cbninstf",
     name: "counterFn",
     loc: {
         file: "input.js",

@@ -1,6 +1,6 @@
 import { merge, createStore, createEvent } from "effector";
 const $store = createStore(0, {
-    sid: "2r976i2e",
+    sid: "2aam2jk3",
     name: "$store",
     loc: {
         file: "input.js",
@@ -9,7 +9,7 @@ const $store = createStore(0, {
     }
 });
 const event = createEvent({
-    sid: "8luqdo9f",
+    sid: "7siolh7i",
     name: "event",
     loc: {
         file: "input.js",
@@ -22,7 +22,7 @@ const merged = merge([
     event,
     $store.updates
 ], {
-    sid: "d2zd864o",
+    sid: "dmsll98p",
     name: "merged",
     loc: {
         file: "input.js",
@@ -35,7 +35,7 @@ const mergedSpread = merge(...[
     event,
     $store.updates
 ], {
-    sid: "dehl3abf",
+    sid: "350xijs7",
     name: "mergedSpread",
     loc: {
         file: "input.js",

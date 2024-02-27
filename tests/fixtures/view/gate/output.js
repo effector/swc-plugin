@@ -2,7 +2,7 @@ import { createGate } from "effector-react";
 const Gate = createGate({
     and: [],
     or: {
-        sid: "7sz8b7vu",
+        sid: "6ag63fmk",
         name: "Gate"
     }
 });
@@ -11,7 +11,7 @@ const NamedGate = createGate({
         "name"
     ],
     or: {
-        sid: "7cesu214",
+        sid: "9m5j9qe0",
         name: "NamedGate"
     }
 });
@@ -22,7 +22,7 @@ const ConfiguredGate = createGate({
         }
     ],
     or: {
-        sid: "btjux29a",
+        sid: "4dciz7xp",
         name: "ConfiguredGate"
     }
 });
@@ -34,7 +34,7 @@ const DeafultPropsGate = createGate({
         }
     ],
     or: {
-        sid: "adw5rfgl",
+        sid: "6eq1w8ui",
         name: "DeafultPropsGate"
     }
 });

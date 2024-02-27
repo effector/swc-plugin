@@ -1,27 +1,27 @@
 import { sample, restore, createStore, createEvent } from "effector";
 function createTarget(source) {
     return restore(source(), 0, {
-        sid: "30fdkv5q"
+        sid: "wph2xgt"
     });
 }
 sample({
     and: [
         {
             clock: createEvent({
-                sid: "1fn272w6",
+                sid: "7cy39r3i",
                 name: "clock"
             }),
             filter: createStore(true, {
-                sid: "9rb8y377",
+                sid: "8jdri4im",
                 name: "filter"
             }),
             target: createTarget(()=>createEvent({
-                    sid: "70nfibeq",
+                    sid: "4vx03vyz",
                     name: "target"
                 }))
         }
     ],
     or: {
-        sid: "cuj56asv"
+        sid: "dttebqdp"
     }
 });

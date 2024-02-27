@@ -1,7 +1,7 @@
 import { createDomain } from "effector";
 import { importedDomain } from "./local-file";
 const created = createDomain("created", {
-    sid: "3zl1hsak",
+    sid: "bm4rhtf8",
     name: "created",
     loc: {
         file: "input.js",
@@ -11,7 +11,7 @@ const created = createDomain("created", {
 });
 // --- event ---
 const event = created.createEvent({
-    sid: "980954pz",
+    sid: "729zmiav",
     name: "event",
     loc: {
         file: "input.js",
@@ -20,7 +20,7 @@ const event = created.createEvent({
     }
 });
 const eventShort = created.event({
-    sid: "dufk6dk",
+    sid: "82tpseig",
     name: "eventShort",
     loc: {
         file: "input.js",
@@ -29,7 +29,7 @@ const eventShort = created.event({
     }
 });
 const eventImported = importedDomain.event("name", {
-    sid: "3lwimmxz",
+    sid: "5y1mh1r9",
     name: "eventImported",
     loc: {
         file: "input.js",
@@ -39,7 +39,7 @@ const eventImported = importedDomain.event("name", {
 });
 // --- effect ---
 const effect = created.createEffect(()=>0, {
-    sid: "2yyrojar",
+    sid: "cory6h0y",
     name: "effect",
     loc: {
         file: "input.js",
@@ -50,7 +50,7 @@ const effect = created.createEffect(()=>0, {
 const effectShort = created.effect({
     handler: ()=>0
 }, {
-    sid: "9ctpv9fz",
+    sid: "a0926b89",
     name: "effectShort",
     loc: {
         file: "input.js",
@@ -59,7 +59,7 @@ const effectShort = created.effect({
     }
 });
 const effectImported = importedDomain.effect(()=>0, {
-    sid: "4r5akc1z",
+    sid: "ee7ah0j",
     name: "effectImported",
     loc: {
         file: "input.js",
@@ -72,7 +72,7 @@ const effectImported = importedDomain.effect(()=>0, {
 });
 // --- store ---
 const store = created.createStore(0, {
-    sid: "8jd5pb7y",
+    sid: "5atweoq4",
     name: "store",
     loc: {
         file: "input.js",
@@ -81,7 +81,7 @@ const store = created.createStore(0, {
     }
 });
 const storeShort = created.store(0, {
-    sid: "1trxawgn",
+    sid: "7x5eqhy6",
     name: "storeShort",
     loc: {
         file: "input.js",
@@ -93,7 +93,7 @@ const storeShort = created.store(0, {
     }
 });
 const storeImported = importedDomain.store("value", {
-    sid: "cbvp5hc2",
+    sid: "3lois87m",
     name: "storeImported",
     loc: {
         file: "input.js",
@@ -103,7 +103,7 @@ const storeImported = importedDomain.store("value", {
 });
 // --- domain ---
 const domain = created.createDomain({
-    sid: "564srhru",
+    sid: "3jpfpi0w",
     name: "domain",
     loc: {
         file: "input.js",
@@ -112,7 +112,7 @@ const domain = created.createDomain({
     }
 });
 const domainShort = created.domain("name", {
-    sid: "9tg5vkce",
+    sid: "66p6907l",
     name: "domainShort",
     loc: {
         file: "input.js",
@@ -121,7 +121,7 @@ const domainShort = created.domain("name", {
     }
 });
 const domainImported = importedDomain.domain({
-    sid: "8u0b6dts",
+    sid: "5trh5mnm",
     name: "domainImported",
     loc: {
         file: "input.js",

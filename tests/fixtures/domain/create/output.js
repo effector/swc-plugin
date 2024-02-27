@@ -1,7 +1,7 @@
 import { createDomain } from "effector";
 // --- valid: empty ---
 const domain = createDomain({
-    sid: "9yhb4wel",
+    sid: "9i2yamjg",
     name: "domain",
     loc: {
         file: "input.js",
@@ -11,7 +11,7 @@ const domain = createDomain({
 });
 // --- valid: named ---
 const domainWithName = createDomain("name", {
-    sid: "dpv53g2o",
+    sid: "6qcbq2c7",
     name: "domainWithName",
     loc: {
         file: "input.js",
@@ -23,7 +23,7 @@ const domainWithName = createDomain("name", {
 const domainWithConfig = createDomain({
     name: "name"
 }, {
-    sid: "983wa76o",
+    sid: "1dag6b37",
     name: "domainWithConfig",
     loc: {
         file: "input.js",
@@ -33,7 +33,7 @@ const domainWithConfig = createDomain({
 });
 // --- valid: name + confug ---
 const domainComplete = createDomain("name", {
-    sid: "32mpkfoo",
+    sid: "8ljxypj7",
     name: "domainComplete",
     loc: {
         file: "input.js",

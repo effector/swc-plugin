@@ -1,5 +1,5 @@
 const event = createEvent({
-    sid: "74i1kdc4",
+    sid: "2l7ciwut",
     name: "event"
 });
 import { createEvent } from "effector";

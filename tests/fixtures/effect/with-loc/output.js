@@ -1,7 +1,7 @@
 import { createEffect } from "effector";
 // --- valid: empty ---
 const empty = createEffect({
-    sid: "9ptdyw9i",
+    sid: "7lc86mpg",
     loc: {
         file: "input.js",
         line: 3,
@@ -10,7 +10,7 @@ const empty = createEffect({
 });
 // --- valid: with name ---
 const name = createEffect("name", {
-    sid: "8s95qlim",
+    sid: "44o0xf6c",
     loc: {
         file: "input.js",
         line: 5,
@@ -19,7 +19,7 @@ const name = createEffect("name", {
 });
 // --- valid: handler ---
 const handler = createEffect(()=>0, {
-    sid: "b2tfp94t",
+    sid: "b52dng93",
     loc: {
         file: "input.js",
         line: 7,
@@ -28,7 +28,7 @@ const handler = createEffect(()=>0, {
 });
 // --- valid: with name & config ---
 const nameAndConfig = createEffect("name", {
-    sid: "dws1ocgl",
+    sid: "9aogr3ia",
     loc: {
         file: "input.js",
         line: 9,
@@ -43,7 +43,7 @@ const config = createEffect({
     name: "name",
     handler: ()=>0
 }, {
-    sid: "cpqt48lo",
+    sid: "6wo0jscf",
     loc: {
         file: "input.js",
         line: 11,
@@ -54,7 +54,7 @@ const config = createEffect({
 const configured = createEffect({
     name: "name"
 }, {
-    sid: "dnxj1e12",
+    sid: "7dgd9kso",
     loc: {
         file: "input.js",
         line: 13,

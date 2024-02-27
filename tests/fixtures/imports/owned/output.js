@@ -2,21 +2,21 @@ import * as effectorStar from "effector";
 import effector from "effector";
 // --- star import: event ---
 const eventStar = effectorStar.createEvent({
-    sid: "bmdq1euo",
+    sid: "7ixb6fcj",
     name: "eventStar"
 });
 // --- star import: effect ---
 const fxStar = effectorStar.createEffect({
-    sid: "66jncvya",
+    sid: "770vignq",
     name: "fxStar"
 });
 // --- default import: event ---
 const event = effector.createEvent({
-    sid: "6cr249ft",
+    sid: "4y8xi7js",
     name: "event"
 });
 // --- default import: effect ---
 const fx = effector.createEffect({
-    sid: "224ge676",
+    sid: "dyqkdtd0",
     name: "fx"
 });

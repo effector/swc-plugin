@@ -1,7 +1,7 @@
 import { createEvent } from "effector";
 // --- valid: empty ---
 const empty = createEvent({
-    sid: "9ptdyw9i",
+    sid: "7lc86mpg",
     loc: {
         file: "input.js",
         line: 3,
@@ -10,7 +10,7 @@ const empty = createEvent({
 });
 // --- valid: with name ---
 const named = createEvent("name", {
-    sid: "3xqv49y6",
+    sid: "83ybljqp",
     loc: {
         file: "input.js",
         line: 5,
@@ -21,7 +21,7 @@ const named = createEvent("name", {
 const configured = createEvent({
     name: "name"
 }, {
-    sid: "c4qjkowi",
+    sid: "4pallxa9",
     loc: {
         file: "input.js",
         line: 7,
@@ -30,7 +30,7 @@ const configured = createEvent({
 });
 // --- valid: member ---
 object.test = createEvent({
-    sid: "zngkehk",
+    sid: "7vjbygjx",
     loc: {
         file: "input.js",
         line: 9,
