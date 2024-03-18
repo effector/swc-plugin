@@ -1,6 +1,9 @@
 use std::ops::DerefMut;
 
-use swc_core::ecma::{ast::*, visit::VisitMut};
+use swc_core::ecma::{
+    ast::*,
+    visit::{VisitMut, VisitMutWith},
+};
 
 use crate::{
     constants::EffectorMethod,
@@ -39,6 +42,8 @@ impl ForceReflectScope {
 
 impl VisitMut for ForceReflectScope {
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
+        node.visit_mut_children_with(self);
+
         let state = self.state.borrow();
 
         let method = node
