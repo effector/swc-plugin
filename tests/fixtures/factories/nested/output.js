@@ -5,20 +5,20 @@ import { delay } from "patronum/delay";
 import { createQuery } from "@farfetched/core";
 import { invoke } from "@withease/factories";
 const event = createEvent({
-    sid: "4y8xi7js",
+    sid: "9j09yk4e",
     name: "event"
 });
 _effector$factory({
-    sid: "e0a2ieoo",
+    sid: "20mmd8hp",
     method: "debounce",
     fn: ()=>debounce({
             source: _effector$factory({
-                sid: "dyyitvfo",
+                sid: "4koaoy7k",
                 name: "source",
                 method: "invoke",
                 fn: ()=>invoke(()=>createCounter({
                             value: _effector$factory({
-                                sid: "5dc0th04",
+                                sid: "9uz78soe",
                                 name: "value",
                                 method: "delay",
                                 fn: ()=>delay(event, 100)
@@ -27,7 +27,7 @@ _effector$factory({
             }),
             timeout: 100,
             target: _effector$factory({
-                sid: "a2vwgccd",
+                sid: "3yo7o5ao",
                 name: "target",
                 method: "createQuery",
                 fn: ()=>createQuery({

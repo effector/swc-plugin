@@ -1,6 +1,6 @@
 import { restore, createEffect, createEvent } from "effector";
 const fx = createEffect({
-    sid: "2m2o585b",
+    sid: "1e31hr76",
     name: "fx",
     loc: {
         file: "input.js",
@@ -9,7 +9,7 @@ const fx = createEffect({
     }
 });
 const event = createEvent({
-    sid: "7siolh7i",
+    sid: "3g0kdzwe",
     name: "event",
     loc: {
         file: "input.js",
@@ -19,7 +19,7 @@ const event = createEvent({
 });
 // --- valid ---
 const $restored = restore(fx, 0, {
-    sid: "7zcnjxiw",
+    sid: "2cjuc7jg",
     name: "$restored",
     loc: {
         file: "input.js",
@@ -29,7 +29,7 @@ const $restored = restore(fx, 0, {
 });
 // --- valid ---
 const $restoredEvent = restore(event, 0, {
-    sid: "c1q5sz5r",
+    sid: "9rg94jpx",
     name: "$restoredEvent",
     loc: {
         file: "input.js",
@@ -39,7 +39,7 @@ const $restoredEvent = restore(event, 0, {
 });
 // --- valid ---
 const $restoredConfig = restore(fx, 0, {
-    sid: "7m3xkodc",
+    sid: "3ludf56f",
     name: "$restoredConfig",
     loc: {
         file: "input.js",

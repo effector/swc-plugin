@@ -14,7 +14,7 @@ debug = "none"
 strip = "debuginfo"
 
 [dependencies]
-ahash = { version = "0.8.9", features = ["std"], default-features = false }
+ahash = { version = "0.8.11", features = ["std"], default-features = false }
 radix_fmt = "1.0.0"
 serde = "1"
 serde_json = "1"

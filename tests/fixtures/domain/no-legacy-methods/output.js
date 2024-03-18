@@ -1,7 +1,7 @@
 import { createDomain } from "effector";
 import { importedDomain } from "./local-file";
 const created = createDomain("created", {
-    sid: "bm4rhtf8",
+    sid: "7bhem3qi",
     name: "created",
     loc: {
         file: "input.js",
@@ -36,7 +36,7 @@ createDomain({
     name: "second",
     domain: created
 }, {
-    sid: "29ysq6c8",
+    sid: "dqqb3fz2",
     loc: {
         file: "input.js",
         line: 22,

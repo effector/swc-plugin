@@ -1,19 +1,19 @@
 import { createEvent } from "effector";
 // --- valid: empty ---
 const empty = createEvent({
-    sid: "7lc86mpg"
+    sid: "4624hnhi"
 });
 // --- valid: with name ---
 const named = createEvent("name", {
-    sid: "83ybljqp"
+    sid: "3tz9t0f7"
 });
 // --- valid: with config ---
 const configured = createEvent({
     name: "name"
 }, {
-    sid: "4pallxa9"
+    sid: "2i69vxt1"
 });
 // --- valid: member ---
 object.test = createEvent({
-    sid: "7vjbygjx"
+    sid: "k3td4nn"
 });

@@ -4,7 +4,7 @@ import { createStore } from "effector";
 const $spreadFirstArg = createStore(...[
     0
 ], {
-    sid: "4ute7vd3"
+    sid: "q325jpz"
 });
 // --- two args (treat as no spread) ---
 const $spreadFirstArgs = createStore(...[
@@ -13,13 +13,13 @@ const $spreadFirstArgs = createStore(...[
         name: "name"
     }
 ], {
-    sid: "10nbrbwj"
+    sid: "j8sm1d1"
 });
 // --- second arg (skip) ---
 const $spreadSecondArg = createStore(0, {
-    sid: "am0qkxck"
+    sid: "7ktivjjz"
 });
 // --- second two args (skip) ---
 const $spreadSecondArgs = createStore(0, {
-    sid: "5k1ziouj"
+    sid: "63n5jhl3"
 });

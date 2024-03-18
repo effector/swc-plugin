@@ -3,7 +3,7 @@ import { reflect, list, variant } from "@effector/reflect";
 // === reflect: insert ===
 // --- reflect ---
 const Name = _effector$factory({
-    sid: "9cpz6z07",
+    sid: "2qq0v05m",
     name: "Name",
     method: "reflect",
     fn: ()=>reflect({
@@ -19,7 +19,7 @@ const Name = _effector$factory({
 });
 // --- variant ---
 const Field = _effector$factory({
-    sid: "rajihys",
+    sid: "tcdbiwi",
     name: "Field",
     method: "variant",
     fn: ()=>variant({
@@ -40,7 +40,7 @@ const Field = _effector$factory({
 });
 // --- list ---
 const Items = _effector$factory({
-    sid: "84k0hod1",
+    sid: "b5a8z9yo",
     name: "Items",
     method: "list",
     fn: ()=>list({
@@ -62,7 +62,7 @@ const Items = _effector$factory({
 // === reflect: skip ===
 // --- reflect ---
 const NameInvalid = _effector$factory({
-    sid: "9kqw6wkd",
+    sid: "3ra7qbcp",
     name: "NameInvalid",
     method: "reflect",
     fn: ()=>reflect({
@@ -76,7 +76,7 @@ const NameInvalid = _effector$factory({
 });
 // --- variant ---
 const FieldInvalid = _effector$factory({
-    sid: "2786gggj",
+    sid: "dtf5zm88",
     name: "FieldInvalid",
     method: "variant",
     fn: ()=>variant({
@@ -92,7 +92,7 @@ const FieldInvalid = _effector$factory({
 });
 // --- list ---
 const ItemsInvalid = _effector$factory({
-    sid: "1obguhlu",
+    sid: "dm4l26wf",
     name: "ItemsInvalid",
     method: "list",
     fn: ()=>list({
