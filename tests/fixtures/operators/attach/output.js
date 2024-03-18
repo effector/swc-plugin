@@ -1,6 +1,6 @@
 import { attach, createEffect } from "effector";
 const effect = createEffect({
-    sid: "72u5c257",
+    sid: "7mcm09ot",
     name: "effect",
     loc: {
         file: "input.js",
@@ -14,7 +14,7 @@ const mapped = attach({
         mapParams: (_)=>_
     },
     or: {
-        sid: "dzdymnmw",
+        sid: "drxl7ugo",
         name: "mapped",
         loc: {
             file: "input.js",
@@ -29,7 +29,7 @@ attach({
         mapParams: (_)=>_
     },
     or: {
-        sid: "e0a2ieoo",
+        sid: "20mmd8hp",
         loc: {
             file: "input.js",
             line: 10,
@@ -44,7 +44,7 @@ const config = {
 const configured = attach({
     and: config,
     or: {
-        sid: "c6z6sgyb",
+        sid: "e0zti9hs",
         name: "configured",
         loc: {
             file: "input.js",
@@ -59,7 +59,7 @@ const f = ()=>attach({
             mapParams: (_)=>_
         },
         or: {
-            sid: "6ch7wcsh",
+            sid: "8ct9hww",
             name: "f",
             loc: {
                 file: "input.js",

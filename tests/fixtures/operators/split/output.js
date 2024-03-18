@@ -1,11 +1,11 @@
 import { createStore, createEvent, split } from "effector";
 // === split ===
 const $store = createStore([], {
-    sid: "5a06gukk",
+    sid: "3ngkjtvv",
     name: "$store"
 });
 const event = createEvent({
-    sid: "2xzrimp3",
+    sid: "40n0pzc1",
     name: "event"
 });
 // --- split object ---
@@ -17,7 +17,7 @@ const splitObject = split({
         }
     ],
     or: {
-        sid: "180b27in"
+        sid: "alzldbcz"
     }
 });
 // --- split object: anonymous ---
@@ -29,7 +29,7 @@ split({
         }
     ],
     or: {
-        sid: "3x1lpxcy"
+        sid: "3k1f5zk5"
     }
 });
 // --- split with cases ---
@@ -46,7 +46,7 @@ const splitCases = split({
         }
     ],
     or: {
-        sid: "8c17t5ql"
+        sid: "5t6bbkha"
     }
 });
 // --- split with cases: anonymous ---
@@ -63,7 +63,7 @@ split({
         }
     ],
     or: {
-        sid: "3wwh0z7l"
+        sid: "78127o6e"
     }
 });
 // --- split + spread args ---
@@ -78,7 +78,7 @@ const splitWithSpread = split({
         ...spread
     ],
     or: {
-        sid: "55p3ab76"
+        sid: "8gfvtpiq"
     }
 });
 // --- split + defined config ---
@@ -96,7 +96,7 @@ const splitWithConfig = split({
         config
     ],
     or: {
-        sid: "deijzwqh"
+        sid: "cyw3f3jj"
     }
 });
 // --- split: factory ---
@@ -108,7 +108,7 @@ const f = ()=>split({
             }
         ],
         or: {
-            sid: "ieu0mbd"
+            sid: "dalqx79o"
         }
     });
 // --- split: shadowed ---

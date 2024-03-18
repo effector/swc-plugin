@@ -1,12 +1,12 @@
 import { createStore } from "effector";
 // --- valid: push config ---
 const $justValue = createStore(0, {
-    sid: "90r73xj8",
+    sid: "5kqadt3t",
     name: "$justValue"
 });
 // --- valid: merge config ---
 const $valueAndConfig = createStore(0, {
-    sid: "agy6bc79",
+    sid: "9qgw6w16",
     name: "$valueAndConfig",
     and: {
         name: "second-custom"
@@ -22,13 +22,13 @@ const cfg = {
 };
 // --- inline ---
 const $external = createStore(0, {
-    sid: "4vh1u7ju",
+    sid: "8w56za02",
     name: "$external",
     and: cfg
 });
 // --- spread ---
 const $spread = createStore(0, {
-    sid: "1osrx9hk",
+    sid: "aq6rt9kx",
     name: "$spread",
     and: {
         ...cfg
@@ -36,7 +36,7 @@ const $spread = createStore(0, {
 });
 // --- spread + member ---
 const $spreadAndMember = createStore(0, {
-    sid: "466cjumc",
+    sid: "1q965tgz",
     name: "$spreadAndMember",
     and: {
         ...cfg,

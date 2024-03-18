@@ -4,13 +4,13 @@ import { reflect, variant } from "@effector/reflect";
 import { BreweryCard, Loader } from "#root/shared/ui";
 import { $breweryOfTheDay } from "./model";
 export const BreweryOfTheDay = _effector$factory({
-    sid: "7cq3fzew",
+    sid: "1k46jcja",
     name: "BreweryOfTheDay",
     method: "variant",
     fn: ()=>variant({
             if: $breweryOfTheDay.map((brewery)=>!!brewery),
             then: _effector$factory({
-                sid: "8trylfrh",
+                sid: "5uxnyvvo",
                 name: "then",
                 method: "reflect",
                 fn: ()=>reflect({

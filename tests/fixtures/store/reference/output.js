@@ -1,6 +1,6 @@
 import { createStore } from "effector";
 const $value = createStore("foo", {
-    sid: "bb4ti9x9",
+    sid: "dxbjp5qx",
     name: "$value",
     loc: {
         file: "input.js",
@@ -9,7 +9,7 @@ const $value = createStore("foo", {
     }
 });
 const $withEmptyConfig = createStore("h", {
-    sid: "7y8ddele",
+    sid: "clrd04ze",
     name: "$withEmptyConfig",
     loc: {
         file: "input.js",
@@ -19,7 +19,7 @@ const $withEmptyConfig = createStore("h", {
     and: {}
 });
 const $withInvalidConfig = createStore("h", {
-    sid: "26n5y6ea",
+    sid: "6snzok8i",
     name: "$withInvalidConfig",
     loc: {
         file: "input.js",
@@ -32,7 +32,7 @@ const config = {
     option: 0
 };
 const $withExternalConfig = createStore(null, {
-    sid: "7kdpi9cl",
+    sid: "4cik63it",
     name: "$withExternalConfig",
     loc: {
         file: "input.js",
@@ -42,7 +42,7 @@ const $withExternalConfig = createStore(null, {
     and: config
 });
 const f = (a)=>createStore(a, {
-        sid: "cjrhplpi",
+        sid: "55b7cfsx",
         name: "f",
         loc: {
             file: "input.js",
@@ -51,7 +51,7 @@ const f = (a)=>createStore(a, {
         }
     });
 const { sid } = createStore(null, {
-    sid: "33sw2qqq",
+    sid: "9zlwmxtd",
     loc: {
         file: "input.js",
         line: 12,
@@ -59,7 +59,7 @@ const { sid } = createStore(null, {
     }
 });
 const { shortName } = createStore(null, {
-    sid: "9xr4if67",
+    sid: "5qk6y8od",
     loc: {
         file: "input.js",
         line: 13,
@@ -70,7 +70,7 @@ const { shortName } = createStore(null, {
     }
 });
 createStore(null, {
-    sid: "81i45o7c",
+    sid: "btvipg1t",
     loc: {
         file: "input.js",
         line: 15,
