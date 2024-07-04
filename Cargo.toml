@@ -18,7 +18,7 @@ ahash = { version = "0.8.11", features = ["std"], default-features = false }
 radix_fmt = "1.0.0"
 serde = "1"
 serde_json = "1"
-swc_core = { version = "~0.90.12", features = [
+swc_core = { version = "~0.96.2", features = [
   "ecma_plugin_transform",
   "ecma_quote",
   "ecma_utils",
@@ -26,7 +26,7 @@ swc_core = { version = "~0.90.12", features = [
 ] }
 
 [dev-dependencies]
-testing = "0.35.14"
+testing = "0.36.0"
 
 [features]
 packing = []
