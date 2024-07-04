@@ -1,6 +1,6 @@
 {
   "name": "effector-swc-plugin",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "SWC Plugin for Effector",
   "keywords": [
     "swc-plugin",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kireevmp/effector-swc-plugin.git"
+    "url": "git+https://github.com/kireevmp/effector-swc-plugin.git"
   },
   "license": "ISC",
   "author": "Kireev Mikhail",

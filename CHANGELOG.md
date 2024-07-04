@@ -1,5 +1,25 @@
 # effector-swc-plugin
 
+## 0.4.0
+
+## Notable Changes
+
+`swc1.4.0` tag (which is currently also latest) has been combined with `swc1.3.106`.
+
+- If you were using a newer `swc1.4.0` tag to install the plugin, you can either use `latest` or `swc1.3.106` instead
+- If you were using an older `swc1.3.106` tag, there're no changes (you'll be using an updated `swc_core`)
+
+`swc1.4.0` in NPM will continue to point to `v0.3.0` release without changes.
+
+### Minor Changes
+
+- 9c29f33: Update dependencies & keep up with SWC updates
+
+### Patch Changes
+
+- 65ac53b: Bump `ahash` to `0.8.11`
+- 3378bab: Fix providing `forceScope` for nested `reflect` usage
+
 ## 0.3.0
 
 ### Minor Changes
