@@ -16,7 +16,7 @@ fi;
 if [ "${BUILD:-1}" = "1" ]; then
   echo "Finalizing the base plugin..."
   cargo build-plugin --release
-  cp target/wasm32-wasi/release/effector_swc_plugin.wasm .
+  cp target/wasm32-wasip1/release/effector_swc_plugin.wasm .
 
   echo "Packing $package_version..."
   pnpm pack
@@ -65,7 +65,7 @@ for pair in $versions; do
     echo "Finalizing the build $publish_version..."
     cargo build-plugin --release --features "$build_features" --quiet
 
-    cp ../target/wasm32-wasi/release/effector_swc_plugin.wasm .
+    cp ../target/wasm32-wasip1/release/effector_swc_plugin.wasm .
 
     echo "Packing $publish_version..."
     
