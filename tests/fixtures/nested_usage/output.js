@@ -16,8 +16,7 @@ sample({
                 name: "filter"
             }),
             target: createTarget(()=>createEvent({
-                    sid: "14vbk8d7",
-                    name: "target"
+                    sid: "ceiu4qu6"
                 }))
         }
     ],

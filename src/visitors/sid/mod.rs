@@ -185,7 +185,9 @@ impl VisitMut for UnitIdentifier {
     }
 
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
-        node.visit_mut_children_with(self);
+        // 'consume' name information, so that nested nodes
+        // don't infer their names from far above
+        self.visit_stacked(None, node);
 
         self.transform_method(node);
         self.transform_factory(node);

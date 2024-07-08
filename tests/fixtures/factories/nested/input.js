@@ -1,5 +1,5 @@
-import { createEvent } from "effector";
-import { debounce } from "patronum";
+import { createEvent, createStore } from "effector";
+import { debounce, or, not } from "patronum";
 import { delay } from "patronum/delay";
 
 import { createQuery } from "@farfetched/core";
@@ -12,3 +12,7 @@ debounce({
   timeout: 100,
   target: createQuery({ handler: async () => null }).start,
 });
+
+// --- nested `not` should not receive $c as `name` ---
+const $a = createStore(true);
+const $c = or($a, not($a));

@@ -1,6 +1,6 @@
 import { withFactory as _effector$factory } from 'effector';
-import { createEvent } from "effector";
-import { debounce } from "patronum";
+import { createEvent, createStore } from "effector";
+import { debounce, or, not } from "patronum";
 import { delay } from "patronum/delay";
 import { createQuery } from "@farfetched/core";
 import { invoke } from "@withease/factories";
@@ -35,4 +35,19 @@ _effector$factory({
                     })
             }).start
         })
+});
+// --- nested `not` should not receive $c as `name` ---
+const $a = createStore(true, {
+    sid: "bf91eseq",
+    name: "$a"
+});
+const $c = _effector$factory({
+    sid: "dbujrj93",
+    name: "$c",
+    method: "or",
+    fn: ()=>or($a, _effector$factory({
+            sid: "23222dip",
+            method: "not",
+            fn: ()=>not($a)
+        }))
 });
