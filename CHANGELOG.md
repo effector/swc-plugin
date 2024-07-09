@@ -1,8 +1,16 @@
 # effector-swc-plugin
 
+## 0.4.1
+
+### Patch Changes
+
+- 48b7217: Remove `@effector/reflect` from default factories
+- d62f6d0: Update other usages of target to `wasip1`
+- f500a14: Remove `name` propagating through nested factories calls
+
 ## 0.4.0
 
-## Notable Changes
+### Notable Changes
 
 `swc1.4.0` tag (which is currently also latest) has been combined with `swc1.3.106`.
 
