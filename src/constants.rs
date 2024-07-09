@@ -37,13 +37,13 @@ pub enum EffectorMethod {
 
 pub(crate) struct Internal {
     pub tracked:   [&'static str; 10],
-    pub factories: [&'static str; 5],
+    pub factories: [&'static str; 4],
 }
 
-pub(crate) static INTERNAL: Internal = Internal::default();
+pub(crate) static INTERNAL: Internal = Internal::new();
 
 impl Internal {
-    const fn default() -> Self {
+    const fn new() -> Self {
         Self {
             tracked: [
                 // Core Library
@@ -66,7 +66,6 @@ impl Internal {
             factories: [
                 "patronum",
                 "atomic-router",
-                "@effector/reflect",
                 "@farfetched/core",
                 "@withease/factories",
             ],
