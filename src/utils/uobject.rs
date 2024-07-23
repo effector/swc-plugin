@@ -3,6 +3,12 @@ use swc_core::{common::DUMMY_SP, ecma::ast::*};
 pub struct UObject;
 
 impl UObject {
+    #[cfg(not(feature = "plugin_compat_v2"))]
+    pub fn prop_key(key: &str) -> PropName {
+        PropName::Ident(key.into())
+    }
+
+    #[cfg(feature = "plugin_compat_v2")]
     pub fn prop_key(key: &str) -> PropName {
         PropName::Ident(Ident::new(key.into(), DUMMY_SP))
     }

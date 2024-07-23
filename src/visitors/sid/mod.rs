@@ -5,7 +5,7 @@ use swc_core::{
     ecma::{
         ast::*,
         atoms::JsWord,
-        utils::quote_ident,
+        utils::private_ident,
         visit::{noop_visit_mut_type, VisitMut, VisitMutWith},
     },
     quote,
@@ -107,7 +107,7 @@ impl UnitIdentifier {
         if self.match_factory(expr) {
             let id = self
                 .factory_import
-                .get_or_insert_with(|| quote_ident!(WITH_FACTORY));
+                .get_or_insert_with(|| private_ident!(WITH_FACTORY));
 
             FactoryTransformer {
                 mapper: self.mapper.as_ref(),

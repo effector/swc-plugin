@@ -54,6 +54,9 @@ for pair in $versions; do
   echo "Loading packages ($rust_swc)..."
   cargo add swc_core@$rust_swc --features "$features" --quiet
 
+  # workaround for https://github.com/swc-project/swc/issues/8798
+  if [[ $rust_swc == "0.89.8" ]]; then cargo add swc_common@=0.33.19 --quiet; fi
+
   echo "Features for $rust_swc: ${build_features:-"none!"}"
 
   if [ "${TEST:-0}" = "1" ]; then
