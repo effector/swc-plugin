@@ -1,5 +1,18 @@
 # effector-swc-plugin
 
+## 0.5.0
+
+### Notable Changes
+
+- The build process for the plugin now includes an additional optimization pass, reducing the size of unpacked plugin from **2.3 MB** to **just ~900 KB** with no impact on performance.
+- To improve NextJS compatibility, a list of supported versions was expanded. The `swc1.4.0` label has been reinstated, and two new labels were added `swc1.6.0` and `swc1.7.0`.
+- We added an [Additional documentation](https://github.com/kireevmp/effector-swc-plugin/blob/master/NEXTJS.md) to support NextJS users, sharing details regarding setup and supported labels/versions.
+
+### Minor Changes
+
+- 0cbf8b8: Add `swc_core@0.99.x` plugin build & return `@0.89.x` build
+- 8f2f9e5: Add optimization pass to build script (`wasm-opt`)
+
 ## 0.4.1
 
 ### Patch Changes

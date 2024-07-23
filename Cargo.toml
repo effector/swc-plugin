@@ -1,6 +1,6 @@
 [package]
 name = "effector-swc-plugin"
-version = "0.4.1"
+version = "0.5.0"
 
 authors = ["Kireev Mikhail"]
 description = "SWC Plugin for Effector"
