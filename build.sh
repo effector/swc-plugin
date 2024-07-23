@@ -10,16 +10,25 @@ echo "========="
 
 if [ "${TEST:-0}" = "1" ]; then
   echo "Testing the base plugin..."
-  cargo test
+  cargo test --quiet
 fi;
 
 if [ "${BUILD:-1}" = "1" ]; then
-  echo "Finalizing the base plugin..."
-  cargo build-plugin --release
-  cp target/wasm32-wasip1/release/effector_swc_plugin.wasm .
+  echo "Building the base plugin..."
+  cargo build-plugin --release --quiet
+
+  plugin=target/wasm32-wasip1/release/effector_swc_plugin.wasm
+
+  echo "Running optimization pass on the base plugin..."
+  wasm-opt --converge --all-features -Os -o $plugin $plugin
+  
+  size=$(wc -c < $plugin)
+  echo "Plugin size is $((size / 1024))K"
 
   echo "Packing $package_version..."
+  cp $plugin .
   pnpm pack
+  
   mv "effector-swc-plugin-$package_version.tgz" "target/bundles/"
 fi;
 
@@ -43,6 +52,7 @@ for pair in $versions; do
   
   cp Cargo.toml "$temp_dir"
   cp README.md "$temp_dir"
+  cp LICENSE "$temp_dir"
   cat Build.toml >> "$temp_dir/Cargo.toml"
 
   jq --arg VERSION "$publish_version" \
@@ -68,11 +78,15 @@ for pair in $versions; do
     echo "Finalizing the build $publish_version..."
     cargo build-plugin --release --features "$build_features" --quiet
 
-    cp ../target/wasm32-wasip1/release/effector_swc_plugin.wasm .
+    plugin=../target/wasm32-wasip1/release/effector_swc_plugin.wasm
+
+    echo "Running optimization pass on $publish_version..."
+    wasm-opt --converge --all-features -Os -o $plugin $plugin
 
     echo "Packing $publish_version..."
-    
+    cp $plugin .
     pnpm pack
+
     mv "effector-swc-plugin-$publish_version.tgz" "../target/bundles/"
   fi;
 

@@ -12,6 +12,8 @@ publish = false
 lto = true
 debug = "none"
 strip = "debuginfo"
+opt-level = "s"
+codegen-units = 1
 
 [dependencies]
 ahash = { version = "0.8.11", features = ["std"], default-features = false }
