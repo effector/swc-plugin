@@ -5,35 +5,42 @@ A plugin to enhance your [☄️ Effector](https://effector.dev) experience, jus
 Can be used for SSR, debugging and testing in SWC-powered projects, like [NextJS](https://nextjs.org) or [Vite's react-swc plugin](https://github.com/vitejs/vite-plugin-react-swc). Strives to be compatible with the [built-in `effector/babel-plugin`](https://effector.dev/en/api/effector/babel-plugin/).
 
 > [!IMPORTANT]
-> SWC Plugins are currenlty unstable, and `@swc/core` does not follow semver in plugin compatibility. For more info, see [versioning](#Versioning).
+> SWC Plugins are currenlty **unstable** and experimental, NextJS and SWC **do not follow semver** in plugin compatibility. For more info, see [versioning](#Versioning).
 
-## ⚙️ Get Started
+## Get Started
 
-First, install a [compatible](#Versioning) tag of this package, and pin it:
+> [!TIP]
+> A NextJS user? See [NextJS documentation](https://github.com/kireevmp/effector-swc-plugin/blob/master/NEXTJS.md) for an easy setup & versioning.
 
-```bash
-$ npm install effector-swc-plugin@compatible-tag --save-exact
-# or
-$ yarn add effector-swc-plugin@compatible-tag --exact
-# or
-$ pnpm add effector-swc-plugin@compatible-tag --save-exact
-```
+1. **Install the plugin**
 
-Second, add this plugin into your SWC configuration (like `.swcrc`):
+   Install a [compatible](#Versioning) tag of this package, and **pin** it.
 
-```json
-{
-  "$schema": "https://json.schemastore.org/swcrc",
-  "jsc": {
-    "experimental": {
-      "plugins": [["effector-swc-plugin", {}]]
-    }
-  }
-}
-// You must specify a configuration for a plugin, even if it's empty
-```
+   ```bash
+   $ npm install effector-swc-plugin@compatible-tag --save-exact
+   # or
+   $ yarn add effector-swc-plugin@compatible-tag --exact
+   # or
+   $ pnpm add effector-swc-plugin@compatible-tag --save-exact
+   ```
 
-Third, run your build tools and enjoy.
+1. **Add the plugin to your configuration**
+
+   Add this plugin into your SWC configuration (e.g. `.swcrc`).
+
+   ```json
+   {
+     "$schema": "https://json.schemastore.org/swcrc",
+     "jsc": {
+       "experimental": {
+         "plugins": [["effector-swc-plugin", {}]]
+       }
+     }
+   }
+   // You must specify a configuration for a plugin, even if it's empty
+   ```
+
+Now, the plugin is set up and ready for use.
 
 ## 🛠️ Configuration
 
@@ -74,7 +81,7 @@ Third, run your build tools and enjoy.
 
   An array of module names or files to treat as factories. Only required for SSR.
 
-  A number of community packages (`patronum`, `@farfetched/code`, etc.) are included by default, and do not require you to set them explicitly.
+  A number of community packages (`patronum`, `@farfetched/core`, etc.) are included by default, and do not require you to set them explicitly.
 
   If provided with a relative path (a path starting with `./`), plugin will treat this as a local factory residing at a specified path _relative_ to your `.swcrc`. These factories can be imported using _relative_ imports in your code.
 
@@ -145,21 +152,21 @@ To work around breaking changes, this package publishes different ['labels'](htt
 
 **Always pin your `@swc/core` and this plugin version for stable behavior.**
 
-Choosing the Right Plugin Version:
+Choosing the right plugin version:
 
-- Use `@0.x.x` (no label) for the latest `@swc/core`.
-- Use `@0.x.x-swc1.x.x` for specific `@swc/core` versions.
+- Use a label `@swc1.x.x` for a **pinned** and specific `@swc/core` version.
+- Use a `@latest` label for the latest `@swc/core` (risky).
 
 **Example:**
 
-| Available Plugin Version       | Compatible `@swc/core` Versions |
-| ------------------------------ | ------------------------------- |
-| `@0.x.x-swc1.3.49`             | `1.3.49` to `1.3.57`            |
-| `@0.x.x-swc1.3.58`             | `1.3.58` to `1.3.61`            |
-| `@0.x.x-swc1.3.62` or `@0.x.x` | `1.3.62`                        |
+| `@swc/core` version | A compatible plugin label |
+| ------------------- | ------------------------- |
+| `>=1.3.63 <1.3.106` | `@swc1.3.63`              |
+| `>=1.3.106 <1.4.0`  | `@swc1.3.106`             |
+| `>=1.4.0 <1.6.0`    | `@swc1.4.0`               |
+| `>=1.6.0 <1.7.0`    | `@swc1.6.0`               |
+| `>=1.7.0`           | `@swc1.7.0`               |
 
 ### For NextJS users
 
-See SWC Documentation "[Selecting the version](https://swc.rs/docs/plugin/selecting-swc-core)" for detailed info on plugin compatibility. Each NextJS version has a corresponding `@swc/core` version, which you need to know.
-
-As soon as you know the `@swc/core` version, follow the rules above to install the plugin.
+See a [NextJS-specific documentation](https://github.com/kireevmp/effector-swc-plugin/blob/master/NEXTJS.md#Plugin-Compatibility) for a detailed compatibility table and other info.
