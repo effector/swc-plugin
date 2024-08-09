@@ -47,7 +47,7 @@ Now, the plugin is set up and ready for use.
 - `addNames`: `boolean` (default: `true`)
 
   Add `name` information when calling factories (like `createStore` or `createDomain`).
-  Provides excellent debug or QoL information during development/testing, but its best to disable it when using minification.
+  Provides excellent debug and QoL information during development/testing, but its best to disable it when using minification.
 
 - `addLoc`: `boolean` (default: `false`)
 
@@ -79,13 +79,13 @@ Now, the plugin is set up and ready for use.
 
 - `factories`: `string[]` (default: `[]`)
 
-  An array of module names or files to treat as factories. Only required for SSR.
+  An array of module names or files to treat as factories. Only required for _Server-Side Rendering_.
 
   A number of community packages (`patronum`, `@farfetched/core`, etc.) are included by default, and do not require you to set them explicitly.
 
   If provided with a relative path (a path starting with `./`), plugin will treat this as a local factory residing at a specified path _relative_ to your `.swcrc`. These factories can be imported using _relative_ imports in your code.
 
-  If provided with other path, like a package name or a TypeScript alias, plugin will treat this as an exact import specifier which your code uses. You can not import this factory using a relative path.
+  If provided with other path, like a package name or a TypeScript alias, plugin will treat this as an exact import specifier which your code uses. You can _not_ import this factory using a relative path.
 
   Relative import example:
 
@@ -129,7 +129,7 @@ Now, the plugin is set up and ready for use.
 - No support for `importName`
 
   By default, the plugin supports `effector` (+ `/compat`), `effector-root` (+ `/compat`) and `effector-logger`.
-  This should cover you in most of use cases. If you feel a need for this feature, please open an issue!
+  This should cover you in most of use cases. Open an issue if you want to expand this list.
 
 - No support for `noDefaults`
 
@@ -154,19 +154,19 @@ To work around breaking changes, this package publishes different ['labels'](htt
 
 Choosing the right plugin version:
 
-- Use a label `@swc1.x.x` for a **pinned** and specific `@swc/core` version.
+- Use a label `@swc1.x.x` for a **pinned** and specific `@swc/core` version (see table below).
 - Use a `@latest` label for the latest `@swc/core` (risky).
 
-**Example:**
+### Plugin compatibility table
 
-| `@swc/core` version | A compatible plugin label |
-| ------------------- | ------------------------- |
-| `>=1.3.63 <1.3.106` | `@swc1.3.63`              |
-| `>=1.3.106 <1.4.0`  | `@swc1.3.106`             |
-| `>=1.4.0 <1.6.0`    | `@swc1.4.0`               |
-| `>=1.6.0 <1.7.0`    | `@swc1.6.0`               |
-| `>=1.7.0`           | `@swc1.7.0`               |
+| `@swc/core` version range | Plugin version |
+| ------------------------- | -------------- |
+| `>=1.3.63 <1.3.106`       | `@swc1.3.63`   |
+| `>=1.3.106 <1.4.0`        | `@swc1.3.106`  |
+| `>=1.4.0 <1.6.0`          | `@swc1.4.0`    |
+| `>=1.6.0 <1.7.0`          | `@swc1.6.0`    |
+| `>=1.7.0`                 | `@swc1.7.0`    |
 
 ### For NextJS users
 
-See a [NextJS-specific documentation](https://github.com/kireevmp/effector-swc-plugin/blob/master/NEXTJS.md#Plugin-Compatibility) for a detailed compatibility table and other info.
+See a [NextJS-specific documentation](https://github.com/kireevmp/effector-swc-plugin/blob/master/NEXTJS.md#Plugin-Compatibility) for a detailed NextJS compatibility table, setup instructions and other info.

@@ -62,11 +62,11 @@ To work around breaking changes, this package publishes multiple stable ['labels
 
 To choose an appropriate label, choose your NextJS version on the left, and install the plugin using a label from the right[^2].
 
-| NextJS Version Range           | Plugin Version |
+| NextJS version range           | Plugin version |
 | ------------------------------ | -------------- |
-| `next@13.4.8` to `next@14.1.4` | `swc1.3.63`    |
-| `next@14.2.0` to `next@14.2.5` | `swc1.4.0`     |
-| `next@15.0.0-canary.37` and up | `swc1.6.0`     |
+| `next@13.4.8` to `next@14.1.4` | `@swc1.3.63`   |
+| `next@14.2.0` to `next@14.2.5` | `@swc1.4.0`    |
+| `next@15.0.0-canary.37` and up | `@swc1.6.0`    |
 
 To ensure compatibility with each release of `effector-swc-plugin`, we perform multiple integration tests using a sample NextJS app.
 
@@ -81,17 +81,19 @@ To ensure our plugin is compatible with various NextJS versions, we conduct mult
 
 These tests are executed using [Playwright](https://github.com/Microsoft/playwright) for each setup:
 
-| NextJS Version          | Plugin Version | Bundler[^3] |
-| ----------------------- | -------------- | ----------- |
-| `next@13.4.8`           | `swc1.3.63`    | `webpack`   |
-| `next@14.1.3`           | `swc1.3.63`    | `webpack`   |
-| `next@14.1.3`           | `swc1.3.63`    | `turbopack` |
-| `next@14.2.0`           | `swc1.4.0`     | `webpack`   |
-| `next@14.2.0`           | `swc1.4.0`     | `turbopack` |
-| `next@14.2.5`           | `swc1.4.0`     | `webpack`   |
-| `next@14.2.5`           | `swc1.4.0`     | `turbopack` |
-| `next@15.0.0-canary.37` | `swc1.6.0`     | `webpack`   |
-| `next@15.0.0-canary.37` | `swc1.6.0`     | `turbopack` |
+| NextJS Version           | Plugin Version | Bundler[^3] |
+| ------------------------ | -------------- | ----------- |
+| `next@13.4.8`            | `swc1.3.63`    | `webpack`   |
+| `next@14.1.3`            | `swc1.3.63`    | `webpack`   |
+| `next@14.1.3`            | `swc1.3.63`    | `turbopack` |
+| `next@14.2.0`            | `swc1.4.0`     | `webpack`   |
+| `next@14.2.0`            | `swc1.4.0`     | `turbopack` |
+| `next@14.2.5`            | `swc1.4.0`     | `webpack`   |
+| `next@14.2.5`            | `swc1.4.0`     | `turbopack` |
+| `next@15.0.0-canary.37`  | `swc1.6.0`     | `webpack`   |
+| `next@15.0.0-canary.37`  | `swc1.6.0`     | `turbopack` |
+| `next@15.0.0-canary.110` | `swc1.6.0`     | `webpack`   |
+| `next@15.0.0-canary.110` | `swc1.6.0`     | `turbopack` |
 
 [^1]:
     Failing to pin a version may result in unintentional update to one of the packages (either plugin or NextJS), which _will_ make your setup broken.
