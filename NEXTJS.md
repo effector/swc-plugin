@@ -1,17 +1,17 @@
-# NextJS
+# @effector/swc-plugin with Next.js
 
 ## Get Started
 
 > [!TIP]
-> For a correct NextJS and Effector integration we highly recommend using an official [`@effector/next`](https://github.com/effector/next/#readme) bindings package.
+> For a correct Next.js and Effector integration we highly recommend using an official [`@effector/next`](https://github.com/effector/next/#readme) bindings package.
 >
-> However, this plugin (or a [built-in `effector/babel-plugin`](https://effector.dev/en/api/effector/babel-plugin/)) is required for `@effector/next` to work.
+> However, this plugin (or a [built-in `effector/babel-plugin`](https://effector.dev/api/effector/babel-plugin/)) is required for `@effector/next` to work.
 
-To set up the `effector-swc-plugin` for your NextJS project, follow these steps:
+To set up the `@effector/swc-plugin` for your Next.js project, follow these steps:
 
 1. **Determine a compatible plugin version**
 
-   To pick a compatible plugin version, you need to know the version of NextJS you are using. You can easily find it using your package manager, e.g.
+   To pick a compatible plugin version, you need to know the version of Next.js you are using. You can easily find it using your package manager, e.g.
 
    ```bash
    $ pnpm list next
@@ -19,69 +19,61 @@ To set up the `effector-swc-plugin` for your NextJS project, follow these steps:
    next 14.2.5 # <---
    ```
 
-   Then, refer to the table in the [Plugin Compatibility](#Plugin-Compatibility) section to find the compatible version of the plugin.
+   Then, refer to the table in the [official documentation](https://effector.dev/api/effector/swc-plugin/#installation-versioning) to find the correct version of the plugin.
 
 1. **Install the plugin**
 
-   Use your package manager to install the plugin. Ensure you **pin**[^1] both NextJS and the plugin by using an exact version specifier and a flag.
+   Use your preferred package manager to install the plugin. Ensure you **pin**[^1] both Next.js and the plugin by using an exact version specifier and a flag.
 
    ```bash
-   $ npm install --save-exact next@<nextjs-version> effector-swc-plugin@<plugin-version>
+   $ npm install --save-exact next@<nextjs-version> @effector/swc-plugin@<plugin-version>
    # or
-   $ yarn add --exact next@<nextjs-version> effector-swc-plugin@<plugin-version>
+   $ yarn add --exact next@<nextjs-version> @effector/swc-plugin@<plugin-version>
    # or
-   $ pnpm add --save-exact next@<nextjs-version> effector-swc-plugin@<plugin-version>
+   $ pnpm add --save-exact next@<nextjs-version> @effector/swc-plugin@<plugin-version>
    ```
 
 1. **Add the plugin to your configuration**
 
-   Update your NextJS configuration file `next.config.js` to include the plugin in the `experimental.swcPlugins` field.
+   Update your Next.js configuration file `next.config.js` to include the plugin in the `experimental.swcPlugins` field.
 
-   ```js
+   ```ts
    // next.config.js
-   module.exports = {
+   const nextConfig = {
      experimental: {
-       // make sure to pass options `{}` to
-       // the plugin even if its empty
-       swcPlugins: [["effector-swc-plugin", {}]],
+       // even if empty, pass an options object `{}` to the plugin
+       swcPlugins: [["@effector/swc-plugin", {}]],
      },
    };
    ```
 
-   For a full list of configuration options, refer to the [`README`](https://github.com/kireevmp/effector-swc-plugin/#readme) documentation.
+   For a full list of configuration options, refer to the [official documentation](https://effector.dev/api/effector/swc-plugin/).
 
-Now you're using a blazing-fast `effector-swc-plugin` in your NextJS project!
+Now you're using a blazing-fast `@effector/swc-plugin` in your Next.js project!
 
 ## Plugin Compatibility
 
 > [!IMPORTANT]
-> SWC Plugins are currenlty **unstable** and experimental, NextJS and SWC **do not follow semver** in plugin compatibility.
+> This SWC plugin, along with all other SWC plugins, is currently considered experimental and unstable.
+>
+> SWC and Next.js might not follow semver when it comes to plugin compatibility.
 
-Because of this, breaking changes can happen in minor/patch releases of `@swc/core`, NextJS or underlying `swc_core` Rust library.
-To work around breaking changes, this package publishes multiple stable ['labels'](https://semver.org/#spec-item-9) for different corresponding NextJS versions.
+Please refer to the [versioning section](https://effector.dev/api/effector/swc-plugin/#installation-versioning) in the 📚 official documentation.
 
-To choose an appropriate label, choose your NextJS version on the left, and install the plugin using a label from the right[^2].
-
-| NextJS version range           | Plugin version |
-| ------------------------------ | -------------- |
-| `next@13.4.8` to `next@14.1.4` | `@swc1.3.63`   |
-| `next@14.2.0` to `next@14.2.5` | `@swc1.4.0`    |
-| `next@15.0.0-canary.37` and up | `@swc1.6.0`    |
-
-To ensure compatibility with each release of `effector-swc-plugin`, we perform multiple integration tests using a sample NextJS app.
+To ensure compatibility with each release of `@effector/swc-plugin`, we perform multiple integration tests using a sample Next.js app.
 
 ### Integration Testing
 
-To ensure our plugin is compatible with various NextJS versions, we conduct multiple integration tests, including:
+To ensure our plugin is compatible with various Next.js versions, we conduct multiple integration tests, including:
 
 - Starting a development server and loading the AST into the plugin
-- Verifying the generation of [SID](https://effector.dev/en/explanation/sids/)s and unit names
+- Verifying the generation of [SID](https://effector.dev/explanation/sids/)s and unit names
 - Testing with App Router and `async` Components (via `@effector/next`)
 - Testing with Pages Router and `getServerSideProps` (via `@effector/next`)
 
 These tests are executed using [Playwright](https://github.com/Microsoft/playwright) for each setup:
 
-| NextJS Version           | Plugin Version | Bundler[^3] |
+| Next.js Version          | Plugin Version | Bundler[^2] |
 | ------------------------ | -------------- | ----------- |
 | `next@13.4.8`            | `swc1.3.63`    | `webpack`   |
 | `next@14.1.3`            | `swc1.3.63`    | `webpack`   |
@@ -92,14 +84,13 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 | `next@14.2.5`            | `swc1.4.0`     | `turbopack` |
 | `next@15.0.0-canary.37`  | `swc1.6.0`     | `webpack`   |
 | `next@15.0.0-canary.37`  | `swc1.6.0`     | `turbopack` |
-| `next@15.0.0-canary.110` | `swc1.6.0`     | `webpack`   |
-| `next@15.0.0-canary.110` | `swc1.6.0`     | `turbopack` |
+| `next@15.0.0-canary.115` | `swc1.6.0`     | `webpack`   |
+| `next@15.0.0-canary.115` | `swc1.6.0`     | `turbopack` |
 
 [^1]:
-    Failing to pin a version may result in unintentional update to one of the packages (either plugin or NextJS), which _will_ make your setup broken.
-    These issues are hard to detect due to NextJS producing no meaningful error messages when a plugin fails to load.
+    Failing to pin a version may result in unintentional update to one of the packages (either plugin or Next.js), which _will_ make your setup broken.
+    These issues are hard to detect due to Next.js producing no meaningful error messages when a plugin fails to load.
 
-[^2]: Additional compatibility information can be found in SWC documentation <https://swc.rs/docs/plugin/selecting-swc-core>.
-[^3]:
-    NextJS includes an experimental [`turbopack`](https://nextjs.org/docs/architecture/turbopack) bundler, which can be enabled using the `--turbo` CLI flag when running NextJS. `turbopack` uses `swc` internally.
+[^2]:
+    Next.js includes an experimental [`turbopack`](https://nextjs.org/docs/architecture/turbopack) bundler, which can be enabled using the `--turbo` CLI flag when running Next.js. `turbopack` uses `swc` internally.
     We test plugin compatibility with both bundlers, so you can use either one confidently.

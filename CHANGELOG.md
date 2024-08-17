@@ -1,4 +1,4 @@
-# effector-swc-plugin
+# @effector/swc-plugin
 
 ## 0.5.0
 
