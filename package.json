@@ -1,18 +1,19 @@
 {
-  "name": "effector-swc-plugin",
+  "name": "@effector/swc-plugin",
   "version": "0.5.0",
   "description": "SWC Plugin for Effector",
   "keywords": [
     "swc-plugin",
-    "effector"
+    "effector",
+    "next.js"
   ],
-  "homepage": "https://github.com/kireevmp/effector-swc-plugin#readme",
+  "homepage": "https://github.com/@effector/swc-plugin#readme",
   "bugs": {
-    "url": "https://github.com/kireevmp/effector-swc-plugin/issues"
+    "url": "https://github.com/@effector/swc-plugin/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kireevmp/effector-swc-plugin.git"
+    "url": "git+https://github.com/@effector/swc-plugin.git"
   },
   "license": "ISC",
   "author": "Kireev Mikhail",
@@ -22,14 +23,11 @@
     "effector_swc_plugin.wasm"
   ],
   "scripts": {
-    "build": "cargo build-plugin --release",
-    "build:packages": "./build.sh"
+    "build": "node scripts/pack.mjs"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.7"
-  },
-  "peerDependencies": {
-    "@swc/core": ">=1.7.0"
+    "@changesets/cli": "^2.27.7",
+    "zx": "8.1.4"
   },
   "preferUnplugged": true,
   "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"

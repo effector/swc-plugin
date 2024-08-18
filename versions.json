@@ -1,7 +1,0 @@
-[
-  { "rust": "0.78.28", "features": "plugin_compat_v1", "node": { "lo": "1.3.63", "hi": "1.3.106" } },
-  { "rust": "0.89.8", "features": "plugin_compat_v1", "node": { "lo": "1.3.106", "hi": "1.4.0" } },
-  { "rust": "0.93.4", "features": "plugin_compat_v2", "node": { "lo": "1.4.0", "hi": "1.6.0" } },
-  { "rust": "0.96.9", "features": "plugin_compat_v2", "node": { "lo": "1.6.0", "hi": "1.7.0" } },
-  { "rust": "0.99.3", "features": "", "node": { "lo": "1.7.0" } }
-]
