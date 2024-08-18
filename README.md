@@ -10,3 +10,4 @@ An official ☄️ Effector SWC Plugin for SSR and easier debugging experience i
 - [Using with Next.js](https://github.com/effector/swc-plugin/blob/master/NEXTJS.md)
 - [Installation and versioning](https://effector.dev/api/effector/swc-plugin/#installation)
 - [Configuration reference](https://effector.dev/api/effector/swc-plugin/#configuration)
+- [Contributing guide](https://github.com/effector/swc-plugin/blob/master/CONTRIBUTING.md)
