@@ -3,5 +3,5 @@ pub use self::{keyof::*, path::Resolve, uobject::UObject};
 
 mod keyof;
 mod method;
-mod path;
+pub(crate) mod path;
 mod uobject;

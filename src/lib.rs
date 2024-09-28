@@ -6,14 +6,14 @@ use swc_core::{
         ast::*,
         visit::{as_folder, Fold, VisitMut, VisitMutWith},
     },
-    plugin::{
-        metadata::TransformPluginMetadataContextKind, plugin_transform,
-        proxies::TransformPluginProgramMetadata,
-    },
+    plugin::{plugin_transform, proxies::TransformPluginProgramMetadata},
 };
 
-use crate::visitors::{analyzer, force_scope, unit_identifier};
 pub use crate::{config::Config, visitors::VisitorMeta};
+use crate::{
+    utils::path::filename_from_meta,
+    visitors::{analyzer, force_scope, unit_identifier},
+};
 
 mod config;
 mod constants;
@@ -54,9 +54,7 @@ pub fn process_transform(
     .expect("effector-plugin config should be valid");
 
     let meta = VisitorMeta {
-        file: meta
-            .get_context(&TransformPluginMetadataContextKind::Filename)
-            .unwrap_or("unknown".into()),
+        file: filename_from_meta(&meta).unwrap_or("unknown.js".into()),
 
         config: Rc::new(config),
         mapper: Lrc::from(meta.source_map),
