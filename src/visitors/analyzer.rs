@@ -59,11 +59,13 @@ impl Analyzer {
         if INTERNAL
             .factories
             .iter()
-            .any(|factory| import.starts_with(factory))
+            .filter_map(|&factory| import.strip_prefix(factory))
+            .any(|import| import.is_empty() || import.starts_with('/'))
         {
             return true;
         }
 
+        // Strict rules for custom factories
         if self
             .config
             .factories
