@@ -46,18 +46,13 @@ impl Analyzer {
                 .resolve();
 
             // Only custom factories define relative paths
-            for factory in self
+            return self
                 .config
                 .factories
                 .iter()
                 .filter(|factory| factory.starts_with("./"))
-            {
-                if Path::new(factory).resolve() == import_path {
-                    return true;
-                };
-            }
-
-            return false;
+                .map(|factory| Path::new(factory).resolve())
+                .any(|factory| *factory == import_path);
         }
 
         // Lax rules for built-in factories (we look at prefix to handle patronum/*)
