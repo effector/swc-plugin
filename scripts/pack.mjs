@@ -139,7 +139,7 @@ async function build($$, features) {
 
     await $$`cargo build-plugin --release ${flags}`;
 
-    await fs.move(built.trim(), target);
+    await fs.move(built.trim(), target, { overwrite: true });
   });
 
   await spinner("wasm-opt", async () => {
