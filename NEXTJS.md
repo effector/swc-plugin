@@ -80,12 +80,14 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 | `next@14.1.3`            | `swc1.3.63`    | `turbopack` |
 | `next@14.2.0`            | `swc1.4.0`     | `webpack`   |
 | `next@14.2.0`            | `swc1.4.0`     | `turbopack` |
-| `next@14.2.5`            | `swc1.4.0`     | `webpack`   |
-| `next@14.2.5`            | `swc1.4.0`     | `turbopack` |
+| `next@14.2.14`           | `swc1.4.0`     | `webpack`   |
+| `next@14.2.14`           | `swc1.4.0`     | `turbopack` |
 | `next@15.0.0-canary.37`  | `swc1.6.0`     | `webpack`   |
 | `next@15.0.0-canary.37`  | `swc1.6.0`     | `turbopack` |
-| `next@15.0.0-canary.115` | `swc1.6.0`     | `webpack`   |
-| `next@15.0.0-canary.115` | `swc1.6.0`     | `turbopack` |
+| `next@15.0.0-canary.116` | `swc1.6.0`     | `webpack`   |
+| `next@15.0.0-canary.116` | `swc1.6.0`     | `turbopack` |
+| `next@15.0.0-canary.129` | `swc1.7.0`     | `webpack`   |
+| `next@15.0.0-canary.129` | `swc1.7.0`     | `turbopack` |
 
 [^1]:
     Failing to pin a version may result in unintentional update to one of the packages (either plugin or Next.js), which _will_ make your setup broken.
@@ -93,4 +95,5 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 
 [^2]:
     Next.js includes an experimental [`turbopack`](https://nextjs.org/docs/architecture/turbopack) bundler, which can be enabled using the `--turbo` CLI flag when running Next.js. `turbopack` uses `swc` internally.
-    We test plugin compatibility with both bundlers, so you can use either one confidently.
+
+    Note that Turbopack is not feature-complete. Some features of this plugin **do not work correctly** when using `turbopack`.
