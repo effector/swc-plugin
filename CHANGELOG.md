@@ -1,5 +1,13 @@
 # @effector/swc-plugin
 
+## 0.5.1
+
+### Patch Changes
+
+- cc41d2d: Update latest `swc_core` to 0.106.0
+- dc89a22: Improve relative factories handling
+- 48113f4: Make default factories check stricter
+
 ## 0.5.0
 
 ### Notable Changes
