@@ -1,12 +1,12 @@
 use std::rc::Rc;
 
 use swc_core::{
-    common::{sync::Lrc, SourceMapper},
+    common::{SourceMapper, sync::Lrc},
     ecma::{
         ast::*,
         atoms::JsWord,
         utils::private_ident,
-        visit::{noop_visit_mut_type, VisitMut, VisitMutWith},
+        visit::{VisitMut, VisitMutWith, noop_visit_mut_type},
     },
     quote,
 };
@@ -16,11 +16,11 @@ use self::{
     method::MethodTransformer,
 };
 use crate::{
+    Config,
     constants::EffectorMethod,
     state::EffectorImport,
-    utils::{to_domain_method, to_method, TryKeyOf},
+    utils::{TryKeyOf, to_domain_method, to_method},
     visitors::{MutableState, VisitorMeta},
-    Config,
 };
 
 mod call_identity;
@@ -185,9 +185,11 @@ impl VisitMut for UnitIdentifier {
     }
 
     fn visit_mut_call_expr(&mut self, node: &mut CallExpr) {
-        // 'consume' name information, so that nested nodes
-        // don't infer their names from far above
-        self.visit_stacked(None, node);
+        // CallExpr -> callee do infer `name`
+        node.callee.visit_mut_children_with(self);
+
+        // CallExpr -> args do not inherit the name
+        self.visit_stacked(None, &mut node.args);
 
         self.transform_method(node);
         self.transform_factory(node);
