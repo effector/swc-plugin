@@ -1,5 +1,11 @@
 # @effector/swc-plugin
 
+## 0.5.2
+
+### Patch Changes
+
+- b18c9d4: Fix propagating `name` when chaining methods (#25)
+
 ## 0.5.1
 
 ### Patch Changes

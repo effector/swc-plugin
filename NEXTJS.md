@@ -86,8 +86,8 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 | `next@15.0.0-canary.37`  | `swc1.6.0`     | `turbopack` |
 | `next@15.0.0-canary.116` | `swc1.6.0`     | `webpack`   |
 | `next@15.0.0-canary.116` | `swc1.6.0`     | `turbopack` |
-| `next@15.0.0-canary.129` | `swc1.7.0`     | `webpack`   |
-| `next@15.0.0-canary.129` | `swc1.7.0`     | `turbopack` |
+| `next@15.0.2`            | `swc1.7.0`     | `webpack`   |
+| `next@15.0.2`            | `swc1.7.0`     | `turbopack` |
 
 [^1]:
     Failing to pin a version may result in unintentional update to one of the packages (either plugin or Next.js), which _will_ make your setup broken.
