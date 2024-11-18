@@ -3,15 +3,19 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use effector_swc_plugin::{effector, Config, VisitorMeta};
+use effector_swc_plugin::{Config, VisitorMeta, effector};
 use serde::Deserialize;
+#[cfg(not(feature = "plugin_compat_v3"))]
+use swc_core::ecma::ast::Pass;
+#[cfg(feature = "plugin_compat_v3")]
+use swc_core::ecma::visit::Fold;
 use swc_core::{
-    common::{chain, Mark},
+    common::Mark,
     ecma::{
         parser::Syntax,
         transforms::{
             base::resolver,
-            testing::{test_fixture, Tester},
+            testing::{Tester, test_fixture},
         },
     },
 };
@@ -46,6 +50,18 @@ fn fixture(plugin_config: PathBuf) {
     let config = serde_json::from_str::<Config>(&raw_config).unwrap();
     let internal = serde_json::from_str::<TestConfig>(&raw_config).unwrap();
 
+    #[cfg(not(feature = "plugin_compat_v3"))]
+    fn plugin(meta: VisitorMeta) -> impl Pass {
+        (resolver(Mark::new(), Mark::new(), false), effector(meta))
+    }
+
+    #[cfg(feature = "plugin_compat_v3")]
+    fn plugin(meta: VisitorMeta) -> impl Fold {
+        use swc_core::common::chain;
+
+        chain!(resolver(Mark::new(), Mark::new(), false), effector(meta))
+    }
+
     test_fixture(
         syntax,
         &|tester: &mut Tester| {
@@ -58,7 +74,7 @@ fn fixture(plugin_config: PathBuf) {
                 file: internal.__file.to_owned().unwrap_or("input.js".into()),
             };
 
-            chain!(resolver(Mark::new(), Mark::new(), false), effector(meta))
+            plugin(meta)
         },
         &input,
         &dir.join("output.js"),

@@ -1,10 +1,17 @@
 use std::rc::Rc;
 
+#[cfg(not(feature = "plugin_compat_v3"))]
+use swc_core::ecma::visit::visit_mut_pass;
+#[cfg(feature = "plugin_compat_v3")]
 use swc_core::{
-    common::{chain, pass::Optional, sync::Lrc},
+    common::chain,
+    ecma::visit::{Fold, as_folder},
+};
+use swc_core::{
+    common::{pass::Optional, sync::Lrc},
     ecma::{
         ast::*,
-        visit::{as_folder, Fold, VisitMut, VisitMutWith},
+        visit::{VisitMut, VisitMutWith},
     },
     plugin::{plugin_transform, proxies::TransformPluginProgramMetadata},
 };
@@ -22,6 +29,7 @@ mod state;
 mod utils;
 mod visitors;
 
+#[cfg(feature = "plugin_compat_v3")]
 pub fn effector(meta: VisitorMeta) -> impl VisitMut + Fold {
     let config = &meta.config;
 
@@ -39,6 +47,26 @@ pub fn effector(meta: VisitorMeta) -> impl VisitMut + Fold {
     );
 
     as_folder(visitor)
+}
+
+#[cfg(not(feature = "plugin_compat_v3"))]
+pub fn effector(meta: VisitorMeta) -> impl VisitMut + Pass {
+    let config = &meta.config;
+
+    let chain = (
+        analyzer(&meta),
+        Optional {
+            enabled: config.force_scope.reflect(),
+            visitor: force_scope::reflect(&meta),
+        },
+        Optional {
+            enabled: config.force_scope.hooks(),
+            visitor: force_scope::hooks(&meta),
+        },
+        unit_identifier(&meta),
+    );
+
+    visit_mut_pass(chain)
 }
 
 #[plugin_transform]
