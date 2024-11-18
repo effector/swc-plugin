@@ -1,5 +1,17 @@
 # @effector/swc-plugin
 
+## 0.6.0
+
+This release adds support for latest SWC ([compatible](https://plugins.swc.rs/versions/range/19) with `@swc/core >= 1.8.0` & `next >= 15.0.3`).
+
+### Minor Changes
+
+- 8fd8ffe: Support `swc_core` up to v6.0.0
+
+### Patch Changes
+
+- d04f60e: Update `node` dependencies
+
 ## 0.5.2
 
 ### Patch Changes
