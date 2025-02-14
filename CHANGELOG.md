@@ -1,5 +1,13 @@
 # @effector/swc-plugin
 
+## 0.6.1
+
+New tag added: `swc1.10.0` for upcoming Next v15.2.0.
+
+### Patch Changes
+
+- 00e8f70: Update `swc_core` up to v13.3.0
+
 ## 0.6.0
 
 This release adds support for latest SWC ([compatible](https://plugins.swc.rs/versions/range/19) with `@swc/core >= 1.8.0` & `next >= 15.0.3`).

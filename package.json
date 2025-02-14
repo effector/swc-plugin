@@ -1,6 +1,6 @@
 {
   "name": "@effector/swc-plugin",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "SWC Plugin for Effector",
   "keywords": [
     "swc-plugin",
