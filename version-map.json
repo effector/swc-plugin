@@ -4,5 +4,7 @@
   "0.93.4": { "tag": "1.4.0", "features": ["plugin_compat_v2"] },
   "0.96.9": { "tag": "1.6.0", "features": ["plugin_compat_v2"] },
   "0.106.0": { "tag": "1.7.0", "features": ["plugin_compat_v3"] },
-  "6.0.0": { "tag": "1.8.0", "features": [] }
+  "4.0.3": { "tag": "1.8.0", "features": [] },
+  "6.0.2": { "tag": "1.9.0", "features": [] },
+  "13.3.0": { "tag": "1.10.0", "features": [] }
 }
