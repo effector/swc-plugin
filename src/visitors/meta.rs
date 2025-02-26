@@ -1,6 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
-use swc_core::common::{sync::Lrc, SourceMapper};
+use swc_core::common::{SourceMapper, sync::Lrc};
 
 use crate::{config::Config, state::State};
 

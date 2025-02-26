@@ -1,17 +1,17 @@
 use swc_core::{
-    common::{SourceMapper, DUMMY_SP},
+    common::{DUMMY_SP, SourceMapper},
     ecma::{ast::*, atoms::JsWord},
     quote,
 };
 
 use super::call_identity::CallIdentity;
-use crate::{utils::UObject, Config};
+use crate::{Config, utils::UObject};
 
 pub(super) const WITH_FACTORY: &str = "_effector$factory";
 
 pub(super) struct FactoryTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
-    pub stack: &'a Vec<Option<JsWord>>,
+    pub stack:  &'a Vec<Option<JsWord>>,
     pub config: &'a Config,
 
     pub id: &'a Ident,
