@@ -13,7 +13,7 @@ struct ForceHooksScope {
     pub state: MutableState,
 }
 
-pub(crate) fn force_hooks_scope(meta: &VisitorMeta) -> impl VisitMut {
+pub(crate) fn force_hooks_scope(meta: &VisitorMeta) -> impl VisitMut + use<> {
     ForceHooksScope { state: meta.state.clone() }
 }
 

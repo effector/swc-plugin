@@ -6,14 +6,14 @@ use swc_core::{
     },
 };
 
-use crate::{sid::StableIdentifer, utils::UObject, Config};
+use crate::{Config, sid::StableIdentifer, utils::UObject};
 
 const INLINE_UNIT: &str = "inlineUnit";
 
 pub(super) struct CallIdentity {
-    pub name: Option<String>,
-    pub file: String,
-    pub line: usize,
+    pub name:   Option<String>,
+    pub file:   String,
+    pub line:   usize,
     pub column: usize,
 }
 
@@ -48,9 +48,9 @@ impl CallIdentity {
 
     pub fn new(stack: &[Option<JsWord>], loc: Loc) -> CallIdentity {
         Self {
-            name: Self::name_from(stack),
-            file: loc.file.name.to_string(),
-            line: loc.line,
+            name:   Self::name_from(stack),
+            file:   loc.file.name.to_string(),
+            line:   loc.line,
             column: loc.col_display,
         }
     }

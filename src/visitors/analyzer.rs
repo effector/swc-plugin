@@ -3,10 +3,10 @@ use std::{path::Path, rc::Rc};
 use swc_core::ecma::{ast::*, visit::VisitMut};
 
 use crate::{
-    constants::INTERNAL,
-    utils::{to_method, Resolve},
-    visitors::{MutableState, VisitorMeta},
     Config,
+    constants::INTERNAL,
+    utils::{Resolve, to_method},
+    visitors::{MutableState, VisitorMeta},
 };
 
 struct Analyzer {
@@ -15,7 +15,7 @@ struct Analyzer {
     pub file:   String,
 }
 
-pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut {
+pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut + use<> {
     Analyzer {
         config: meta.config.clone(),
         state:  meta.state.clone(),

@@ -1,14 +1,14 @@
 use swc_core::{
-    common::{SourceMapper, DUMMY_SP},
+    common::{DUMMY_SP, SourceMapper},
     ecma::{ast::*, atoms::JsWord},
 };
 
 use super::call_identity::CallIdentity;
-use crate::{constants::EffectorMethod, utils::UObject, Config};
+use crate::{Config, constants::EffectorMethod, utils::UObject};
 
 pub(super) struct MethodTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
-    pub stack: &'a Vec<Option<JsWord>>,
+    pub stack:  &'a Vec<Option<JsWord>>,
     pub config: &'a Config,
 
     pub method: EffectorMethod,
@@ -25,7 +25,9 @@ impl MethodTransformer<'_> {
 
             EffectorMethod::Restore => self.transform_restore(node),
 
-            EffectorMethod::Attach | EffectorMethod::Forward => self.transform_op_single(node),
+            EffectorMethod::Attach | EffectorMethod::Forward => {
+                self.transform_op_single(node)
+            }
 
             EffectorMethod::Combine
             | EffectorMethod::Sample
@@ -93,12 +95,13 @@ impl MethodTransformer<'_> {
         let loc = self.mapper.lookup_char_pos(node.span.lo);
         let config = CallIdentity::new(self.stack, loc)
             .drop_name_if(
-                self.method == EffectorMethod::CreateApi || self.method == EffectorMethod::Split,
+                self.method == EffectorMethod::CreateApi
+                    || self.method == EffectorMethod::Split,
             )
             .render(self.config);
 
         let and = ArrayLit {
-            span: DUMMY_SP,
+            span:  DUMMY_SP,
             elems: node.args.iter().map(|arg| Some(arg.clone())).collect(),
         };
 

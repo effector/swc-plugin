@@ -1,12 +1,13 @@
 use ahash::RandomState;
 use radix_fmt::radix_36;
 
-const STATE: RandomState = RandomState::with_seeds(0xD3ADB33F, 0xF00DBABE, 0xCAF3BAB3, 0x8BADF00D);
+const STATE: RandomState =
+    RandomState::with_seeds(0xD3ADB33F, 0xF00DBABE, 0xCAF3BAB3, 0x8BADF00D);
 
 pub(crate) struct StableIdentifer<'a> {
-    pub name: &'a str,
-    pub file: &'a str,
-    pub line: usize,
+    pub name:   &'a str,
+    pub file:   &'a str,
+    pub line:   usize,
     pub column: usize,
 
     pub debug: bool,
