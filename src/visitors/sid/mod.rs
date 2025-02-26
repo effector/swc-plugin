@@ -36,7 +36,7 @@ struct UnitIdentifier {
     factory_import: Option<Ident>,
 }
 
-pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut {
+pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut + use<> {
     UnitIdentifier {
         stack: Vec::new(),
         factory_import: None,

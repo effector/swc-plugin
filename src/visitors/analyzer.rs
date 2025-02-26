@@ -15,7 +15,7 @@ struct Analyzer {
     pub file:   String,
 }
 
-pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut {
+pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut + use<> {
     Analyzer {
         config: meta.config.clone(),
         state:  meta.state.clone(),

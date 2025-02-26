@@ -15,7 +15,7 @@ struct ForceReflectScope {
     pub state: MutableState,
 }
 
-pub(crate) fn force_reflect_scope(meta: &VisitorMeta) -> impl VisitMut {
+pub(crate) fn force_reflect_scope(meta: &VisitorMeta) -> impl VisitMut + use<> {
     ForceReflectScope { state: meta.state.clone() }
 }
 
