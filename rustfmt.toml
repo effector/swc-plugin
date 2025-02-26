@@ -1,5 +1,6 @@
 version = "Two"
 unstable_features = true
+style_edition = "2024"
 
 format_code_in_doc_comments = true
 format_strings = true

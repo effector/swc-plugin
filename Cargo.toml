@@ -5,7 +5,7 @@ version = "0.6.1"
 authors = ["Kireev Mikhail"]
 description = "SWC Plugin for Effector"
 
-edition = "2021"
+edition = "2024"
 publish = false
 
 [profile.release]
