@@ -7,7 +7,7 @@ use swc_core::{
 use super::call_identity::CallIdentity;
 use crate::{Config, utils::UObject};
 
-pub(super) const WITH_FACTORY: &str = "_effector$factory";
+pub(super) const WITH_FACTORY: &str = "factory";
 
 pub(super) struct FactoryTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
