@@ -1,6 +1,6 @@
 use swc_core::{
     common::{DUMMY_SP, SourceMapper},
-    ecma::{ast::*, atoms::JsWord},
+    ecma::{ast::*, atoms::Atom},
 };
 
 use super::call_identity::CallIdentity;
@@ -8,7 +8,7 @@ use crate::{Config, constants::EffectorMethod, utils::UObject};
 
 pub(super) struct MethodTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
-    pub stack:  &'a Vec<Option<JsWord>>,
+    pub stack:  &'a Vec<Option<Atom>>,
     pub config: &'a Config,
 
     pub method: EffectorMethod,

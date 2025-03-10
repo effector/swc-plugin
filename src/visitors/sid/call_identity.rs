@@ -2,7 +2,7 @@ use swc_core::{
     common::Loc,
     ecma::{
         ast::{Expr, ObjectLit},
-        atoms::JsWord,
+        atoms::Atom,
     },
 };
 
@@ -18,7 +18,7 @@ pub(super) struct CallIdentity {
 }
 
 impl CallIdentity {
-    fn name_from(stack: &[Option<JsWord>]) -> Option<String> {
+    fn name_from(stack: &[Option<Atom>]) -> Option<String> {
         match stack.last() {
             Some(name) => name.as_ref().map(|name| name.as_ref().into()),
             None => None,
@@ -46,7 +46,7 @@ impl CallIdentity {
         .to_sid()
     }
 
-    pub fn new(stack: &[Option<JsWord>], loc: Loc) -> CallIdentity {
+    pub fn new(stack: &[Option<Atom>], loc: Loc) -> CallIdentity {
         Self {
             name:   Self::name_from(stack),
             file:   loc.file.name.to_string(),

@@ -1,6 +1,6 @@
 use swc_core::{
     common::{DUMMY_SP, SourceMapper},
-    ecma::{ast::*, atoms::JsWord},
+    ecma::{ast::*, atoms::Atom},
     quote,
 };
 
@@ -11,7 +11,7 @@ pub(super) const WITH_FACTORY: &str = "_effector$factory";
 
 pub(super) struct FactoryTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
-    pub stack:  &'a Vec<Option<JsWord>>,
+    pub stack:  &'a Vec<Option<Atom>>,
     pub config: &'a Config,
 
     pub id: &'a Ident,

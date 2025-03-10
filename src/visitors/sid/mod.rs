@@ -4,7 +4,7 @@ use swc_core::{
     common::{SourceMapper, sync::Lrc},
     ecma::{
         ast::*,
-        atoms::JsWord,
+        atoms::Atom,
         utils::private_ident,
         visit::{VisitMut, VisitMutWith, noop_visit_mut_type},
     },
@@ -32,7 +32,7 @@ struct UnitIdentifier {
     pub mapper: Lrc<dyn SourceMapper>,
     pub state:  MutableState,
 
-    stack: Vec<Option<JsWord>>,
+    stack: Vec<Option<Atom>>,
     factory_import: Option<Ident>,
 }
 
@@ -48,7 +48,7 @@ pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut + use<> {
 }
 
 impl UnitIdentifier {
-    fn visit_stacked(&mut self, id: Option<JsWord>, node: &mut impl VisitMutWith<Self>) {
+    fn visit_stacked(&mut self, id: Option<Atom>, node: &mut impl VisitMutWith<Self>) {
         self.stack.push(id);
         node.visit_mut_children_with(self);
         self.stack.pop();
@@ -125,7 +125,7 @@ impl VisitMut for UnitIdentifier {
     noop_visit_mut_type!();
 
     fn visit_mut_assign_expr(&mut self, node: &mut AssignExpr) {
-        let id: Option<JsWord> = match &node.left {
+        let id: Option<Atom> = match &node.left {
             AssignTarget::Simple(target) => match target {
                 SimpleAssignTarget::Ident(binding) => Some(binding.id.sym.to_owned()),
                 SimpleAssignTarget::Member(member) => match &member.prop {
@@ -148,7 +148,7 @@ impl VisitMut for UnitIdentifier {
 
     fn visit_mut_var_declarator(&mut self, node: &mut VarDeclarator) {
         if let Some(expr) = &mut node.init {
-            let id: Option<JsWord> = match &node.name {
+            let id: Option<Atom> = match &node.name {
                 Pat::Ident(binding) => Some(binding.id.sym.to_owned()),
                 _ => None,
             };
