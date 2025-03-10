@@ -75,31 +75,22 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 
 | Next.js Version          | Plugin Version | Bundler[^2] |
 | ------------------------ | -------------- | ----------- |
-| `next@13.4.8`            | `swc1.3.63`    | `webpack`   |
-| `next@14.1.3`            | `swc1.3.63`    | `webpack`   |
-| `next@14.1.3`            | `swc1.3.63`    | `turbopack` |
-| `next@14.2.0`            | `swc1.4.0`     | `webpack`   |
-| `next@14.2.0`            | `swc1.4.0`     | `turbopack` |
-| `next@14.2.14`           | `swc1.4.0`     | `webpack`   |
-| `next@14.2.14`           | `swc1.4.0`     | `turbopack` |
-| `next@15.0.0-canary.37`  | `swc1.6.0`     | `webpack`   |
-| `next@15.0.0-canary.37`  | `swc1.6.0`     | `turbopack` |
-| `next@15.0.0-canary.116` | `swc1.6.0`     | `webpack`   |
-| `next@15.0.0-canary.116` | `swc1.6.0`     | `turbopack` |
-| `next@15.0.2`            | `swc1.7.0`     | `webpack`   |
-| `next@15.0.2`            | `swc1.7.0`     | `turbopack` |
-| `next@15.0.3`            | `swc1.9.0`     | `webpack`   |
-| `next@15.0.3`            | `swc1.9.0`     | `turbopack` |
-| `next@15.1.6`            | `swc1.9.0`     | `webpack`   |
-| `next@15.1.6`            | `swc1.9.0`     | `turbopack` |
-| `next@15.2.0-canary.57`  | `swc1.10.0`    | `webpack`   |
-| `next@15.2.0-canary.57`  | `swc1.10.0`    | `turbopack` |
+| `next@14.2.0`            | `swc1.4.0`     | `both`      |
+| `next@14.2.14`           | `swc1.4.0`     | `both`      |
+| `next@15.0.0-canary.37`  | `swc1.6.0`     | `both`      |
+| `next@15.0.0-canary.116` | `swc1.6.0`     | `both`      |
+| `next@15.0.2`            | `swc1.7.0`     | `both`      |
+| `next@15.0.3`            | `swc1.9.0`     | `both`      |
+| `next@15.1.6`            | `swc1.9.0`     | `both`      |
+| `next@15.2.0`            | `swc1.10.0`    | `both`      |
+| `next@15.2.1`            | `swc1.11.0`    | `both`      |
 
 [^1]:
     Failing to pin a version may result in unintentional update to one of the packages (either plugin or Next.js), which _will_ make your setup broken.
     These issues are hard to detect due to Next.js producing no meaningful error messages when a plugin fails to load.
 
-[^2]:
+[^2]: Either `webpack`, `turbopack` or `both`.
+
     Next.js includes an experimental [`turbopack`](https://nextjs.org/docs/architecture/turbopack) bundler, which can be enabled using the `--turbo` CLI flag when running Next.js. `turbopack` uses `swc` internally.
 
     Note that Turbopack is not feature-complete. Some features of this plugin **do not work correctly** when using `turbopack`.
