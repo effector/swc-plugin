@@ -124,7 +124,6 @@ impl UnitIdentifier {
 impl VisitMut for UnitIdentifier {
     noop_visit_mut_type!();
 
-    #[cfg(not(feature = "plugin_compat_v1"))]
     fn visit_mut_assign_expr(&mut self, node: &mut AssignExpr) {
         let id: Option<JsWord> = match &node.left {
             AssignTarget::Simple(target) => match target {
@@ -136,32 +135,6 @@ impl VisitMut for UnitIdentifier {
                 _ => None,
             },
             _ => None,
-        };
-
-        self.visit_stacked(id, node);
-    }
-
-    #[cfg(feature = "plugin_compat_v1")]
-    fn visit_mut_assign_expr(&mut self, node: &mut AssignExpr) {
-        use std::ops::Deref;
-
-        let id: Option<JsWord> = match &node.left {
-            PatOrExpr::Pat(pat) => match pat.deref() {
-                Pat::Ident(binding) => Some(binding.id.sym.to_owned()),
-                Pat::Expr(expr) => match expr.deref() {
-                    Expr::Ident(id) => Some(id.sym.to_owned()),
-                    Expr::Member(member) => member
-                        .prop
-                        .as_ident()
-                        .and_then(|id| Some(id.sym.to_owned())),
-                    _ => None,
-                },
-                _ => None,
-            },
-            PatOrExpr::Expr(expr) => match expr.deref() {
-                Expr::Ident(ident) => Some(ident.sym.to_owned()),
-                _ => None,
-            },
         };
 
         self.visit_stacked(id, node);

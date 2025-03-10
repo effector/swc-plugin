@@ -5,9 +5,9 @@ use std::{
 
 use effector_swc_plugin::{Config, VisitorMeta, effector};
 use serde::Deserialize;
-#[cfg(not(feature = "plugin_compat_v3"))]
+#[cfg(not(feature = "plugin_compat_v1.7.0"))]
 use swc_core::ecma::ast::Pass;
-#[cfg(feature = "plugin_compat_v3")]
+#[cfg(feature = "plugin_compat_v1.7.0")]
 use swc_core::ecma::visit::Fold;
 use swc_core::{
     common::Mark,
@@ -50,12 +50,12 @@ fn fixture(plugin_config: PathBuf) {
     let config = serde_json::from_str::<Config>(&raw_config).unwrap();
     let internal = serde_json::from_str::<TestConfig>(&raw_config).unwrap();
 
-    #[cfg(not(feature = "plugin_compat_v3"))]
+    #[cfg(not(feature = "plugin_compat_v1.7.0"))]
     fn plugin(meta: VisitorMeta) -> impl Pass {
         (resolver(Mark::new(), Mark::new(), false), effector(meta))
     }
 
-    #[cfg(feature = "plugin_compat_v3")]
+    #[cfg(feature = "plugin_compat_v1.7.0")]
     fn plugin(meta: VisitorMeta) -> impl Fold {
         use swc_core::common::chain;
 

@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
-#[cfg(not(feature = "plugin_compat_v3"))]
+#[cfg(not(feature = "plugin_compat_v1.7.0"))]
 use swc_core::ecma::visit::visit_mut_pass;
-#[cfg(feature = "plugin_compat_v3")]
+#[cfg(feature = "plugin_compat_v1.7.0")]
 use swc_core::{
     common::chain,
     ecma::visit::{Fold, as_folder},
@@ -29,7 +29,7 @@ mod state;
 mod utils;
 mod visitors;
 
-#[cfg(feature = "plugin_compat_v3")]
+#[cfg(feature = "plugin_compat_v1.7.0")]
 pub fn effector(meta: VisitorMeta) -> impl VisitMut + Fold {
     let config = &meta.config;
 
@@ -49,7 +49,7 @@ pub fn effector(meta: VisitorMeta) -> impl VisitMut + Fold {
     as_folder(visitor)
 }
 
-#[cfg(not(feature = "plugin_compat_v3"))]
+#[cfg(not(feature = "plugin_compat_v1.7.0"))]
 pub fn effector(meta: VisitorMeta) -> impl VisitMut + Pass {
     let config = &meta.config;
 

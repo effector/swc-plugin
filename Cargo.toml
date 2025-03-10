@@ -32,9 +32,8 @@ testing = "6.0.0"
 
 [features]
 packing = []
-plugin_compat_v1 = ['plugin_compat_v2']
-plugin_compat_v2 = ['plugin_compat_v3']
-plugin_compat_v3 = []
+"plugin_compat_v1.4.0" = ['plugin_compat_v1.7.0']
+"plugin_compat_v1.7.0" = []
 
 [lib]
 crate-type = ["cdylib", "rlib"]
