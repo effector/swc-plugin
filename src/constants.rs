@@ -1,4 +1,4 @@
-#[derive(PartialEq, Eq, Hash, Clone, Debug)]
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 #[repr(usize)]
 pub enum EffectorMethod {
     // unit creators
@@ -18,6 +18,9 @@ pub enum EffectorMethod {
     Attach,
     Split,
     CreateApi,
+
+    // effector factory
+    Factory,
 
     // view library hooks
     UseEvent,

@@ -30,6 +30,7 @@ pub(crate) fn to_method(name: &str) -> Option<EffectorMethod> {
         "reflect" => Some(EffectorMethod::Reflect),
         "list" => Some(EffectorMethod::ReflectList),
         "variant" => Some(EffectorMethod::ReflectVariant),
+
         _ => None,
     }
 }

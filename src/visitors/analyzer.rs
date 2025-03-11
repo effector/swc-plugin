@@ -5,7 +5,7 @@ use swc_core::ecma::{ast::*, visit::VisitMut};
 use crate::{
     Config,
     constants::INTERNAL,
-    utils::{Resolve, to_method},
+    utils::{Imported, Resolve, to_method},
     visitors::{MutableState, VisitorMeta},
 };
 
@@ -24,17 +24,6 @@ pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut + use<> {
 }
 
 impl Analyzer {
-    fn name_of(import: &ImportNamedSpecifier) -> &str {
-        import
-            .imported
-            .as_ref()
-            .map(|v| match v {
-                ModuleExportName::Ident(v) => &*v.sym,
-                ModuleExportName::Str(v) => &*v.value,
-            })
-            .unwrap_or(&*import.local.sym)
-    }
-
     fn is_factory(&self, import: &String) -> bool {
         let is_relative = import.starts_with("./") || import.starts_with("../");
 
@@ -83,7 +72,7 @@ impl Analyzer {
 
         match specifier {
             ImportSpecifier::Named(import) => {
-                if let Some(method) = to_method(Self::name_of(import)) {
+                if let Some(method) = to_method(import.as_known()) {
                     state.aliases.insert(import.local.to_id(), method);
                 }
             }

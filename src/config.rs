@@ -16,6 +16,9 @@ pub struct Config {
     pub debug_sids: bool,
 
     #[serde(default)]
+    pub hmr: HotReplacementMode,
+
+    #[serde(default)]
     pub factories: Vec<String>,
 
     #[serde(
@@ -26,7 +29,6 @@ pub struct Config {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct ForceScopeConfig {
     #[serde(default = "Configurator::enabled")]
     hooks: bool,
@@ -62,6 +64,19 @@ impl Default for ForceScope {
     fn default() -> Self {
         Self::Simple(false)
     }
+}
+
+#[derive(Debug, Default, Clone, Deserialize, PartialEq)]
+pub enum HotReplacementMode {
+    #[serde(rename = "es")]
+    ImportMeta,
+
+    #[serde(rename = "cjs")]
+    Module,
+
+    #[default]
+    #[serde(rename = "none")]
+    None,
 }
 
 struct Configurator;

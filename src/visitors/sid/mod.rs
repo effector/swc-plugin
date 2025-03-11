@@ -1,11 +1,8 @@
-use std::rc::Rc;
-
 use swc_core::{
     common::{SourceMapper, sync::Lrc},
     ecma::{
         ast::*,
         atoms::Atom,
-        utils::private_ident,
         visit::{VisitMut, VisitMutWith, noop_visit_mut_type},
     },
     quote,
@@ -16,11 +13,9 @@ use self::{
     method::MethodTransformer,
 };
 use crate::{
-    Config,
     constants::EffectorMethod,
-    state::EffectorImport,
-    utils::{TryKeyOf, to_domain_method, to_method},
-    visitors::{MutableState, VisitorMeta},
+    utils::{EffectorMatcher, TryKeyOf, UniqueId},
+    visitors::VisitorMeta,
 };
 
 mod call_identity;
@@ -28,9 +23,8 @@ mod factory;
 mod method;
 
 struct UnitIdentifier {
-    pub config: Rc<Config>,
-    pub mapper: Lrc<dyn SourceMapper>,
-    pub state:  MutableState,
+    pub mapper:  Lrc<dyn SourceMapper>,
+    pub matcher: EffectorMatcher,
 
     stack: Vec<Option<Atom>>,
     factory_import: Option<Ident>,
@@ -41,9 +35,8 @@ pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut + use<> {
         stack: Vec::new(),
         factory_import: None,
 
-        config: meta.config.clone(),
-        mapper: meta.mapper.clone(),
-        state:  meta.state.clone(),
+        mapper:  meta.mapper.clone(),
+        matcher: EffectorMatcher::from_meta(meta),
     }
 }
 
@@ -54,46 +47,23 @@ impl UnitIdentifier {
         self.stack.pop();
     }
 
-    fn is_effector(&self, id: &Id) -> bool {
-        let EffectorImport { star, def } = &self.state.borrow().import;
-
-        star.as_ref().is_some_and(|star| *star == *id)
-            || def.as_ref().is_some_and(|def| *def == *id)
-    }
-
-    fn match_method(&self, node: &Expr) -> Option<EffectorMethod> {
-        match node {
-            Expr::Ident(ident) => {
-                self.state.borrow_mut().aliases.get(&ident.to_id()).cloned()
-            }
-            Expr::Member(member) => {
-                let MemberExpr { obj, prop, .. } = member;
-                let (obj, prop) = (obj.as_ident()?, prop.as_ident()?);
-
-                if self.is_effector(&obj.to_id()) {
-                    to_method(&prop.sym)
-                } else if self.config.transform_domain_methods {
-                    to_domain_method(&prop.sym)
-                } else {
-                    None
-                }
-            }
-            _ => None,
-        }
-    }
-
     fn match_factory(&self, node: &Expr) -> bool {
         let Expr::Ident(ident) = node else { return false };
-        self.state.borrow().factories.contains(&ident.to_id())
+
+        self.matcher
+            .state
+            .borrow()
+            .factories
+            .contains(&ident.to_id())
     }
 
     fn transform_method(&self, node: &mut CallExpr) {
         let Callee::Expr(expr) = &node.callee else { return };
-        let Some(method) = self.match_method(expr) else { return };
+        let Some(method) = self.matcher.try_match(expr) else { return };
 
         MethodTransformer {
             mapper: self.mapper.as_ref(),
-            config: self.config.as_ref(),
+            config: &self.matcher.config,
             stack:  &self.stack,
 
             method: method.to_owned(),
@@ -107,11 +77,11 @@ impl UnitIdentifier {
         if self.match_factory(expr) {
             let id = self
                 .factory_import
-                .get_or_insert_with(|| private_ident!(WITH_FACTORY));
+                .get_or_insert_with(|| UniqueId::ident(WITH_FACTORY));
 
             FactoryTransformer {
                 mapper: self.mapper.as_ref(),
-                config: self.config.as_ref(),
+                config: &self.matcher.config,
                 stack: &self.stack,
 
                 id,
@@ -183,6 +153,7 @@ impl VisitMut for UnitIdentifier {
                 .position(|expr| matches!(expr, ModuleItem::ModuleDecl(..)))
                 .unwrap_or(0);
 
+            self.matcher.track(id.to_id(), EffectorMethod::Factory);
             node.body.insert(first_import, import);
         }
     }
