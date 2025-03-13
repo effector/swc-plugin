@@ -1,5 +1,23 @@
 # @effector/swc-plugin
 
+## 0.7.0
+
+### Notable changes
+
+- The plugin now has support for Hot Module Replacement, allowing to clean up side effects in development.
+- The support for older SWC versions (older than 1 year ago) was dropped – if you depend on these versions, you may continue to use `v0.6.1` using old tags.
+
+### Minor Changes
+
+- 534881a: Support for Hot Module Replacement
+- 9cb21e8: Support `@swc/core@1.11.x` (issue #31)
+- 911fa5e: Drop support for `@swc/core<1.4.0`
+
+### Patch Changes
+
+- b4aade6: Upgraded to Rust 2024 Edition on nightly 2025-02-26
+- ced92ca: Update JS dependencies
+
 ## 0.6.1
 
 New tag added: `swc1.10.0` for upcoming Next v15.2.0.
