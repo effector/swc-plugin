@@ -26,8 +26,8 @@
     "build": "node scripts/pack.mjs"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
-    "zx": "^8.4.0"
+    "@changesets/cli": "^2.29.2",
+    "zx": "^8.5.3"
   },
   "preferUnplugged": true,
   "packageManager": "pnpm@9.13.2+sha512.88c9c3864450350e65a33587ab801acf946d7c814ed1134da4a924f6df5a2120fd36b46aab68f7cd1d413149112d53c7db3a4136624cfd00ff1846a0c6cef48a"
