@@ -102,9 +102,6 @@ async function install($$, swc) {
 
   await spinner("cargo install", async () => {
     await $$`cargo add swc_core@${swc} --features ${features}`;
-
-    // workaround for https://github.com/swc-project/swc/issues/8798
-    if (swc === "0.89.8") await $$`cargo add swc_common@=0.33.19`;
   });
 }
 
