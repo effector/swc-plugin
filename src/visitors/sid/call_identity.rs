@@ -18,11 +18,8 @@ pub(super) struct CallIdentity {
 }
 
 impl CallIdentity {
-    fn name_from(stack: &[Option<Atom>]) -> Option<String> {
-        match stack.last() {
-            Some(name) => name.as_ref().map(|name| name.as_ref().into()),
-            None => None,
-        }
+    fn to_name(atom: &Option<Atom>) -> Option<String> {
+        atom.as_ref().map(|value| value.to_string())
     }
 
     fn loc(&self) -> ObjectLit {
@@ -46,9 +43,9 @@ impl CallIdentity {
         .to_sid()
     }
 
-    pub fn new(stack: &[Option<Atom>], loc: Loc) -> CallIdentity {
+    pub fn new(atom: &Option<Atom>, loc: Loc) -> CallIdentity {
         Self {
-            name:   Self::name_from(stack),
+            name:   Self::to_name(atom),
             file:   loc.file.name.to_string(),
             line:   loc.line,
             column: loc.col_display,

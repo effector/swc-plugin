@@ -1,3 +1,5 @@
+use std::mem;
+
 use swc_core::{
     common::{SourceMapper, sync::Lrc},
     ecma::{
@@ -26,13 +28,13 @@ struct UnitIdentifier {
     pub mapper:  Lrc<dyn SourceMapper>,
     pub matcher: EffectorMatcher,
 
-    stack: Vec<Option<Atom>>,
+    current: Option<Atom>,
     factory_import: Option<Ident>,
 }
 
 pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut + use<> {
     UnitIdentifier {
-        stack: Vec::new(),
+        current: None,
         factory_import: None,
 
         mapper:  meta.mapper.clone(),
@@ -42,9 +44,10 @@ pub(crate) fn unit_identifier(meta: &VisitorMeta) -> impl VisitMut + use<> {
 
 impl UnitIdentifier {
     fn visit_stacked(&mut self, id: Option<Atom>, node: &mut impl VisitMutWith<Self>) {
-        self.stack.push(id);
+        // Swap out the `current` name for `id`
+        let prev = mem::replace(&mut self.current, id);
         node.visit_mut_children_with(self);
-        self.stack.pop();
+        self.current = prev;
     }
 
     fn match_factory(&self, node: &Expr) -> bool {
@@ -64,7 +67,7 @@ impl UnitIdentifier {
         MethodTransformer {
             mapper: self.mapper.as_ref(),
             config: &self.matcher.config,
-            stack:  &self.stack,
+            name:   &self.current,
 
             method: method.to_owned(),
         }
@@ -82,7 +85,7 @@ impl UnitIdentifier {
             FactoryTransformer {
                 mapper: self.mapper.as_ref(),
                 config: &self.matcher.config,
-                stack: &self.stack,
+                name: &self.current,
 
                 id,
             }

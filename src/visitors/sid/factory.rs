@@ -11,8 +11,8 @@ pub(super) const WITH_FACTORY: &str = "factory";
 
 pub(super) struct FactoryTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
-    pub stack:  &'a Vec<Option<Atom>>,
     pub config: &'a Config,
+    pub name:   &'a Option<Atom>,
 
     pub id: &'a Ident,
 }
@@ -34,7 +34,7 @@ impl FactoryTransformer<'_> {
 
     pub fn transform(&self, node: &mut CallExpr) {
         let loc = self.mapper.lookup_char_pos(node.span.lo);
-        let mut config = CallIdentity::new(self.stack, loc).render(self.config);
+        let mut config = CallIdentity::new(self.name, loc).render(self.config);
 
         if self.config.add_names {
             config

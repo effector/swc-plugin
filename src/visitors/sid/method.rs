@@ -8,8 +8,8 @@ use crate::{Config, constants::EffectorMethod, utils::UObject};
 
 pub(super) struct MethodTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
-    pub stack:  &'a Vec<Option<Atom>>,
     pub config: &'a Config,
+    pub name:   &'a Option<Atom>,
 
     pub method: EffectorMethod,
 }
@@ -42,7 +42,7 @@ impl MethodTransformer<'_> {
 
     fn prepare_config(&self, node: &CallExpr, in_place_of: usize) -> ExprOrSpread {
         let loc = self.mapper.lookup_char_pos(node.span.lo);
-        let mut config = CallIdentity::new(self.stack, loc).render(self.config);
+        let mut config = CallIdentity::new(self.name, loc).render(self.config);
 
         if let Some(ExprOrSpread { expr, spread: None }) = node.args.get(in_place_of) {
             UObject::insert_and(&mut config, expr.clone());
@@ -82,7 +82,7 @@ impl MethodTransformer<'_> {
 
     fn transform_op_single(&self, node: &mut CallExpr) {
         let loc = self.mapper.lookup_char_pos(node.span.lo);
-        let config = CallIdentity::new(self.stack, loc).render(self.config);
+        let config = CallIdentity::new(self.name, loc).render(self.config);
 
         if let Some(ExprOrSpread { expr, spread: None }) = node.args.first() {
             let config = UObject::and_or(*expr.clone(), config.into());
@@ -93,7 +93,7 @@ impl MethodTransformer<'_> {
 
     fn transform_op_list(&self, node: &mut CallExpr) {
         let loc = self.mapper.lookup_char_pos(node.span.lo);
-        let config = CallIdentity::new(self.stack, loc)
+        let config = CallIdentity::new(self.name, loc)
             .drop_name_if(
                 self.method == EffectorMethod::CreateApi
                     || self.method == EffectorMethod::Split,
