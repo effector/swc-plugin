@@ -1,5 +1,13 @@
 # @effector/swc-plugin
 
+## 0.7.1
+
+### Patch Changes
+
+- b8dd26c: Support `swc_core` up to v27
+- b7529b2: Store call name in stack to improve SID insertion performance
+- f30515b: Update NodeJS dev dependencies
+
 ## 0.7.0
 
 ### Notable changes
