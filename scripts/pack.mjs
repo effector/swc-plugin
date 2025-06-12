@@ -43,7 +43,7 @@ async function runBase() {
 }
 
 async function runTag(/** @type {Version} */ swc) {
-  const { tag, features: base } = versionMap[swc];
+  const { tag, override, features: base } = versionMap[swc];
   const features = [...base, "packing"].join(",");
 
   const env = { ...$.env, CARGO_TARGET_DIR: "../target" };
@@ -56,7 +56,7 @@ async function runTag(/** @type {Version} */ swc) {
 
   cd(tmpdir);
 
-  await install($$, swc);
+  await install($$, swc, override);
 
   if (argv["test"]) await test($$, features);
   if (argv["build"]) await build($$, features);
@@ -94,14 +94,21 @@ async function prepare(tag) {
  * Install dependencies
  *
  * @param {import("zx").Shell} $$
- * @param {string[]} swc
+ * @param {string} swc
+ * @param {Record<string, string> | undefined} override
  */
-async function install($$, swc) {
+async function install($$, swc, override) {
   // swc features as set in Cargo.toml
   const features = "ecma_plugin_transform,ecma_quote,ecma_utils,ecma_parser";
 
   await spinner("cargo install", async () => {
     await $$`cargo add swc_core@${swc} --features ${features}`;
+
+    if (override) {
+      const fixes = Object.entries(override).map((def) => def.join("@"));
+
+      await $$`cargo add ${fixes}`;
+    }
   });
 }
 
@@ -116,7 +123,9 @@ async function test($$, features) {
     const flags = [];
     if (features) flags.push(`--features=${features}`);
 
-    await $$`cargo test ${flags}`;
+    await $$`cargo test ${flags}`.catch(
+      (out) => (console.error(out.stdall), Promise.reject(out.exitCode))
+    );
   });
 }
 
@@ -128,7 +137,8 @@ async function test($$, features) {
  */
 async function build($$, features) {
   const target = "effector_swc_plugin.wasm";
-  const built = await $$`echo $CARGO_TARGET_DIR/wasm32-wasip1/release/${target}`.text();
+  const built =
+    await $$`echo $CARGO_TARGET_DIR/wasm32-wasip1/release/${target}`.text();
 
   await spinner("cargo build", async () => {
     const flags = [];
