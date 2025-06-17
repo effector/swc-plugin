@@ -1,5 +1,5 @@
 import { createEvent, createStore, createEffect } from "effector";
-import { invoke, createFactory } from "@withease/factories"
+import { invoke, createFactory } from "@withease/factories";
 
 const correct = createFactory(() => {
   const $si = createStore(0);

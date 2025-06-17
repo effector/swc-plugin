@@ -9,5 +9,5 @@ const $spreadSecondArg = createStore(0, ...[{ name: "name" }]);
 // --- second two args (skip) ---
 const $spreadSecondArgs = createStore(
   0,
-  ...[{ name: "name" }, { other: true }],
+  ...[{ name: "name" }, { other: true }]
 );

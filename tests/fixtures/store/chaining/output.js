@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { createEvent, createStore } from "effector";
 const event = createEvent({
     sid: "3g0kdzwe",
     name: "event"

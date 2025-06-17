@@ -1,7 +1,7 @@
-import { sample, createStore, createEvent } from "effector"
+import { sample, createStore, createEvent } from "effector";
 
-const $count = createStore(0)
-const increment = createEvent()
+const $count = createStore(0);
+const increment = createEvent();
 
 if (true) {
   sample({
@@ -9,5 +9,5 @@ if (true) {
     source: $count,
     fn: (count) => count + 1,
     target: $count,
-  })
+  });
 }

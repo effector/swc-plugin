@@ -3,7 +3,7 @@ import { useStoreMap } from "effector-react";
 // --- invalid ---
 useStoreMap();
 useStoreMap(1, 2, 3);
-useStoreMap([])
+useStoreMap([]);
 // --- valid ---
 useStoreMap({ store: $store, keys: [b, c], fn: (a) => 1 });
 useStoreMap({ store: $store, keys: [b, c], fn });

@@ -6,4 +6,4 @@ const named = createEvent("name");
 // --- valid: with config ---
 const configured = createEvent({ name: "name" });
 // --- valid: member ---
-object.test = createEvent()
+object.test = createEvent();
