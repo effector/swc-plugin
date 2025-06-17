@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 use swc_core::{
     common::{DUMMY_SP, SourceMapper},
     ecma::{ast::*, atoms::Atom},
@@ -85,9 +87,9 @@ impl MethodTransformer<'_> {
         let config = CallIdentity::new(self.name, loc).render(self.config);
 
         if let Some(ExprOrSpread { expr, spread: None }) = node.args.first() {
-            let config = UObject::and_or(*expr.clone(), config.into());
+            let config = UObject::and_or(expr.deref().clone(), config.into());
 
-            node.args = vec![Expr::Object(config).into()];
+            node.args = vec![config.into()];
         }
     }
 
@@ -108,6 +110,6 @@ impl MethodTransformer<'_> {
         let and = Expr::Array(and);
         let config = UObject::and_or(and, config.into());
 
-        node.args = vec![Expr::Object(config).into()];
+        node.args = vec![config.into()];
     }
 }

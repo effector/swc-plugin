@@ -1,4 +1,4 @@
-use swc_core::{common::DUMMY_SP, ecma::ast::*};
+use swc_core::{common::DUMMY_SP, ecma::ast::*, quote};
 
 pub struct UObject;
 
@@ -35,7 +35,7 @@ impl UObject {
         base.props.push(Prop::KeyValue(prop).into());
     }
 
-    pub fn and_or(and: Expr, or: Expr) -> ObjectLit {
-        UObject::with(vec![("and", and), ("or", or)])
+    pub fn and_or(and: Expr, or: Expr) -> Expr {
+        quote!("{ and: $and, or: $or }" as Expr, and: Expr = and, or: Expr = or)
     }
 }

@@ -1,6 +1,7 @@
 use swc_core::{
     common::util::take::Take,
     ecma::{ast::*, utils::ExprFactory, visit::VisitMut},
+    quote,
 };
 
 use crate::{
@@ -26,9 +27,9 @@ impl ForceHooksScope {
 
     fn inject_use_unit(&self, node: &mut CallExpr, after: usize) {
         if node.args.len() == after {
-            let opts = UObject::with(vec![("forceScope", true.into())]);
+            let opts = quote!("{ forceScope: true }" as Expr);
 
-            node.args.push(Expr::Object(opts).into())
+            node.args.push(opts.into())
         }
     }
 

@@ -1,5 +1,7 @@
 import { withRegion as _effector$withRegion, clearNode as _effector$clearNode, createNode as _effector$createNode } from 'effector';
-const _effector$region = _effector$createNode();
+const _effector$region = _effector$createNode({
+    regional: true
+});
 import { createStore, createEvent } from "effector";
 const $count = _effector$withRegion(_effector$region, ()=>createStore(0, {
         sid: "8iyytmbq"

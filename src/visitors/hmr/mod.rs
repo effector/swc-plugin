@@ -69,13 +69,15 @@ impl HotModuleReplacer {
     }
 
     fn create_region(&mut self) -> ModuleItem {
-        let id = self.region.as_ref().unwrap();
+        let id = self.region.clone().unwrap();
+
+        let config = quote!("{ regional: true }" as Expr);
 
         self.tools
             .get(&HmrTool::CreateNode)
             .clone()
-            .as_call(Span::dummy(), Vec::dummy())
-            .into_var_decl(VarDeclKind::Const, id.clone().into())
+            .as_call(Span::dummy(), vec![config.into()])
+            .into_var_decl(VarDeclKind::Const, id.into())
             .into()
     }
 

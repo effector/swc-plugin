@@ -1,5 +1,7 @@
 import { withRegion as _effector$withRegion, clearNode as _effector$clearNode, createNode as _effector$createNode } from 'effector';
-const _effector$region = _effector$createNode();
+const _effector$region = _effector$createNode({
+    regional: true
+});
 import { createEvent, createStore, sample, createEffect, attach, forward } from "effector";
 const decrement = _effector$withRegion(_effector$region, ()=>createEvent({
         sid: "4koojyr"
