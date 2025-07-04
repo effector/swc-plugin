@@ -1,6 +1,6 @@
 use swc_core::{
     common::{DUMMY_SP, SourceMapper},
-    ecma::{ast::*, atoms::Atom},
+    ecma::{ast::*, atoms::Atom, utils::ExprFactory},
     quote,
 };
 
@@ -28,8 +28,8 @@ impl FactoryTransformer<'_> {
             .unwrap()
     }
 
-    fn wrap(node: &CallExpr) -> Expr {
-        quote!("() => $expr" as Expr, expr: Expr = node.clone().into())
+    fn wrap(expr: Expr) -> Expr {
+        quote!("() => $expr" as Expr, expr: Expr = expr)
     }
 
     pub fn transform(&self, node: &mut CallExpr) {
@@ -42,11 +42,13 @@ impl FactoryTransformer<'_> {
                 .push(UObject::prop("method", Self::method_expr(node)));
         };
 
-        config.props.push(UObject::prop("fn", Self::wrap(node)));
+        config
+            .props
+            .push(UObject::prop("fn", Self::wrap(node.clone().into())));
 
         let config: Box<Expr> = config.into();
 
-        node.callee = Callee::Expr(self.id.clone().into());
+        node.callee = self.id.clone().as_callee();
         node.args = vec![config.into()];
         node.span = DUMMY_SP;
     }
