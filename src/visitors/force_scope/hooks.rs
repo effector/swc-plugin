@@ -46,7 +46,6 @@ impl ForceHooksScope {
 
     fn inject_use_store_map(&self, node: &mut CallExpr) {
         match &mut node.args[..] {
-            #[rustfmt::skip]
             [
                 ExprOrSpread { spread: None, expr: store },
                 ExprOrSpread { spread: None, expr: func },
