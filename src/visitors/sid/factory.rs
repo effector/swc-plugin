@@ -34,7 +34,7 @@ impl FactoryTransformer<'_> {
 
     pub fn transform(&self, node: &mut CallExpr) {
         let loc = self.mapper.lookup_char_pos(node.span.lo);
-        let mut config = CallIdentity::new(self.name, loc).render(self.config);
+        let mut config = CallIdentity::new(self.name, loc).generate(self.config);
 
         if self.config.add_names {
             config

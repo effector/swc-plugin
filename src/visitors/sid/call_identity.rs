@@ -52,15 +52,7 @@ impl CallIdentity {
         }
     }
 
-    pub fn drop_name_if(&mut self, drop: bool) -> &mut Self {
-        if drop {
-            self.name = None
-        };
-
-        self
-    }
-
-    pub fn render(&self, config: &Config) -> ObjectLit {
+    pub fn generate(&self, config: &Config) -> ObjectLit {
         let mut props: Vec<(&str, Expr)> = Vec::new();
 
         props.push(("sid", self.id(config.debug_sids).into()));
