@@ -18,7 +18,6 @@ use swc_core::{
 
 pub use crate::{config::Config, visitors::VisitorMeta};
 use crate::{
-    config::HotReplacementMode,
     utils::path::filename_from_meta,
     visitors::{analyzer, force_scope, hmr, unit_identifier},
 };
@@ -45,10 +44,7 @@ pub fn effector(meta: VisitorMeta) -> impl VisitMut + Fold {
             visitor: force_scope::hooks(&meta),
         },
         unit_identifier(&meta),
-        Optional {
-            enabled: config.hmr != HotReplacementMode::None,
-            visitor: hmr(&meta),
-        },
+        Optional { enabled: config.hmr.enabled(), visitor: hmr(&meta) },
     );
 
     as_folder(visitor)
@@ -69,10 +65,7 @@ pub fn effector(meta: VisitorMeta) -> impl VisitMut + Pass {
             visitor: force_scope::hooks(&meta),
         },
         unit_identifier(&meta),
-        Optional {
-            enabled: config.hmr != HotReplacementMode::None,
-            visitor: hmr(&meta),
-        },
+        Optional { enabled: config.hmr.enabled(), visitor: hmr(&meta) },
     );
 
     visit_mut_pass(chain)
@@ -98,6 +91,8 @@ pub fn process_transform(
 
         state: Default::default(),
     };
+
+    meta.config.check();
 
     let mut visitor = effector(meta);
 

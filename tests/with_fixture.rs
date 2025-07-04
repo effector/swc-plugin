@@ -15,7 +15,7 @@ use swc_core::{
         parser::Syntax,
         transforms::{
             base::resolver,
-            testing::{Tester, test_fixture},
+            testing::{FixtureTestConfig, Tester, test_fixture},
         },
     },
 };
@@ -36,7 +36,8 @@ fn find_input(dir: &Path) -> PathBuf {
 
 #[derive(Deserialize)]
 struct TestConfig {
-    __file: Option<String>,
+    __file:     Option<String>,
+    __can_fail: Option<bool>,
 }
 
 fn fixture(plugin_config: PathBuf) {
@@ -49,6 +50,11 @@ fn fixture(plugin_config: PathBuf) {
         read_to_string(plugin_config.clone()).expect("failed to read config.json");
     let config = serde_json::from_str::<Config>(&raw_config).unwrap();
     let internal = serde_json::from_str::<TestConfig>(&raw_config).unwrap();
+
+    let can_fail = internal.__can_fail.unwrap_or(false);
+
+    let fixture_config =
+        FixtureTestConfig { allow_error: can_fail, ..Default::default() };
 
     #[cfg(not(feature = "plugin_compat_v1.7.0"))]
     fn plugin(meta: VisitorMeta) -> impl Pass {
@@ -65,6 +71,8 @@ fn fixture(plugin_config: PathBuf) {
     test_fixture(
         syntax,
         &|tester: &mut Tester| {
+            config.check();
+
             let meta = VisitorMeta {
                 config: config.clone().into(),
                 mapper: tester.cm.clone(),
@@ -78,7 +86,7 @@ fn fixture(plugin_config: PathBuf) {
         },
         &input,
         &dir.join("output.js"),
-        Default::default(),
+        fixture_config,
     )
 }
 

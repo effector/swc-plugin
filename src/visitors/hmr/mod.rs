@@ -87,14 +87,15 @@ impl HotModuleReplacer {
             region: Ident = self.region.clone().unwrap()
         );
 
-        match self.config.hmr {
+        match self.config.hmr.mode() {
             HotReplacementMode::Module => {
                 quote!("if (module.hot) module.hot.dispose($handler)" as ModuleItem, handler: Expr = handler)
             }
             HotReplacementMode::ImportMeta => {
                 quote!("if (import.meta.hot) import.meta.hot.dispose($handler)" as ModuleItem, handler: Expr = handler)
             }
-            HotReplacementMode::None => unreachable!("visitor should not have run"),
+            HotReplacementMode::Disabled => unreachable!("visitor should not have run"),
+            HotReplacementMode::Detect => unreachable!("detection is not supported"),
         }
     }
 

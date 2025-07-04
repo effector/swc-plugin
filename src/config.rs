@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use swc_core::plugin::errors::HANDLER;
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -16,7 +17,7 @@ pub struct Config {
     pub debug_sids: bool,
 
     #[serde(default)]
-    pub hmr: HotReplacementMode,
+    pub hmr: HotReplacement,
 
     #[serde(default)]
     pub factories: Vec<String>,
@@ -26,6 +27,19 @@ pub struct Config {
         alias = "transformLegacyDomainMethods"
     )]
     pub transform_domain_methods: bool,
+}
+
+impl Config {
+    pub fn check(&self) {
+        if *self.hmr.mode() == HotReplacementMode::Detect {
+            HANDLER.with(|handler| {
+                handler
+                    .struct_err("hmr detection is not supported by swc plugin")
+                    .help("consider specifying the mode explicitly")
+                    .emit()
+            })
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -66,7 +80,7 @@ impl Default for ForceScope {
     }
 }
 
-#[derive(Debug, Default, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub enum HotReplacementMode {
     #[serde(rename = "es")]
     ImportMeta,
@@ -74,9 +88,40 @@ pub enum HotReplacementMode {
     #[serde(rename = "cjs")]
     Module,
 
-    #[default]
     #[serde(rename = "none")]
-    None,
+    Disabled,
+
+    #[serde(skip, rename = "detect")]
+    Detect,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(untagged)]
+pub enum HotReplacement {
+    Simple(bool),
+    Configured(HotReplacementMode),
+}
+
+impl HotReplacement {
+    pub fn mode(&self) -> &HotReplacementMode {
+        match self {
+            Self::Simple(true) => &HotReplacementMode::Detect,
+            Self::Simple(false) => &HotReplacementMode::Disabled,
+            Self::Configured(mode) => mode,
+        }
+    }
+
+    pub fn enabled(&self) -> bool {
+        let mode = self.mode();
+
+        *mode == HotReplacementMode::ImportMeta || *mode == HotReplacementMode::Module
+    }
+}
+
+impl Default for HotReplacement {
+    fn default() -> Self {
+        Self::Simple(false)
+    }
 }
 
 struct Configurator;
