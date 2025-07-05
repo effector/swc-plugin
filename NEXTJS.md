@@ -75,8 +75,6 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 
 | Next.js Version          | Plugin Version | Bundler[^2] |
 | ------------------------ | -------------- | ----------- |
-| `next@14.2.0`            | `swc1.4.0`     | `both`      |
-| `next@14.2.14`           | `swc1.4.0`     | `both`      |
 | `next@15.0.0-canary.37`  | `swc1.6.0`     | `both`      |
 | `next@15.0.0-canary.116` | `swc1.6.0`     | `both`      |
 | `next@15.0.2`            | `swc1.7.0`     | `both`      |
@@ -84,6 +82,8 @@ These tests are executed using [Playwright](https://github.com/Microsoft/playwri
 | `next@15.1.6`            | `swc1.9.0`     | `both`      |
 | `next@15.2.0`            | `swc1.10.0`    | `both`      |
 | `next@15.2.1`            | `swc1.11.0`    | `both`      |
+| `next@15.3.2`            | `swc1.11.0`    | `both`      |
+| `next@15.4.0-canary.113` | `swc1.12.0`    | `both`      |
 
 [^1]:
     Failing to pin a version may result in unintentional update to one of the packages (either plugin or Next.js), which _will_ make your setup broken.
