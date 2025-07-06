@@ -1,5 +1,29 @@
 # @effector/swc-plugin
 
+## 0.8.0
+
+### Notable Changes
+
+The support for `@swc/core@1.4.0`, along with Next.js v14, was dropped. If you can't upgrade your runtime, you may continue to use the `v0.7.1` plugin version via `@swc1.4.0` label.
+
+#### Deprecations
+
+For Hot Module Replacement `hmr` option, the value `"none"` has been renamed to `false`, matching the behavior of `effector/babel-plugin`.
+
+- If you were using `hmr: "none"` explicitly, update your configuration to pass `hmr: false` instead.
+
+### Minor Changes
+
+- 5eee6c8: Extend `hmr` configuration to match `effector/babel-plugin`
+- d5994bb: Include `effector-action` as a default factory
+- 2045a50: Drop support for `@swc/core@1.4.0`
+
+### Patch Changes
+
+- e6d0bb0: Refactor SID method call name drop
+- af3821c: Update HMR to use `regional` node for disposal
+- 066b616: Bump `swc_core` to latest `v30.1.2` for `@swc/core@1.12.x`
+
 ## 0.7.1
 
 ### Patch Changes
