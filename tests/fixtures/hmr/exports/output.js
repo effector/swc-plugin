@@ -26,4 +26,4 @@ export const $$model = _effector$withRegion(_effector$region, ()=>_effector$fact
 $var = _effector$withRegion(_effector$region, ()=>createStore(0, {
         sid: "33om66sn"
     }));
-if (import.meta.hot) import.meta.hot.dispose(()=>_effector$clearNode(_effector$region));
+if (import.meta.hot || import.meta.webpackHot) (import.meta.hot || import.meta.webpackHot).dispose(()=>_effector$clearNode(_effector$region));
