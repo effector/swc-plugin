@@ -92,7 +92,7 @@ impl HotModuleReplacer {
                 quote!("if (module.hot) module.hot.dispose($handler)" as ModuleItem, handler: Expr = handler)
             }
             HotReplacementMode::ImportMeta => {
-                quote!("if (import.meta.hot) import.meta.hot.dispose($handler)" as ModuleItem, handler: Expr = handler)
+                quote!("if (import.meta.hot || import.meta.webpackHot) (import.meta.hot || import.meta.webpackHot).dispose($handler)" as ModuleItem, handler: Expr = handler)
             }
             HotReplacementMode::Disabled => unreachable!("visitor should not have run"),
             HotReplacementMode::Detect => unreachable!("detection is not supported"),
