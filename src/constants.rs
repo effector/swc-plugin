@@ -40,7 +40,7 @@ pub enum EffectorMethod {
 
 pub(crate) struct Internal {
     pub tracked:   [&'static str; 10],
-    pub factories: [&'static str; 5],
+    pub factories: [&'static str; 8],
 }
 
 pub(crate) static INTERNAL: Internal = Internal::new();
@@ -72,6 +72,9 @@ impl Internal {
                 "effector-action",
                 "@farfetched/core",
                 "@withease/factories",
+                "@effector/reflect",
+                "@effector/reflect/ssr",
+                "@effector/reflect/scope",
             ],
         }
     }
