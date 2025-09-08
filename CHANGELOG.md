@@ -1,5 +1,12 @@
 # @effector/swc-plugin
 
+## 0.8.1
+
+### Patch Changes
+
+- f6cadf6: Add support for webpack ESM HMR using `import.meta.webpackHot`
+- 9e941e8: Bump to `swc_core` v39.0.0
+
 ## 0.8.0
 
 ### Notable Changes
