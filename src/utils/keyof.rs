@@ -8,7 +8,11 @@ impl TryKeyOf for KeyValueProp {
     fn try_key(&self) -> Option<Atom> {
         match self {
             KeyValueProp { key: PropName::Ident(id), .. } => Some(id.sym.to_owned()),
-            KeyValueProp { key: PropName::Str(str), .. } => Some(str.value.to_owned()),
+            KeyValueProp { key: PropName::Str(str), .. } => {
+                // We currently only match on "well-formed utf-8", so if it isn't
+                // – we skip it
+                str.value.clone().try_into_atom().ok()
+            }
             _ => None,
         }
     }

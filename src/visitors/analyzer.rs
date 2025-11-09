@@ -1,4 +1,4 @@
-use std::{path::Path, rc::Rc};
+use std::{borrow::Borrow, path::Path, rc::Rc};
 
 use swc_core::ecma::{ast::*, visit::VisitMut};
 
@@ -24,7 +24,7 @@ pub(crate) fn analyzer(meta: &VisitorMeta) -> impl VisitMut + use<> {
 }
 
 impl Analyzer {
-    fn is_factory(&self, import: &String) -> bool {
+    fn is_factory(&self, import: &str) -> bool {
         let is_relative = import.starts_with("./") || import.starts_with("../");
 
         if is_relative {
@@ -72,7 +72,7 @@ impl Analyzer {
 
         match specifier {
             ImportSpecifier::Named(import) => {
-                if let Some(method) = to_method(import.as_known()) {
+                if let Some(method) = import.as_known().and_then(to_method) {
                     state.aliases.insert(import.local.to_id(), method);
                 }
             }
@@ -96,15 +96,15 @@ impl Analyzer {
 
 impl VisitMut for Analyzer {
     fn visit_mut_import_decl(&mut self, node: &mut ImportDecl) {
-        let import = node.src.value.to_string();
+        let import = node.src.value.to_string_lossy();
 
-        if INTERNAL.tracked.contains(&import.as_str()) {
+        if INTERNAL.tracked.contains(&import.borrow()) {
             node.specifiers
                 .iter()
                 .for_each(|spec| self.match_effector(spec));
         };
 
-        if self.is_factory(&import) {
+        if self.is_factory(import.borrow()) {
             node.specifiers
                 .iter()
                 .for_each(|spec| self.match_factory(spec));
