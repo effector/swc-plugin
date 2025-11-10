@@ -393,7 +393,7 @@ dependencies = [
 
 [[package]]
 name = "effector-swc-plugin"
-version = "0.8.1"
+version = "1.0.0-next.0"
 dependencies = [
  "ahash",
  "radix_fmt",

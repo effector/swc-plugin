@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@effector/swc-plugin": "0.8.1"
+  },
+  "changesets": [
+    "huge-needles-appear",
+    "slow-parks-shout",
+    "social-bushes-look"
+  ]
+}
