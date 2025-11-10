@@ -3,14 +3,8 @@ use swc_core::{common::DUMMY_SP, ecma::ast::*, quote};
 pub struct UObject;
 
 impl UObject {
-    #[cfg(not(feature = "plugin_compat_v1.4.0"))]
     pub fn prop_key(key: &str) -> PropName {
         PropName::Ident(key.into())
-    }
-
-    #[cfg(feature = "plugin_compat_v1.4.0")]
-    pub fn prop_key(key: &str) -> PropName {
-        PropName::Ident(Ident::new(key.into(), DUMMY_SP))
     }
 
     pub fn prop(key: &str, value: Expr) -> PropOrSpread {

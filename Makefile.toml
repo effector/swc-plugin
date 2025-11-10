@@ -1,0 +1,42 @@
+[env]
+WASM_TARGET = "wasm32-wasip1"
+WASM_FILENAME = "${CARGO_MAKE_CRATE_FS_NAME}.wasm"
+WASM_RELEASE_DIR = "${CARGO_MAKE_CRATE_TARGET_DIRECTORY}/${WASM_TARGET}/release"
+
+BUNDLE_DIR = "${CARGO_MAKE_CRATE_TARGET_DIRECTORY}/bundle"
+
+[tasks.default]
+alias = "bundle"
+
+[tasks.bundle-directory]
+command = "mkdir"
+args = ["-p", "${BUNDLE_DIR}"]
+
+[tasks.test]
+command = "cargo"
+args = ["test"]
+
+[tasks.wasm]
+command = "cargo"
+args = ["build-plugin", "--release"]
+dependencies = ["bundle-directory"]
+
+[tasks.optimize]
+command = "wasm-opt"
+args = [
+  "--converge",
+  "--all-features",
+  "-Os",
+  "${WASM_RELEASE_DIR}/${WASM_FILENAME}",
+  "-o",
+  "${CARGO_MAKE_WORKING_DIRECTORY}/${WASM_FILENAME}",
+]
+dependencies = ["wasm"]
+
+[tasks.pack]
+command = "pnpm"
+args = ["pack", "--pack-destination", "${BUNDLE_DIR}"]
+dependencies = ["optimize"]
+
+[tasks.bundle]
+dependencies = ["bundle-directory", "wasm", "optimize", "pack"]

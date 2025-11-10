@@ -31,10 +31,5 @@ swc_core = { version = "47.0.4", features = [
 [dev-dependencies]
 testing = "18.0.0"
 
-[features]
-packing = []
-"plugin_compat_v1.4.0" = ['plugin_compat_v1.7.0']
-"plugin_compat_v1.7.0" = []
-
 [lib]
 crate-type = ["cdylib", "rlib"]
