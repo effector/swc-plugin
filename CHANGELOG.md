@@ -1,5 +1,11 @@
 # @effector/swc-plugin
 
+## 1.0.0-next.1
+
+### Patch Changes
+
+- 6fb24b3: Bump dependencies up to `swc_core@52` & toolchain to `nightly-2025-12-23`
+
 ## 1.0.0-next.0
 
 The Wasm ABI for plugins have been [announced](https://blog.swc.rs/2025-11-4-wasm-backward-compatibility) to now be backward compatible. This release prepares the plugin for its first major version by getting rid of multi-label system for supporting several `@swc/core` versions.

@@ -5,6 +5,7 @@
     "@effector/swc-plugin": "0.8.1"
   },
   "changesets": [
+    "chilly-waves-pick",
     "huge-needles-appear",
     "slow-parks-shout",
     "social-bushes-look"
