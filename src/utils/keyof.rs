@@ -8,7 +8,9 @@ impl TryKeyOf for KeyValueProp {
     fn try_key(&self) -> Option<Atom> {
         match self {
             KeyValueProp { key: PropName::Ident(id), .. } => Some(id.sym.to_owned()),
-            KeyValueProp { key: PropName::Str(str), .. } => Some(str.value.to_owned()),
+            KeyValueProp { key: PropName::Str(str), .. } => {
+                Some(str.value.to_atom_lossy().into_owned())
+            }
             _ => None,
         }
     }

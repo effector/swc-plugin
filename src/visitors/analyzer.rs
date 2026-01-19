@@ -72,7 +72,7 @@ impl Analyzer {
 
         match specifier {
             ImportSpecifier::Named(import) => {
-                if let Some(method) = to_method(import.as_known()) {
+                if let Some(method) = to_method(import.as_known().as_str()) {
                     state.aliases.insert(import.local.to_id(), method);
                 }
             }
@@ -96,7 +96,7 @@ impl Analyzer {
 
 impl VisitMut for Analyzer {
     fn visit_mut_import_decl(&mut self, node: &mut ImportDecl) {
-        let import = node.src.value.to_string();
+        let import = node.src.value.to_string_lossy().to_string();
 
         if INTERNAL.tracked.contains(&import.as_str()) {
             node.specifiers
