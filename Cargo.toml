@@ -28,7 +28,7 @@ swc_core = { version = "50.2.3", features = [
 ] }
 
 [dev-dependencies]
-testing = "19.0.0"
+testing = "15.0.0"
 
 [features]
 packing = []
