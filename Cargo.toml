@@ -33,7 +33,8 @@ testing = "15.0.0"
 [features]
 packing = []
 "plugin_compat_v1.4.0" = ['plugin_compat_v1.7.0']
-"plugin_compat_v1.7.0" = []
+"plugin_compat_v1.7.0" = ['plugin_compat_v1.12.0']
+"plugin_compat_v1.12.0" = []
 
 [lib]
 crate-type = ["cdylib", "rlib"]

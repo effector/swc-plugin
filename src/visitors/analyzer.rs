@@ -72,7 +72,11 @@ impl Analyzer {
 
         match specifier {
             ImportSpecifier::Named(import) => {
-                if let Some(method) = to_method(import.as_known().as_str()) {
+                #[cfg(not(feature = "plugin_compat_v1.12.0"))]
+                let method = to_method(import.as_known().as_str());
+                #[cfg(feature = "plugin_compat_v1.12.0")]
+                let method = to_method(import.as_known());
+                if let Some(method) = method {
                     state.aliases.insert(import.local.to_id(), method);
                 }
             }
@@ -96,7 +100,10 @@ impl Analyzer {
 
 impl VisitMut for Analyzer {
     fn visit_mut_import_decl(&mut self, node: &mut ImportDecl) {
+        #[cfg(not(feature = "plugin_compat_v1.12.0"))]
         let import = node.src.value.to_atom_lossy();
+        #[cfg(feature = "plugin_compat_v1.12.0")]
+        let import = &node.src.value;
 
         if INTERNAL.tracked.contains(&import.as_str()) {
             node.specifiers
