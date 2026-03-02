@@ -1,5 +1,45 @@
 # @effector/swc-plugin
 
+## 1.0.0
+
+This is the first stable release of `@effector/swc-plugin`. The plugin now supports stable Plugin ABI and fully supports `@swc/core@^1.15.0` and Next.js v16.1+.
+
+### Major Changes
+
+- ffcab40: Remove support for multi-label publishing
+
+### Minor Changes
+
+- d13af2f: Support `swc_core@47` (stable Plugin ABI)
+
+### Patch Changes
+
+- 9834f76: Bump to `swc_core@55`
+- 6fb24b3: Bump dependencies up to `swc_core@52` & toolchain to `nightly-2025-12-23`
+- 5ef2f76: Bump toolchain to `nightly-2025-11-08`
+
+## 1.0.0-next.1
+
+### Patch Changes
+
+- 6fb24b3: Bump dependencies up to `swc_core@52` & toolchain to `nightly-2025-12-23`
+
+## 1.0.0-next.0
+
+The Wasm ABI for plugins have been [announced](https://blog.swc.rs/2025-11-4-wasm-backward-compatibility) to now be backward compatible. This release prepares the plugin for its first major version by getting rid of multi-label system for supporting several `@swc/core` versions.
+
+### Major Changes
+
+- ffcab40: Remove support for multi-label publishing
+
+### Minor Changes
+
+- d13af2f: Support `swc_core@47` (stable Plugin ABI)
+
+### Patch Changes
+
+- 5ef2f76: Bump toolchain to `nightly-2025-11-08`
+
 ## 0.8.1
 
 ### Patch Changes

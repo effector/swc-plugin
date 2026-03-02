@@ -1,6 +1,6 @@
 [package]
 name = "effector-swc-plugin"
-version = "0.8.1"
+version = "1.0.0"
 
 authors = ["Kireev Mikhail"]
 description = "SWC Plugin for Effector"
@@ -18,9 +18,9 @@ codegen-units = 1
 [dependencies]
 ahash = { version = "0.8.12", features = ["std"], default-features = false }
 radix_fmt = "1.0.0"
-serde = "1.0.219"
-serde_json = "1.0.140"
-swc_core = { version = "39.0.0", features = [
+serde = "1.0.228"
+serde_json = "1.0.147"
+swc_core = { version = "55.0.0", features = [
   "ecma_plugin_transform",
   "ecma_quote",
   "ecma_utils",
@@ -28,12 +28,7 @@ swc_core = { version = "39.0.0", features = [
 ] }
 
 [dev-dependencies]
-testing = "15.0.0"
-
-[features]
-packing = []
-"plugin_compat_v1.4.0" = ['plugin_compat_v1.7.0']
-"plugin_compat_v1.7.0" = []
+testing = "19.0.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

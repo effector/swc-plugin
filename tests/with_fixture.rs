@@ -5,10 +5,6 @@ use std::{
 
 use effector_swc_plugin::{Config, VisitorMeta, effector};
 use serde::Deserialize;
-#[cfg(not(feature = "plugin_compat_v1.7.0"))]
-use swc_core::ecma::ast::Pass;
-#[cfg(feature = "plugin_compat_v1.7.0")]
-use swc_core::ecma::visit::Fold;
 use swc_core::{
     common::Mark,
     ecma::{
@@ -56,18 +52,6 @@ fn fixture(plugin_config: PathBuf) {
     let fixture_config =
         FixtureTestConfig { allow_error: can_fail, ..Default::default() };
 
-    #[cfg(not(feature = "plugin_compat_v1.7.0"))]
-    fn plugin(meta: VisitorMeta) -> impl Pass {
-        (resolver(Mark::new(), Mark::new(), false), effector(meta))
-    }
-
-    #[cfg(feature = "plugin_compat_v1.7.0")]
-    fn plugin(meta: VisitorMeta) -> impl Fold {
-        use swc_core::common::chain;
-
-        chain!(resolver(Mark::new(), Mark::new(), false), effector(meta))
-    }
-
     test_fixture(
         syntax,
         &|tester: &mut Tester| {
@@ -82,7 +66,7 @@ fn fixture(plugin_config: PathBuf) {
                 file: internal.__file.to_owned().unwrap_or("input.js".into()),
             };
 
-            plugin(meta)
+            (resolver(Mark::new(), Mark::new(), false), effector(meta))
         },
         &input,
         &dir.join("output.js"),
@@ -90,14 +74,7 @@ fn fixture(plugin_config: PathBuf) {
     )
 }
 
-#[cfg(not(feature = "packing"))]
 #[testing::fixture("tests/fixtures/**/config.json")]
 fn run_local(plugin_config: PathBuf) {
-    fixture(plugin_config);
-}
-
-#[cfg(feature = "packing")]
-#[testing::fixture("../tests/fixtures/**/config.json")]
-fn run_remote(plugin_config: PathBuf) {
     fixture(plugin_config);
 }

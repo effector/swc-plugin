@@ -1,41 +1,37 @@
 # Contributing to @effector/swc-plugin
 
-## Developing plugin
+## Development
 
-The plugin is built to support both _latest_ `swc_core`, with some features to support older SWC versions.
+This plugin supports `swc_core@49.0.0+` and `@swc/core@1.15.0+` with stable Plugin ABI and targets the _latest_ version available. Breaking changes in Plugin ABI by SWC require a major version bump.
 
-Usually, the development is done using the base plugin, targeting the latest AST version, and the latest _Nightly_ Rust version.
+### Making Changes
 
-### Changelog
+Changelog is managed with `@changesets/cli`. When making changes to the plugin code document them briefly using `pnpm changeset` before committing.
 
-Changelog is managed with `changeset`, and each change to the plugin's core must be logged using `pnpm changeset`.
+### Testing
 
-### Tests
+#### Fixtures
 
-Currently, the plugin is tested in two ways
+Plugin Transform is run against a set of JS code samples (located at `tests/fixtures`) directly. Run manually with `cargo test`.
 
-- **Fixture tests** located in `src/tests/fixtures`.
+#### Integration
 
-  The plugin transforms are run directly on samples of JS code. These tests are run during packing process to ensure plugin is functionally working.
+Pre-built `wasm` file with the plugin is loaded into different _host runtimes_ (usually Next.js), and several Playwright-based end-to-end tests are run. These tests are managed manually and should be run after packing to ensure the plugin is compatible with supported host runtimes.
 
-  You can run them manually on base plugin with `cargo test`.
+## Releasing
 
-- **Integration tests**, run using Playwright.
+### 1. Version Bump
 
-  Pre-built `wasm` files are loaded into different _host runtimes_, e.g. Next.js. These tests are run manually after packing to ensure published labels are compatible with host runtimes.
+1. Run `pnpm changeset version`
+2. Update `CHANGELOG.md` with notable changes
+3. Sync version from `package.json` -> to `Cargo.toml`
+4. Run fixture tests with `cargo test`
+5. Commit as `release: v{version}` and git tag with `v{version}`
 
-## Release process
+### 2. Build
 
-1. **Bump packages versions**
-   1. Run `pnpm changeset version` to generate `CHANGELOG.md` and bump `package.json` version.
-   2. Update `CHANGELOG.md` with additional details, e.g. notable/breaking changes.
-   3. Manually update the `package.version` field in `Cargo.toml` to match `package.json`.
-   4. Check the base plugin using `cargo test`.
-   5. Make a release commit `release: v{version}`.
-   6. Tag the release with new git tag `v{version}`.
-2. **Build packages**
-   1. Run build script with `pnpm build --test --build`.
-   2. Verify that `target/bundles` contains several tarballs named in form `effector-swc-plugin-{version}-swc{tag}.tgz`.
-3. **Publish**
-   1. For each labeled tarball, run `npm publish target/bundles/effector-swc-plugin-{version}-swc{tag}.tgz --tag swc{tag}`.
-   2. For the _latest_, non-labeled tarball, run `npm publish target/bundles/effector-swc-plugin-{version}.tgz`.
+Build a tarball `cargo make bundle` -> `target/bundle/effector-swc-plugin-{version}.tgz`
+
+### 3. Publish
+
+Run `npm publish target/bundle/effector-swc-plugin-{version}.tgz`
