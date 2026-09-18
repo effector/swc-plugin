@@ -2,7 +2,7 @@
 
 ## Development
 
-This plugin supports `swc_core@49.0.0+` and `@swc/core@1.15.0+` with stable Plugin ABI and targets the _latest_ version available. Breaking changes in Plugin ABI by SWC require a major version bump.
+This plugin supports `swc_core@77.0.0+` and `@swc/core@1.16.0+` with stable Plugin ABI and targets the _latest_ version available. Breaking changes in Plugin ABI by SWC require a major version bump.
 
 ### Making Changes
 
