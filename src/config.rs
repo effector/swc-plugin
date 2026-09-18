@@ -34,8 +34,8 @@ impl Config {
         if *self.hmr.mode() == HotReplacementMode::Detect {
             HANDLER.with(|handler| {
                 handler
-                    .struct_err("hmr detection is not supported by swc plugin")
-                    .help("consider specifying the mode explicitly")
+                    .struct_err("effector: hmr detection is not supported by swc plugin")
+                    .note("consider specifying the mode explicitly")
                     .emit()
             })
         }

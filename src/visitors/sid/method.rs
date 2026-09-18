@@ -6,7 +6,11 @@ use swc_core::{
 };
 
 use super::call_identity::CallIdentity;
-use crate::{Config, constants::EffectorMethod, utils::UObject};
+use crate::{
+    Config,
+    constants::EffectorMethod,
+    utils::{SourceMapperExt, UObject},
+};
 
 pub(super) struct MethodTransformer<'a> {
     pub mapper: &'a dyn SourceMapper,
@@ -42,19 +46,19 @@ impl MethodTransformer<'_> {
         };
     }
 
-    fn prepare_config(&self, node: &CallExpr, in_place_of: usize) -> ExprOrSpread {
-        let loc = self.mapper.lookup_char_pos(node.span.lo);
+    fn prepare_config(&self, node: &CallExpr, at: usize) -> Option<ExprOrSpread> {
+        let loc = self.mapper.try_lookup_pos(node.span.lo)?;
         let mut config = CallIdentity::new(self.name, loc).generate(self.config);
 
-        if let Some(ExprOrSpread { expr, spread: None }) = node.args.get(in_place_of) {
+        if let Some(ExprOrSpread { expr, spread: None }) = node.args.get(at) {
             UObject::insert_and(&mut config, expr.clone());
         };
 
-        Expr::Object(config).into()
+        Some(Expr::Object(config).into())
     }
 
     fn transform_store(&self, node: &mut CallExpr) {
-        let config = self.prepare_config(node, 1);
+        let Some(config) = self.prepare_config(node, 1) else { return };
 
         match node.args.len() {
             0 => { /* invalid store creation */ }
@@ -64,7 +68,7 @@ impl MethodTransformer<'_> {
     }
 
     fn transform_event(&self, node: &mut CallExpr) {
-        let config = self.prepare_config(node, 1);
+        let Some(config) = self.prepare_config(node, 1) else { return };
 
         match node.args.len() {
             0..=1 => node.args.push(config),
@@ -73,7 +77,7 @@ impl MethodTransformer<'_> {
     }
 
     fn transform_restore(&self, node: &mut CallExpr) {
-        let config = self.prepare_config(node, 2);
+        let Some(config) = self.prepare_config(node, 2) else { return };
 
         match node.args.len() {
             2 => node.args.push(config),
@@ -83,7 +87,7 @@ impl MethodTransformer<'_> {
     }
 
     fn transform_op_single(&self, node: &mut CallExpr) {
-        let loc = self.mapper.lookup_char_pos(node.span.lo);
+        let Some(loc) = self.mapper.try_lookup_pos(node.span.lo) else { return };
         let config = CallIdentity::new(self.name, loc).generate(self.config);
 
         if let Some(ExprOrSpread { expr, spread: None }) = node.args.first() {
@@ -94,7 +98,7 @@ impl MethodTransformer<'_> {
     }
 
     fn transform_op_list(&self, node: &mut CallExpr) {
-        let loc = self.mapper.lookup_char_pos(node.span.lo);
+        let Some(loc) = self.mapper.try_lookup_pos(node.span.lo) else { return };
 
         let name = match self.method {
             EffectorMethod::CreateApi | EffectorMethod::Split => &None,

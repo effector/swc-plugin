@@ -5,7 +5,10 @@ use swc_core::{
 };
 
 use super::call_identity::CallIdentity;
-use crate::{Config, utils::UObject};
+use crate::{
+    Config,
+    utils::{SourceMapperExt, UObject},
+};
 
 pub(super) const WITH_FACTORY: &str = "factory";
 
@@ -33,7 +36,8 @@ impl FactoryTransformer<'_> {
     }
 
     pub fn transform(&self, node: &mut CallExpr) {
-        let loc = self.mapper.lookup_char_pos(node.span.lo);
+        let Some(loc) = self.mapper.try_lookup_pos(node.span.lo) else { return };
+
         let mut config = CallIdentity::new(self.name, loc).generate(self.config);
 
         if self.config.add_names {
