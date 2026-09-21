@@ -305,7 +305,7 @@ checksum = "fd8e701084c37e7ef62d3f9e453b618130cbc0ef3573847785952a3ac3f746bf"
 
 [[package]]
 name = "effector-swc-plugin"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "ahash",
  "radix_fmt",

@@ -1,5 +1,15 @@
 # @effector/swc-plugin
 
+## 2.0.0
+
+### Major Changes
+
+- 23a28ec: Update to `swc_core@80.0.0` and raise the minimum supported `@swc/core` version to `1.16.0`.
+
+### Patch Changes
+
+- 2d6e08a: Avoid a panic on AST nodes without Source Map position data (#39)
+
 ## 1.0.0
 
 This is the first stable release of `@effector/swc-plugin`. The plugin now supports stable Plugin ABI and fully supports `@swc/core@^1.15.0` and Next.js v16.1+.
